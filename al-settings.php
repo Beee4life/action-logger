@@ -26,11 +26,7 @@
         <?php } ?>
 
         <h2><?php echo __( 'Export data to CSV', 'action-logger' ); ?></h2>
-        <p>
-            <?php echo __( 'By clicking this button you will trigger a download for a CSV (comma separated value) file.', 'action-logger' ); ?>
-            <br />
-            <small>The export works but the HTML of the entire site is outputted as well.</small>
-        </p>
+        <p><?php echo __( 'By clicking this button you will trigger a download for a CSV (comma separated value) file.', 'action-logger' ); ?></p>
         <form name="settings-form" action="" method="post">
             <input name="export_csv" type="hidden" value="1" />
             <input name="export_csv_nonce" type="hidden" value="<?php echo wp_create_nonce( 'export-csv-nonce' ); ?>"/>
