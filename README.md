@@ -53,18 +53,39 @@ To make sure your site won't break if you deactivate the plugin, wrap it in a `c
     if ( class_exists( 'ActionLogger' ) ) {
         ActionLogger::log_user_action( 'user_registered', 'action-logger', 'New user registered: "' . get_userdata( $user_id )->display_name . '".' );
     }
-    
+
 The code consists can contain 3 variables:
 * $action (string) - default false
 * $action_generator (string) - default false
 * $action description (escaped string) - default false
+
+= Can I use this plugin to track visit to special pages like registration confirmations or so ? =
+
+Yes. You can do this by inserting a simple shortcode to the page you want to track. Insert the follwoing shortcode into your post/page:
+    
+    [actionlogger]
+
+This will trigger a log entry as follows:
+
+    'user->display_name' has visited 'post title'
+
+* user->display_name will be taken from the user who triggers the action
+* post title will be taken from the post/page where the shortcode is inserted.
+
+You can override the default message with a simple `message=""` variable.
+
+    [actionlogger message="did something bad"]
+
+This will trigger a log entry as follows:
+
+    'user->display_name' did something bad
 
 ### Misc
 
 If you're a plugin author and you would like to see your hooks logged in this plugin, please contact me @ http://berryplasman.com.  
 
 ### To Do
-* [ ] - Add shortcode to track thank you pages and other status pages
+* [X] - Add shortcode to track thank you pages and other status pages
 * [ ] - Add WP errors
 * [ ] - Add EM registration approve
 * [ ] - Scan S2Member for hooks
