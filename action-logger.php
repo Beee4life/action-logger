@@ -65,9 +65,6 @@
 
                 // $this->al_prepare_db();
 
-                // @TODO: remove include
-                include( 'get-functions.php' ); // read csv
-
             }
 
             // @TODO: check if db exists
