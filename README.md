@@ -89,13 +89,15 @@ The default action is `page_visit`, since the message is generated from within t
 
 The default value for generator is `shortcode on {page title}`. 
 
-You can override the default message with 3 variables.
+You can override the default values with 3 variables.
 
 - message
 - action
 - generator
 
-Which is defined as this:
+There's only 1 exception. You can't use a " (double quotes) in your messages, because a shortcode variable is contained within double quotes.
+
+This is defined as this:
 
     [actionlogger message="did something bad" action="register" generator="something"]
    
