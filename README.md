@@ -95,9 +95,10 @@ You can override the default message with 3 variables.
 - action
 - generator
 
+Which is defined as this:
 
     [actionlogger message="did something bad" action="register" generator="something"]
-    
+   
 
 This will trigger a log entry with the following description:
 
