@@ -239,18 +239,15 @@
 
             public static function al_log_user_action( $action = 'none', $action_generator = 'none', $action_description = 'none' ) {
 
-                $timestamp          = strtotime( date( 'Y-m-d  H:i:s', strtotime( '+' . get_option( 'gmt_offset' ) . ' hours' ) ) );
-                $action_description = esc_attr( $action_description );
-
                 do_action( 'before_log_user_action' );
 
                 global $wpdb;
                 $sql_data = array(
-                    'action_time'        => $timestamp,
+                    'action_time'        => strtotime( date( 'Y-m-d  H:i:s', strtotime( '+' . get_option( 'gmt_offset' ) . ' hours' ) ) ),
                     'action_user'        => get_current_user_id(),
-                    'action'             => $action,
-                    'action_generator'   => $action_generator,
-                    'action_description' => $action_description,
+                    'action'             => esc_attr( $action ),
+                    'action_generator'   => esc_attr( $action_generator ),
+                    'action_description' => esc_attr( $action_description ),
                 );
                 $wpdb->insert( $wpdb->prefix . 'action_logs', $sql_data );
 
