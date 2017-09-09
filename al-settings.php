@@ -14,7 +14,9 @@
 
         echo "<h1>Action Logger settings</h1>";
 
-        idf_show_error_messages();
+        if ( function_exists( 'idf_show_error_messages' ) ) {
+            idf_show_error_messages();
+        }
         do_action('al_before_settings' );
 
         echo '<div id="action-logger" class="">';
