@@ -14,6 +14,7 @@
         echo "<h1>Action Logger overview</h1>";
 
         idf_show_error_messages();
+        // hook before list
         do_action('al_before_overview', '' );
 
         echo '<div id="action-logger" class="">';
@@ -95,6 +96,7 @@
 
         echo '</div>'; // end #action-logger
 
+        // hook after list
         do_action('al_after_overview' );
 
         echo '</div><!-- end .wrap -->';

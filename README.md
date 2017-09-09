@@ -5,14 +5,15 @@ Welcome to the Action Logger plugin for [Wordpress](http://wordpress.org).
 
 ## Description
 
+This plugin gives you the option to log various actions on your website. Default there are a few actions which are tracked from within WP core and some plugins I like/use.
+
 ## Features
 
-This plugin gives you the option to log various actions on your website. Default there are 3 core Wordpress actions which can be tracked:
 1. User registration
 1. User change
 1. User delete
 
-Next to that we included a few loggin options for one of our favourite plugins: [Events Manager](http://wp-events-plugin.com/) + [Pro](https://eventsmanagerpro.com/). You can track the following actions:
+Next to that we included a few logging options for one of our favourite plugins: [Events Manager](http://wp-events-plugin.com/) + [Pro](https://eventsmanagerpro.com/). Right now you can track the following actions but more expected to follow:
 * registration approved (tbc)
 * registration cancelled
 * registration rejected
@@ -20,7 +21,30 @@ Next to that we included a few loggin options for one of our favourite plugins: 
 
 ## Usage
 
-To use the logger, you need to add piece of code on the place where you want the tracking to occur.
+## Impact
+
+* Upon activation a new database table named `wp_action_logs` is created.
+* Every action is logged real-time, which is 1 row being stored in the database
+* Upon uninstallation the database table `wp_action_logs` is dropped (unless preserve data is selected in the options panel).
+
+## FAQ
+
+= Which plugins/actions are included in the plugin =
+
+### WP core
+* user registration
+* user change
+* user delete
+
+### Events manager
+* event booking cancelled
+* event booking rejected
+* event booking approved (in progress)
+* more to follow...
+
+= Can I log my own custom action actions ? =
+
+Of course. To use the logger, you need to add piece of code on the place where you want the tracking to occur. This can be a plugin or a theme.
 
     ActionLogger::log_user_action( $action, $action_generator, $action_description );
 
@@ -31,21 +55,24 @@ To make sure your site won't break if you deactivate the plugin, wrap it in a `c
     }
     
 The code consists can contain 3 variables:
-* $action (string)
-* $action_generator (string)
-* $action description
-
-## FAQ
-
-### To Do
-* [X] - create shortcode for easier logging
+* $action (string) - default false
+* $action_generator (string) - default false
+* $action description (escaped string) - default false
 
 ### Misc
 
-Author: [Beee](http://www.berryplasman.nl)
+If you're a plugin author and you would like to see your hooks logged in this plugin, please contact me @ http://berryplasman.com.  
+
+### To Do
+* [ ] - Add shortcode to track thank you pages and other status pages
+* [ ] - Add WP errors
+* [ ] - Add EM registration approve
+* [ ] - Scan S2Member for hooks
+* [ ] - Scan WPSC for hooks
+* [ ] - Scan BuddyPress for hooks
+* [ ] - Scan WP4MC for hooks
 
 ## Changelog
-
 
 **1.0**
 

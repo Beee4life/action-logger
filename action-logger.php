@@ -49,7 +49,7 @@
                 add_action( 'admin_menu',            array( $this, 'al_add_action_logger_dashboard' ) );            // add menu page
                 add_action( 'admin_menu',            array( $this, 'al_add_action_logger_settings_page' ) );        // add settings page
                 add_action( 'admin_init',            array( $this, 'al_items_overview_functions' ) );               // functions for overview (delete)
-                add_action( 'admin_init',            array( $this, 'al_check_table' ) );                            // functions for settings page
+                add_action( 'admin_init',            array( $this, 'al_check_log_table' ) );                        // functions for settings page
                 add_action( 'admin_init',            array( $this, 'al_drop_log_table' ) );                         // functions for settings page
                 add_action( 'admin_init',            array( $this, 'al_admin_page_functions' ) );                   // functions for settings page
                 add_action( 'admin_init',            array( $this, 'al_delete_all_logs' ) );                        // functions for settings page
@@ -283,7 +283,7 @@
 
             }
 
-            public function al_check_db() {
+            public function al_check_log_table() {
 
                 require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
                 ob_start();

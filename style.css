@@ -11,7 +11,7 @@
 }
 
 #action-logger table {
-    width: 100%;
+    max-width: 100%;
     border-collapse: collapse;
     border-style:    hidden;
     border-spacing: 0;
