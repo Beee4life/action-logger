@@ -13,6 +13,7 @@
 
         echo "<h1>Action Logger overview</h1>";
 
+        // this will be removed asap
         if ( function_exists( 'idf_show_error_messages' ) ) {
             idf_show_error_messages();
         }

@@ -124,10 +124,11 @@ If you're a plugin author and you would like to see your hooks logged in this pl
 * [ ] - Add option 'keep logs for X days'
 * [ ] - Add auto-purge logs after x days
 * [ ] - Add EM registration approve
-* [ ] - Scan S2Member for hooks
-* [ ] - Scan WPSC for hooks
-* [ ] - Scan BuddyPress for hooks
-* [ ] - Scan WP4MC for hooks
+* [ ] - Add EM hooks
+* [ ] - Add S2Member hooks
+* [ ] - Add WPSC hooks
+* [ ] - Add BuddyPress hooks
+* [ ] - Add WP4MC hooks
 
 ## Changelog
 
