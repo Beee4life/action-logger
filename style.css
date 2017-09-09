@@ -32,6 +32,21 @@
     padding-top: 1em;
 }
 
+#action-logger table tbody td.datetime {
+    min-width: 130px;
+}
+#action-logger table tbody td.action {
+    min-width: 100px;
+}
+#action-logger table tbody td.generator {
+    min-width: 125px;
+}
+#action-logger table tbody td.description {
+    min-width: 150px;
+}
+
 #action-logger table td.checkbox {
     text-align: center;
+    min-width: 50px;
+    max-width: 90px;
 }

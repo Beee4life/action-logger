@@ -26,7 +26,6 @@
                 SELECT * FROM " . $wpdb->prefix . "action_logs
                 order by id DESC
             ");
-
         if ( count( $items ) == 0 ) {
             ?>
             <p><?php echo __( 'This page will show a log of all actions done by IDF board members/volunteers, which are "interesting" to log (if there are any).', 'action-logger' ); ?></p>
@@ -64,12 +63,12 @@
                         foreach( $items as $item ) {
                             ?>
                             <tr class="row">
-                                <td class=""><?php echo date( 'M j @ H:i:s', $item->action_time ); ?> (+<?php echo get_option( 'gmt_offset' ); ?>)</td>
+                                <td class="datetime"><?php echo date( 'M j @ H:i:s', $item->action_time ); ?> (+<?php echo get_option( 'gmt_offset' ); ?>)</td>
                                 <?php if ( current_user_can( 'manage_options' ) ) { ?>
-                                    <td class=""><?php echo $item->action; ?></td>
+                                    <td class="action"><?php echo $item->action; ?></td>
                                 <?php } ?>
                                 <?php if ( 27 == get_current_user_id() ) { ?>
-                                    <td class=""><?php echo $item->action_generator; ?></td>
+                                    <td class="generator"><?php echo $item->action_generator; ?></td>
                                 <?php } ?>
                                 <td class=""><?php echo $item->action_description; ?></td>
                                 <?php if ( current_user_can( 'manage_options' ) ) { ?>

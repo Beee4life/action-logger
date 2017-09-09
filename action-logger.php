@@ -61,6 +61,7 @@
                 add_action( 'delete_user',           array( $this, 'al_log_user_delete'), 10, 1 );                  // log on user delete
                 add_action( 'em_bookings_deleted',   array( $this, 'al_log_registration_delete'), 10, 2 );          // log on registration_delete
                 add_action( 'em_booking_save',       array( $this, 'al_log_registration_cancel_reject'), 10, 2 );   // log on registration_cancel/reject
+                add_shortcode( 'actionlogger',  array( $this, 'al_register_shortcode_logger' ) );              // register shortcode to track pages/posts
 
                 // $this->al_prepare_db();
 
@@ -305,11 +306,16 @@
             }
 
             public function al_register_shortcode_logger( $attributes ) {
+                $post_title = get_the_title();
                 $attributes = shortcode_atts( array(
-                    'message' => get_userdata( get_current_user_id() ) . ' ',
+                    'action'  => 'page_visit',
+                    'generator'  => 'shortcode on ' . $post_title . '"',
+                    'message' => 'visited "' . $post_title . '"',
                 ), $attributes, 'actionlogger' );
 
-                ActionLogger::log_user_action( 'test', array( 'ActionLogger', 'action-logger', $attributes[ 'message' ] ) );
+                if ( ! is_admin() ) {
+                    $this->al_log_user_action( $attributes[ 'action' ], $attributes[ 'generator' ], get_userdata( get_current_user_id() )->display_name . ' ' . $attributes[ 'message' ] );
+                }
 
                 return ;
             }
