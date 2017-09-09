@@ -87,15 +87,22 @@ Next to that 2 other values are stored:
 
 The default action is `page_visit`, since the message is generated from within the shortcode and is mostly used on pages.
 
-The default 
+The default value for generator is `shortcode on {page title}`. 
 
-You can override the default message with a simple `message=""` variable.
+You can override the default message with 3 variables.
 
-    [actionlogger message="did something bad" action="register" generator=""]
+1. message
+1. action
+1. generator
 
-This will trigger a log entry as follows:
+
+    [actionlogger message="did something bad" action="register" generator="something"]
+
+This will trigger a log entry with the following description:
 
     'user->display_name' did something bad
+
+Register and something are stored in their own columns in the overview.
 
 = Which plugins do you plan to include in the plugin ? =
 

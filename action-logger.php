@@ -242,7 +242,6 @@
 
             public static function al_log_user_action( $action = 'none', $action_generator = 'none', $action_description = 'none' ) {
 
-
                 $timestamp          = strtotime( date( 'Y-m-d  H:i:s', strtotime( '+' . get_option( 'gmt_offset' ) . ' hours' ) ) );
                 $action_description = esc_attr( $action_description );
 
