@@ -1,0 +1,18 @@
+{
+    "name": "action-logger",
+    "version": "1.0.0",
+    "description": "This plugin logs allows you to log several actions across your website, like creating/deleting/promoting users.",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/beee4life/action-logger.git"
+    },
+    "keywords": [
+        "log"
+    ],
+    "author": "Berry Plasman <info@berryplasman.com>",
+    "license": "GPL-2.0",
+    "bugs": {
+        "url": "https://github.com/beee4life/action-logger/issues"
+    },
+    "homepage": "https://github.com/beee4life/action-logger#readme"
+}
