@@ -91,11 +91,11 @@ The default value for generator is `shortcode on {page title}`.
 
 You can override the default message with 3 variables.
 
-1. message
-1. action
-1. generator
+- message
+- action
+- generator
 
-    
+
     [actionlogger message="did something bad" action="register" generator="something"]
     
 
