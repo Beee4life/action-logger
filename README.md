@@ -68,11 +68,11 @@ This will trigger a default log entry with the following description:
 
 If a user is logged in, it will trigger the following log entry:
 
-    {user->display_name} has visited "{post title}"
+    {user->display_name} has visited {post title}
 
 If it's a visitor (not logged in), it will trigger the following log entry:
 
-    A visitor has visited 'post title'
+    A visitor has visited {post title}
 
 * user->display_name will be taken from the user who triggers the action
 * post title will be taken from the post/page where the shortcode is inserted.
@@ -83,7 +83,7 @@ Next to that 2 other values are stored:
 
 The default action is `{post_type}_visit`.
 
-The default value for generator is `shortcode on {page title}`. 
+The default value for generator is `Shortcode`. 
 
 You can override the default values with 3 variables.
 
@@ -116,9 +116,9 @@ To make sure your site won't break if you deactivate the plugin, wrap it in a `c
 
 The function can contain 3 variables which are default all set to false. Use them in this order:
 
-* $action (escaped string)
-* $action_generator (escaped string)
-* $action description (escaped string)
+* $action
+* $action_generator
+* $action description
 
 
     if ( class_exists( 'ActionLogger' ) ) {
