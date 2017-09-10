@@ -68,7 +68,7 @@ This will trigger a default log entry with the following description:
 
 If a user is logged in, it will trigger the following log entry:
 
-    'user->display_name' has visited 'post title'
+    {user->display_name} has visited "{post title}"
 
 If it's a visitor (not logged in), it will trigger the following log entry:
 
@@ -81,7 +81,7 @@ Next to that 2 other values are stored:
 1. action
 2. generator
 
-The default action is `page_visit`, since the message is generated from within the shortcode and is mostly used on pages.
+The default action is `{post_type}_visit`.
 
 The default value for generator is `shortcode on {page title}`. 
 
@@ -95,12 +95,12 @@ There's only 1 exception. You can't use a " (double quotes) in your message, bec
 
 This is defined as this:
 
-    [actionlogger message="did something bad" action="register action" generator="did something on the website"]
+    [actionlogger message="did something on the website"]
    
 
 This will trigger a log entry with the following description:
 
-    'user->display_name' did something on the website
+    {user->display_name} did something on the website
 
 = Can I log my own custom action actions ? =
 
@@ -143,8 +143,8 @@ If you're a plugin author and you would like to see your hooks logged in this pl
 * [X] - Add panel to select what to track
 * [X] - Add WP errors
 * [ ] - Add apply_filters
-* [ ] - Add pagination
-* [ ] - Add filters to filter certain actions/generators
+* [ ] - Add pagination in overview
+* [ ] - Add filters in overview to filter certain actions/generators
 * [ ] - Add option to 'keep logs for X days'
 * [ ] - Add auto-purge logs after x days
 * [ ] - Add option to select which user roles can see the logger
