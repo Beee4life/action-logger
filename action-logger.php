@@ -509,12 +509,8 @@
                 $log_visitor               = get_option( 'al_user_visit_visitor' );
                 $log_it                    = true;
                 $attributes                = shortcode_atts( array(
-                    // 'action'    => $post_type . '_visit',
-                    // 'generator' => 'Shortcode',
-                    'message' => 'visited "' . $post_title . '"',
+                    'message' => ' visited ' . $post_title,
                 ), $attributes, 'actionlogger' );
-                $attributes[ 'action' ]    = $post_type . '_visit';
-                $attributes[ 'generator' ] = 'Shortcode';
 
                 if ( is_user_logged_in() ) {
                     $user = get_userdata( get_current_user_id() )->display_name;
@@ -529,7 +525,7 @@
                 }
         
                 if ( ! is_admin() && true == $log_it ) {
-                    $this->al_log_user_action( $attributes[ 'action' ], $attributes[ 'generator' ], $user . ' ' . $attributes[ 'message' ] );
+                    $this->al_log_user_action( $post_type . '_visit', 'Shortcode', $user . $attributes[ 'message' ] );
                 }
         
                 return;
