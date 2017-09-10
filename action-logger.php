@@ -43,7 +43,6 @@
                 // (de)activation hooks
                 register_activation_hook( __FILE__,     array( $this, 'al_plugin_activation' ) );
                 register_deactivation_hook( __FILE__,   array( $this, 'al_plugin_deactivation' ) );
-                register_uninstall_hook( __FILE__,      array( $this, 'al_plugin_uninstall' ) );
 
                 // actions
                 add_action( 'admin_menu',            array( $this, 'al_add_action_logger_dashboard' ) );
@@ -52,7 +51,6 @@
                 add_action( 'admin_init',            array( $this, 'al_admin_page_functions' ) );
                 add_action( 'admin_init',            array( $this, 'al_delete_all_logs' ) );
                 add_action( 'admin_init',            array( $this, 'al_check_log_table' ) );
-                add_action( 'admin_init',            array( $this, 'al_drop_log_table' ) );
                 add_action( 'admin_init',            array( $this, 'al_admin_menu' ) );
                 add_action( 'admin_init',            array( $this, 'al_errors' ) );
                 add_action( 'plugins_loaded',        array( $this, 'al_load_plugin_textdomain' ) );
@@ -112,15 +110,6 @@
              * The only thing left to do is to nuke the database, unless the preserve option is checked, because
              * all stored values are already deleted upon plugin deactivation.
              */
-            public function al_plugin_uninstall() {
-                if ( false == get_option( 'al_storage_type' ) ) {
-                    // nuke it all
-                    $this->al_drop_log_table();
-                    delete_option( 'available_log_actions' );
-                } else {
-                    delete_option( 'al_storage_type' );
-                }
-            }
     
             /**
              * Drop table if exists ( upon plugin activation).
@@ -524,15 +513,6 @@
                 }
         
                 return;
-            }
-    
-            public function al_drop_log_table( $drop = false ) {
-        
-                if ( false != $drop ) {
-                    global $wpdb;
-                    $prefix = $wpdb->get_blog_prefix();
-                    $wpdb->query( 'DROP TABLE ' . $prefix . 'action_logs' );
-                }
             }
     
             public function al_truncate_log_table( $truncate = false ) {
