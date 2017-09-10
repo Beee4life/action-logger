@@ -16,10 +16,8 @@
             <h1>Action Logger settings</h1>
 
             <?php
-                // this will be removed asap
-                if ( function_exists( 'idf_show_error_messages' ) ) {
-                    idf_show_error_messages();
-                }
+                ActionLogger::al_show_admin_notices();
+                // hook before settings page
                 do_action('al_before_settings' );
             ?>
 
@@ -111,7 +109,10 @@
 
             </div><!-- end #action-logger -->
 
-        <?php do_action('al_after_settings' ); ?>
+        <?php
+            // hook after settings page
+            do_action('al_after_settings' );
+        ?>
         </div><!-- end .wrap -->
 <?php
     }
