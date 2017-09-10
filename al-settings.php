@@ -6,7 +6,7 @@
     function action_logger_settings_page() {
 
         if ( ! current_user_can( 'manage_options' ) ) {
-            wp_die( __( 'Sorry, you do not have sufficient permissions to access this page.', 'action-logger' ) );
+            wp_die( esc_html( 'Sorry, you do not have sufficient permissions to access this page.', 'action-logger' ) );
         }
         ?>
 
@@ -25,9 +25,9 @@
 
                 <?php echo ActionLogger::al_admin_menu(); ?>
 
-                <p><?php echo __( 'Here you can export the data to csv and set some values for this plugin.', 'action-logger' ); ?></p>
-                <h2><?php echo __( 'Select what to log', 'action-logger' ); ?></h2>
-                <p><?php echo __( 'Here you can select which actions you want to log/ignore.', 'action-logger' ); ?></p>
+                <p><?php esc_html_e( 'Here you can export the data to csv and set some values for this plugin.', 'action-logger' ); ?></p>
+                <h2><?php esc_html_e( 'Select what to log', 'action-logger' ); ?></h2>
+                <p><?php esc_html_e( 'Here you can select which actions you want to log/ignore.', 'action-logger' ); ?></p>
                 <?php
                     // get all log actions
                     $available_log_actions = get_option( 'al_available_log_actions' );
@@ -66,7 +66,7 @@
                                                 }
                                             ?>
                                             <label for="action-status" class="screen-reader-text">
-                                                <?php echo __( 'Active', 'action-logger' ); ?>
+                                                <?php esc_html_e( 'Active', 'action-logger' ); ?>
                                             </label>
                                             <input name="<?php echo $action[ 'action_name' ]; ?>" id="action-status" type="checkbox" value="<?php echo $active; ?>" <?php echo $checked; ?>/>
                                         </td>
@@ -79,27 +79,27 @@
                         </form>
                 <?php } ?>
 
-                <h2><?php echo __( 'Export data to CSV', 'action-logger' ); ?></h2>
-                <p><?php echo __( 'By clicking this button you will trigger a download for a CSV (comma separated value) file.', 'action-logger' ); ?></p>
+                <h2><?php esc_html_e( 'Export data to CSV', 'action-logger' ); ?></h2>
+                <p><?php esc_html_e( 'By clicking this button you will trigger a download for a CSV (comma separated value) file.', 'action-logger' ); ?></p>
                 <form name="export-form" action="" method="post">
                     <input name="export_csv" type="hidden" value="1" />
                     <input name="export_csv_nonce" type="hidden" value="<?php echo wp_create_nonce( 'export-csv-nonce' ); ?>"/>
                     <input name="" type="submit" class="admin-button admin-button-small" value="Export to CSV"/>
                 </form>
 
-                <h2><?php echo __( 'Preserve data when uninstalling', 'action-logger' ); ?></h2>
+                <h2><?php esc_html_e( 'Preserve data when uninstalling', 'action-logger' ); ?></h2>
                 <?php $checked = get_option( 'al_preserve_settings' ); ?>
                 <form name="preserve-form" action="" method="post">
                     <input name="preserve_settings_nonce" type="hidden" value="<?php echo wp_create_nonce( 'preserve-settings-nonce' ); ?>"/>
                     <label for="preserve-settings" class="screen-reader-text">Preserve settings</label>
-                    <input name="preserve_settings" id="preserve-settings" type="checkbox" value="1" <?php if ( false != $checked ) { echo 'checked '; } ?>/> <?php echo __( 'If you uninstall the plugin, all data is removed as well. If you check this box, your data won\'t be deleted upon uninstall.', 'action-logger' ); ?>
+                    <input name="preserve_settings" id="preserve-settings" type="checkbox" value="1" <?php if ( false != $checked ) { echo 'checked '; } ?>/> <?php esc_html_e( 'If you uninstall the plugin, all data is removed as well. If you check this box, your data won\'t be deleted upon uninstall.', 'action-logger' ); ?>
                     <br />
                     <br />
                     <input name="" type="submit" class="admin-button admin-button-small" value="Save settings"/>
                 </form>
 
-                <h2><?php echo __( 'Nuke \'em all', 'action-logger' ); ?></h2>
-                <p><?php echo __( 'Delete all items. Watch out, there\'s no confirmation. Delete = delete !', 'action-logger' ); ?></p>
+                <h2><?php esc_html_e( 'Nuke \'em all', 'action-logger' ); ?></h2>
+                <p><?php esc_html_e( 'Delete all items. Watch out, there\'s no confirmation. Delete = delete !', 'action-logger' ); ?></p>
                 <form name="delete-logs" action="" method="post">
                     <input name="delete_all_logs_nonce" type="hidden" value="<?php echo wp_create_nonce( 'delete-all-logs-nonce' ); ?>" />
                     <label for="delete-all" class="screen-reader-text">Delete</label>

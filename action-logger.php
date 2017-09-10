@@ -55,6 +55,7 @@
                 add_action( 'admin_init',            array( $this, 'al_drop_log_table' ) );
                 add_action( 'admin_init',            array( $this, 'al_admin_menu' ) );
                 add_action( 'admin_init',            array( $this, 'al_errors' ) );
+                add_action( 'plugins_loaded',        array( $this, 'al_load_plugin_textdomain' ) );
                 add_action( 'admin_enqueue_scripts', array( $this, 'al_enqueue_action_logger_css' ) );
 
                 // log actions
@@ -65,10 +66,6 @@
                 add_action( 'em_booking_save',       array( $this, 'al_log_registration_cancel_reject'), 10, 2 );
                 add_shortcode( 'actionlogger',  array( $this, 'al_register_shortcode_logger' ) );
                 
-                // always load, same as hooking to admin_init
-                // $this->al_prepare_log_table();
-                // $this->al_store_available_actions();
-
             }
     
             // @TODO: change s2member role
@@ -177,44 +174,52 @@
             }
     
             /**
+             * Load language files
+             */
+            public function al_load_plugin_textdomain() {
+                load_plugin_textdomain( 'action-logger', FALSE, basename( dirname( __FILE__ ) ) . '/languages/' );
+            }
+    
+            /**
              * Here we built a simple array of available log actions and store them in an option value.
              */
             public function al_store_available_actions() {
     
-                $available_options = get_option( 'available_log_actions' );
+                $available_options = get_option( 'al_available_log_actions' );
+                // $available_options = false;
                 if ( false == $available_options ) {
                     $available_options = array(
                         array(
                             'action_name'        => 'wp_user_create',
-                            'action_generator'   => 'WP',
+                            'action_generator'   => 'WordPress',
                             'action_title'       => 'Create user',
-                            'action_description' => 'Logs when a new user is created in WordPress.',
+                            'action_description' => esc_html( __( 'Logs when a new user is created in WordPress.', 'action-logger' ) ),
                         ),
                         array(
                             'action_name'        => 'wp_user_change',
-                            'action_generator'   => 'WP',
+                            'action_generator'   => 'WordPress',
                             'action_title'       => 'Change user',
-                            'action_description' => 'Logs when a user is changed (by another user) in WordPress.',
+                            'action_description' => esc_html( __( 'Logs when a user is changed (by another user) in WordPress.', 'action-logger' ) ),
                         ),
                         array(
                             'action_name'        => 'wp_user_delete',
-                            'action_generator'   => 'WP',
+                            'action_generator'   => 'WordPress',
                             'action_title'       => 'Delete user',
-                            'action_description' => 'Logs when a user is deleted in WordPress',
+                            'action_description' => esc_html( __( 'Logs when a user is deleted in WordPress', 'action-logger' ) ),
                         ),
                     );
                     $user_options      = array(
                         array(
                             'action_name'        => 'user_visit_visitor',
-                            'action_generator'   => 'WP',
+                            'action_generator'   => 'WordPress',
                             'action_title'       => 'User visit (visitor)',
-                            'action_description' => 'Log when a registered user visits a post/page with the shortcode on it.',
+                            'action_description' => esc_html( __( 'Logs when a registered user visits a post/page with the shortcode on it.', 'action-logger' ) ),
                         ),
                         array(
                             'action_name'        => 'user_visit_registered',
-                            'action_generator'   => 'WP',
+                            'action_generator'   => 'WordPress',
                             'action_title'       => 'User visit (registered)',
-                            'action_description' => 'Log when a visitor visits a post/page with the shortcode on it.',
+                            'action_description' => esc_html( __( 'Logs when a visitor visits a post/page with the shortcode on it.', 'action-logger' ) ),
                         ),
                     );
                     $available_options = array_merge( $available_options, $user_options );
@@ -224,13 +229,13 @@
                                 'action_name'        => 'wp_em_booking_delete',
                                 'action_generator'   => 'Events Manager',
                                 'action_title'       => 'Booking delete',
-                                'action_description' => 'Logs when a booking is deleted',
+                                'action_description' => esc_html( __( 'Logs when a booking is deleted', 'action-logger' ) ),
                             ),
                             array(
                                 'action_name'        => 'wp_em_booking_cancel_reject',
                                 'action_generator'   => 'Events Manager',
                                 'action_title'       => 'Booking canceled/rejected',
-                                'action_description' => 'Logs when a booking is canceled or rejected',
+                                'action_description' => esc_html( __( 'Logs when a booking is canceled or rejected', 'action-logger' ) ),
                             ),
                         );
                         $available_options = array_merge( $available_options, $em_options );
@@ -238,15 +243,15 @@
                     foreach ( $available_options as $option ) {
                         update_option( 'al_' . $option[ 'action_name' ], true );
                     }
+                    update_option( 'al_available_log_actions', $available_options );
                 }
-                update_option( 'al_available_log_actions', $available_options );
             }
     
             /**
              * Adds a page to admin sidebar menu
              */
             public function al_add_action_logger_dashboard() {
-                add_menu_page( 'Action logger', 'Action logger', 'access_s2member_level4', 'action-logger', 'action_logger_dashboard', 'dashicons-editor-alignleft' );
+                add_menu_page( 'Action logger', 'Action Logger', 'access_s2member_level4', 'action-logger', 'action_logger_dashboard', 'dashicons-editor-alignleft' );
                 include( 'al-dashboard.php' ); // content for the settings page
             }
     
@@ -282,13 +287,13 @@
                             $prefix     = false;
                         } elseif ( strpos( $code, 'warning' ) !== false ) {
                             $span_class = 'notice-warning ';
-                            $prefix     = __( 'Warning', 'action-logger' );
+                            $prefix     = esc_html( __( 'Warning', 'action-logger' ) );
                         } elseif ( strpos( $code, 'info' ) !== false ) {
                             $span_class = 'notice-info ';
                             $prefix     = false;
                         } else {
                             $error  = true;
-                            $prefix = __( 'Error', 'action-logger' );
+                            $prefix = esc_html( __( 'Error', 'action-logger' ) );
                         }
                     }
                     echo '<div class="notice ' . $span_class . 'is-dismissible">';
@@ -296,11 +301,11 @@
                         $message = ActionLogger::al_errors()->get_error_message( $code );
                         echo '<div class="">';
                         if ( true == $prefix ) {
-                            echo '<strong>' . __( $prefix ) . ':</strong> ';
+                            echo '<strong>' . $prefix . ':</strong> ';
                         }
                         echo $message;
                         echo '</div>';
-                        echo '<button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button>';
+                        echo '<button type="button" class="notice-dismiss"><span class="screen-reader-text">' . esc_html( __( 'Dismiss this notice', 'action-logger' ) ) . '</span></button>';
                     }
                     echo '</div>';
                 }
@@ -313,7 +318,7 @@
         
                 if ( isset( $_POST[ 'active_logs_nonce' ] ) ) {
                     if ( ! wp_verify_nonce( $_POST[ 'active_logs_nonce' ], 'active-logs-nonce' ) ) {
-                        $this->al_errors()->add( 'error_nonce_no_match', __( 'Something went wrong. Please try again.', 'idf-action-logger' ) );
+                        $this->al_errors()->add( 'error_nonce_no_match', esc_html( __( 'Something went wrong. Please try again.', 'action-logger' ) ) );
                 
                         return;
                     } else {
@@ -330,13 +335,13 @@
                                 update_option( 'al_' . $action[ 'action_name' ], 1 );
                             }
                         }
-                        $this->al_errors()->add( 'success_settings_saved', __( 'Settings saved.', 'idf-action-logger' ) );
+                        $this->al_errors()->add( 'success_settings_saved', esc_html( __( 'Settings saved.', 'action-logger' ) ) );
                     }
                 }
         
                 if ( isset( $_POST[ 'preserve_settings_nonce' ] ) ) {
                     if ( ! wp_verify_nonce( $_POST[ 'preserve_settings_nonce' ], 'preserve-settings-nonce' ) ) {
-                        $this->al_errors()->add( 'error_nonce_no_match', __( 'Something went wrong. Please try again.', 'idf-action-logger' ) );
+                        $this->al_errors()->add( 'error_nonce_no_match', esc_html( __( 'Something went wrong. Please try again.', 'action-logger' ) ) );
                 
                         return;
                     } else {
@@ -355,7 +360,7 @@
                  */
                 if ( isset( $_POST[ 'export_csv_nonce' ] ) ) {
                     if ( ! wp_verify_nonce( $_POST[ 'export_csv_nonce' ], 'export-csv-nonce' ) ) {
-                        $this->al_errors()->add( 'error_nonce_no_match', __( 'Something went wrong. Please try again.', 'idf-action-logger' ) );
+                        $this->al_errors()->add( 'error_nonce_no_match', esc_html( __( 'Something went wrong. Please try again.', 'action-logger' ) ) );
                 
                         return;
                     } else {
@@ -412,7 +417,7 @@
         
                 if ( isset( $_POST[ 'delete_action_items_nonce' ] ) ) {
                     if ( ! wp_verify_nonce( $_POST[ 'delete_action_items_nonce' ], 'delete-actions-items-nonce' ) ) {
-                        $this->al_errors()->add( 'error_nonce_no_match', __( 'Something went wrong. Please try again.', 'idf-action-logger' ) );
+                        $this->al_errors()->add( 'error_nonce_no_match', esc_html( __( 'Something went wrong. Please try again.', 'action-logger' ) ) );
                 
                         return;
                     } else {
@@ -427,12 +432,12 @@
                                     $wpdb->delete( $wpdb->prefix . 'action_logs', array( 'ID' => $row_id ) );
                                 }
                         
-                                $this->al_errors()->add( 'success_items_deleted', __( 'All selected items are successfully deleted from the database.', 'idf-action-logger' ) );
+                                $this->al_errors()->add( 'success_items_deleted', esc_html( __( 'All selected items are successfully deleted from the database.', 'action-logger' ) ) );
                         
                                 return;
                             }
                         } else {
-                            $this->al_errors()->add( 'error_no_selection', __( 'You didn\'t select any lines. If you did, then something went wrong. You should contact Beee.', 'idf-action-logger' ) );
+                            $this->al_errors()->add( 'error_no_selection', esc_html( __( 'You didn\'t select any lines. If you did, then something went wrong.', 'action-logger' ) ) );
                     
                             return;
                         }
@@ -447,7 +452,7 @@
         
                 if ( isset( $_POST[ 'delete_all_logs_nonce' ] ) ) {
                     if ( ! wp_verify_nonce( $_POST[ 'delete_all_logs_nonce' ], 'delete-all-logs-nonce' ) ) {
-                        $this->al_errors()->add( 'error_nonce_no_match', __( 'Something went wrong. Please try again.', 'idf-action-logger' ) );
+                        $this->al_errors()->add( 'error_nonce_no_match', esc_html( __( 'Something went wrong. Please try again.', 'action-logger' ) ) );
                 
                         return;
                     } else {
@@ -456,7 +461,7 @@
                         if ( false != $delete_all ) {
                             // truncate table
                             $this->al_truncate_log_table( true );
-                            $this->al_errors()->add( 'info_logs_deleted', __( 'All logs deleted.', 'idf-action-logger' ) );
+                            $this->al_errors()->add( 'info_logs_deleted', esc_html( __( 'All logs deleted.', 'action-logger' ) ) );
                     
                             return;
                         }
@@ -549,7 +554,7 @@
     
             public static function al_admin_menu() {
                 if ( current_user_can( 'manage_options' ) ) {
-                    return '<p><a href="' . site_url() . '/wp-admin/admin.php?page=action-logger">Logs</a> | <a href="' . site_url() . '/wp-admin/admin.php?page=al-settings">Settings</a></p>';
+                    return '<p><a href="' . site_url() . '/wp-admin/admin.php?page=action-logger">' . esc_html( __( 'Logs', 'action-logger' ) ) . '</a> | <a href="' . site_url() . '/wp-admin/admin.php?page=al-settings">' . esc_html( __( 'Settings', 'action-logger' ) ) . '</a></p>';
                 }
             }
     
@@ -579,7 +584,7 @@
                 // don't log when a a user edits his own profile
                 if ( $user_id != get_current_user_id() ) {
                     if ( class_exists( 'ActionLogger' ) && false != get_option( 'al_wp_user_change' ) ) {
-                        $this->al_log_user_action( 'user_changed', 'Action Logger', get_userdata( get_current_user_id() )->first_name . ' changed the user of ' . get_userdata( $user_id )->first_name . ' ' . get_userdata( $user_id )->last_name );
+                        $this->al_log_user_action( 'user_changed', 'Action Logger', get_userdata( get_current_user_id() )->first_name . ' ' . esc_html( __( 'changed the user of', 'action-logger' ) ) . ' ' . get_userdata( $user_id )->first_name . ' ' . get_userdata( $user_id )->last_name . '.' );
                     }
                 }
             }
@@ -590,7 +595,7 @@
              */
             public function al_log_user_delete( $user_id ) {
                 if ( class_exists( 'ActionLogger' ) && false != get_option( 'al_wp_user_delete' ) ) {
-                    $this->al_log_user_action( 'user_deleted', 'Action Logger', get_userdata( get_current_user_id() )->first_name . ' deleted the user of ' . get_userdata( $user_id )->first_name . ' ' . get_userdata( $user_id )->last_name );
+                    $this->al_log_user_action( 'user_deleted', 'Action Logger', get_userdata( get_current_user_id() )->first_name . ' ' . esc_html( __( 'deleted the user of', 'action-logger' ) ) . ' ' . get_userdata( $user_id )->first_name . ' ' . get_userdata( $user_id )->last_name . '.' );
                 }
             }
     
@@ -606,7 +611,7 @@
              */
             public function al_log_registration_delete( $result, $booking_ids ) {
                 if ( class_exists( 'ActionLogger' ) && false != get_option( 'al_wp_em_booking_delete' ) ) {
-                    $this->al_log_user_action( 'registration_deleted', 'Action Logger', get_userdata( get_current_user_id() )->first_name . ' deleted bookings for an event.' );
+                    $this->al_log_user_action( 'registration_deleted', 'Action Logger', get_userdata( get_current_user_id() )->first_name . ' ' . esc_html( __( 'deleted bookings for an event.', 'action-logger' ) ) );
                 }
             }
     
@@ -635,7 +640,7 @@
                     }
             
                     if ( class_exists( 'ActionLogger' ) && false != get_option( 'al_wp_em_booking_cancel_reject' ) ) {
-                        $this->al_log_user_action( $action, 'Action Logger', get_userdata( get_current_user_id() )->first_name . ' ' . $status . ' the booking with booking ID: ' . $booking_id );
+                        $this->al_log_user_action( $action, 'Action Logger', get_userdata( get_current_user_id() )->first_name . ' ' . $status . ' ' . esc_html( __( 'the booking with booking ID:', 'action-logger' ) )  . ' ' . $booking_id . '.' );
                     }
                 }
             }
