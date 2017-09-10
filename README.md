@@ -14,7 +14,7 @@ This plugin gives you the option to log various actions on your website. Default
 * user delete
 
 #### Events manager
-Next to that we included a few logging options for one of our favourite plugins: [Events Manager](http://wp-events-plugin.com/) + [Pro](https://eventsmanagerpro.com/). Right now you can track the following actions but more expected to follow:
+Next to that I included a few logging options for one of our favourite plugins: [Events Manager](http://wp-events-plugin.com/) + [Pro](https://eventsmanagerpro.com/). Right now you can track the following actions but more expected to follow:
 * registration canceled
 * registration rejected
 * registration deleted
@@ -40,7 +40,7 @@ The first option offers a lot more logging possibilities, but requires php knowl
 
 = Can I disable the logs I'm not interested in =
 
-Yes. This can be done on the settings panel.
+Yes. This can be done on the settings page.
 
 = Which plugins/actions are included in the plugin =
 
@@ -141,8 +141,10 @@ If you're a plugin author and you would like to see your hooks logged in this pl
 ### To Do
 * [X] - Add shortcode to track thank you pages and other status pages
 * [X] - Add panel to select what to track
-* [ ] - Add WP errors
-* [ ] - Add option which deletes 'available_log_actions' upon any plugin deactivation
+* [X] - Add WP errors
+* [ ] - Add apply_filters
+* [ ] - Add pagination
+* [ ] - Add filters to filter certain actions/generators
 * [ ] - Add option to 'keep logs for X days'
 * [ ] - Add auto-purge logs after x days
 * [ ] - Add option to select which user roles can see the logger
@@ -153,6 +155,7 @@ If you're a plugin author and you would like to see your hooks logged in this pl
 * [ ] - Add WPSC hooks
 * [ ] - Add BuddyPress hooks
 * [ ] - Add WP4MC hooks
+* [ ] - Add column chooser
 
 ## Changelog
 
