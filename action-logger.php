@@ -503,18 +503,19 @@
     
             public function al_register_shortcode_logger( $attributes ) {
     
-                $post_title   = get_the_title();
-                $post_type    = get_post_type();
-                $attributes   = shortcode_atts( array(
-                    'action'    => $post_type . '_visit',
-                    'generator' => 'Shortcode',
-                    'message'   => 'visited "' . $post_title . '"',
+                $post_title                = get_the_title();
+                $post_type                 = get_post_type();
+                $log_loggedin              = get_option( 'al_user_visit_registered' );
+                $log_visitor               = get_option( 'al_user_visit_visitor' );
+                $log_it                    = true;
+                $attributes                = shortcode_atts( array(
+                    // 'action'    => $post_type . '_visit',
+                    // 'generator' => 'Shortcode',
+                    'message' => 'visited "' . $post_title . '"',
                 ), $attributes, 'actionlogger' );
-                
-                $log_loggedin = get_option( 'al_user_visit_registered' );
-                $log_visitor  = get_option( 'al_user_visit_visitor' );
-                $log_it       = true;
-        
+                $attributes[ 'action' ]    = $post_type . '_visit';
+                $attributes[ 'generator' ] = 'Shortcode';
+
                 if ( is_user_logged_in() ) {
                     $user = get_userdata( get_current_user_id() )->display_name;
                     if ( false == $log_loggedin ) {
