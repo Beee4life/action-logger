@@ -10,7 +10,7 @@
         }
 
         echo '<div class="wrap">';
-
+        
         echo "<h1>Action Logger overview</h1>";
 
         ActionLogger::al_show_admin_notices();
