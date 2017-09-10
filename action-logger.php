@@ -450,7 +450,7 @@
                         if ( false != $delete_all ) {
                             // truncate table
                             $this->al_truncate_log_table( true );
-                            $this->al_errors()->add( 'info_logs_deleted', esc_html( __( 'All logs deleted.', 'action-logger' ) ) );
+                            $this->al_errors()->add( 'success_logs_deleted', esc_html( __( 'All logs deleted.', 'action-logger' ) ) );
                     
                             return;
                         }
