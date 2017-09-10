@@ -13,10 +13,7 @@
 
         echo "<h1>Action Logger overview</h1>";
 
-        // this will be removed asap
-        if ( function_exists( 'idf_show_error_messages' ) ) {
-            idf_show_error_messages();
-        }
+        ActionLogger::al_show_admin_notices();
         // hook before list
         do_action('al_before_overview', '' );
 
@@ -34,12 +31,12 @@
 
         if ( count( $items ) == 0 ) {
             ?>
-            <p><?php echo __( 'This page will show a log of all actions done by IDF board members/volunteers, which are "interesting" to log (if there are any).', 'action-logger' ); ?></p>
+            <p><?php echo __( 'No logs (yet)...', 'action-logger' ); ?></p>
             <?php
         } elseif ( count( $items ) > 0 ) {
             rsort( $items );
             ?>
-            <p><?php echo __( 'This page shows a log of all actions done by IDF board members/volunteers, which are "interesting" to log.', 'action-logger' ); ?></p>
+            <p><?php echo __( 'This page shows a log of all actions done by users, which are "interesting" to log.', 'action-logger' ); ?></p>
             <h2><?php echo __( 'Logs', 'action-logger' ); ?></h2>
             <p><small><?php echo __( 'Log items are sorted, newest to oldest.', 'action-logger' ); ?></small></p>
             <form name="logs-form" action="" method="post">
