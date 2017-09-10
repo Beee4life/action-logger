@@ -6,7 +6,7 @@
     function action_logger_settings_page() {
 
         if ( ! current_user_can( 'manage_options' ) ) {
-            wp_die( esc_html( 'Sorry, you do not have sufficient permissions to access this page.', 'action-logger' ) );
+            wp_die( __( 'Sorry, you do not have sufficient permissions to access this page.', 'action-logger' ) );
         }
         ?>
 

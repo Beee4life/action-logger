@@ -47,6 +47,7 @@
                 // actions
                 add_action( 'admin_menu',            array( $this, 'al_add_action_logger_dashboard' ) );
                 add_action( 'admin_menu',            array( $this, 'al_add_action_logger_settings_page' ) );
+                // add_action( 'admin_menu',            array( $this, 'al_add_action_logger_support_page' ) );
                 add_action( 'admin_init',            array( $this, 'al_items_overview_functions' ) );
                 add_action( 'admin_init',            array( $this, 'al_admin_page_functions' ) );
                 add_action( 'admin_init',            array( $this, 'al_delete_all_logs' ) );
@@ -215,13 +216,13 @@
                     if ( class_exists( 'EM_Events' ) ) {
                         $em_options        = array(
                             array(
-                                'action_name'        => 'wp_em_booking_delete',
+                                'action_name'        => 'em_booking_delete',
                                 'action_generator'   => 'Events Manager',
                                 'action_title'       => 'Booking delete',
                                 'action_description' => esc_html( __( 'Logs when a booking is deleted', 'action-logger' ) ),
                             ),
                             array(
-                                'action_name'        => 'wp_em_booking_cancel_reject',
+                                'action_name'        => 'em_booking_cancel_reject',
                                 'action_generator'   => 'Events Manager',
                                 'action_title'       => 'Booking canceled/rejected',
                                 'action_description' => esc_html( __( 'Logs when a booking is canceled or rejected', 'action-logger' ) ),
@@ -253,9 +254,17 @@
             }
     
             /**
+             * Adds a (hidden) settings page, only through the menu on top of the pages.
+             */
+            public function al_add_action_logger_support_page() {
+                add_submenu_page( NULL, 'Support', 'Support', 'manage_options', 'al-support', 'action_logger_support_page' );
+                include( 'al-support.php' ); // content for the settings page
+            }
+    
+            /**
              * @return WP_Error
              */
-            public function al_errors() {
+            public static function al_errors() {
                 static $wp_error; // Will hold global variable safely
                 return isset( $wp_error ) ? $wp_error : ( $wp_error = new WP_Error( null, null, null ) );
             }
@@ -265,38 +274,40 @@
              */
             public static function al_show_admin_notices() {
                 if ( $codes = ActionLogger::al_errors()->get_error_codes() ) {
-            
-                    // Loop error codes and display errors
-                    $error      = false;
-                    $span_class = false;
-                    $prefix     = false;
-                    foreach ( $codes as $code ) {
-                        if ( strpos( $code, 'success' ) !== false ) {
-                            $span_class = 'notice-success ';
-                            $prefix     = false;
-                        } elseif ( strpos( $code, 'warning' ) !== false ) {
-                            $span_class = 'notice-warning ';
-                            $prefix     = esc_html( __( 'Warning', 'action-logger' ) );
-                        } elseif ( strpos( $code, 'info' ) !== false ) {
-                            $span_class = 'notice-info ';
-                            $prefix     = false;
-                        } else {
-                            $error  = true;
-                            $prefix = esc_html( __( 'Error', 'action-logger' ) );
+                    if ( is_wp_error( ActionLogger::al_errors() ) ) {
+        
+                        // Loop error codes and display errors
+                        $error      = false;
+                        $span_class = false;
+                        $prefix     = false;
+                        foreach ( $codes as $code ) {
+                            if ( strpos( $code, 'success' ) !== false ) {
+                                $span_class = 'notice-success ';
+                                $prefix     = false;
+                            } elseif ( strpos( $code, 'warning' ) !== false ) {
+                                $span_class = 'notice-warning ';
+                                $prefix     = esc_html( __( 'Warning', 'action-logger' ) );
+                            } elseif ( strpos( $code, 'info' ) !== false ) {
+                                $span_class = 'notice-info ';
+                                $prefix     = false;
+                            } else {
+                                $error  = true;
+                                $prefix = esc_html( __( 'Error', 'action-logger' ) );
+                            }
                         }
-                    }
-                    echo '<div class="notice ' . $span_class . 'is-dismissible">';
-                    foreach( $codes as $code ) {
-                        $message = ActionLogger::al_errors()->get_error_message( $code );
-                        echo '<div class="">';
-                        if ( true == $prefix ) {
-                            echo '<strong>' . $prefix . ':</strong> ';
+                        echo '<div class="notice ' . $span_class . 'is-dismissible">';
+                        foreach( $codes as $code ) {
+                            $message = ActionLogger::al_errors()->get_error_message( $code );
+                            echo '<div class="">';
+                            if ( true == $prefix ) {
+                                echo '<strong>' . $prefix . ':</strong> ';
+                            }
+                            echo $message;
+                            echo '</div>';
+                            echo '<button type="button" class="notice-dismiss"><span class="screen-reader-text">' . esc_html( __( 'Dismiss this notice', 'action-logger' ) ) . '</span></button>';
                         }
-                        echo $message;
                         echo '</div>';
-                        echo '<button type="button" class="notice-dismiss"><span class="screen-reader-text">' . esc_html( __( 'Dismiss this notice', 'action-logger' ) ) . '</span></button>';
                     }
-                    echo '</div>';
                 }
             }
     
@@ -534,7 +545,7 @@
     
             public static function al_admin_menu() {
                 if ( current_user_can( 'manage_options' ) ) {
-                    return '<p><a href="' . site_url() . '/wp-admin/admin.php?page=action-logger">' . esc_html( __( 'Logs', 'action-logger' ) ) . '</a> | <a href="' . site_url() . '/wp-admin/admin.php?page=al-settings">' . esc_html( __( 'Settings', 'action-logger' ) ) . '</a></p>';
+                    return '<p><a href="' . site_url() . '/wp-admin/admin.php?page=action-logger">' . esc_html( __( 'Logs', 'action-logger' ) ) . '</a> | <a href="' . site_url() . '/wp-admin/admin.php?page=al-settings">' . esc_html( __( 'Settings', 'action-logger' ) ) . '</a> | <a href="' . site_url() . '/wp-admin/admin.php?page=al-support">' . esc_html( __( 'Support', 'action-logger' ) ) . '</a></p>';
                 }
             }
     
