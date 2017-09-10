@@ -5,8 +5,8 @@
      */
     function action_logger_dashboard() {
 
-        if ( ! current_user_can( 'access_s2member_level4' ) ) {
-            wp_die( esc_html( 'Sorry, you do not have sufficient permissions to access this page.', 'action-logger' ) );
+        if ( ! current_user_can( 'edit_posts' ) ) {
+            wp_die( __( 'Sorry, you do not have sufficient permissions to access this page.', 'action-logger' ) );
         }
 
         echo '<div class="wrap">';

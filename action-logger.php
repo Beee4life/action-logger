@@ -47,6 +47,7 @@
                 // actions
                 add_action( 'admin_menu',            array( $this, 'al_add_action_logger_dashboard' ) );
                 add_action( 'admin_menu',            array( $this, 'al_add_action_logger_settings_page' ) );
+                // add_action( 'admin_menu',            array( $this, 'al_add_action_logger_support_page' ) );
                 add_action( 'admin_init',            array( $this, 'al_items_overview_functions' ) );
                 add_action( 'admin_init',            array( $this, 'al_admin_page_functions' ) );
                 add_action( 'admin_init',            array( $this, 'al_delete_all_logs' ) );
@@ -250,6 +251,14 @@
             public function al_add_action_logger_settings_page() {
                 add_submenu_page( NULL, 'Settings', 'Settings', 'manage_options', 'al-settings', 'action_logger_settings_page' );
                 include( 'al-settings.php' ); // content for the settings page
+            }
+    
+            /**
+             * Adds a (hidden) settings page, only through the menu on top of the pages.
+             */
+            public function al_add_action_logger_support_page() {
+                add_submenu_page( NULL, 'Support', 'Support', 'manage_options', 'al-support', 'action_logger_support_page' );
+                include( 'al-support.php' ); // content for the settings page
             }
     
             /**
@@ -536,7 +545,7 @@
     
             public static function al_admin_menu() {
                 if ( current_user_can( 'manage_options' ) ) {
-                    return '<p><a href="' . site_url() . '/wp-admin/admin.php?page=action-logger">' . esc_html( __( 'Logs', 'action-logger' ) ) . '</a> | <a href="' . site_url() . '/wp-admin/admin.php?page=al-settings">' . esc_html( __( 'Settings', 'action-logger' ) ) . '</a></p>';
+                    return '<p><a href="' . site_url() . '/wp-admin/admin.php?page=action-logger">' . esc_html( __( 'Logs', 'action-logger' ) ) . '</a> | <a href="' . site_url() . '/wp-admin/admin.php?page=al-settings">' . esc_html( __( 'Settings', 'action-logger' ) ) . '</a> | <a href="' . site_url() . '/wp-admin/admin.php?page=al-support">' . esc_html( __( 'Support', 'action-logger' ) ) . '</a></p>';
                 }
             }
     
