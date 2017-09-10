@@ -504,8 +504,9 @@
             public function al_register_shortcode_logger( $attributes ) {
     
                 $post_title   = get_the_title();
+                $post_type    = get_post_type();
                 $attributes   = shortcode_atts( array(
-                    'action'    => 'post_page_visit',
+                    'action'    => $post_type . '_visit',
                     'generator' => 'Shortcode',
                     'message'   => 'visited "' . $post_title . '"',
                 ), $attributes, 'actionlogger' );
