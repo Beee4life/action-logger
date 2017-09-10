@@ -485,11 +485,16 @@
                     $sql_data = array(
                         'action_time'        => strtotime( date( 'Y-m-d  H:i:s', strtotime( '+' . get_option( 'gmt_offset' ) . ' hours' ) ) ),
                         'action_user'        => get_current_user_id(),
-                        'action'             => esc_attr( $action ),
-                        'action_generator'   => esc_attr( $action_generator ),
-                        'action_description' => esc_attr( $action_description ),
+                        'action'             => esc_html( $action ),
+                        'action_generator'   => esc_html( $action_generator ),
+                        'action_description' => esc_html( $action_description ),
                     );
-                    $wpdb->insert( $wpdb->prefix . 'action_logs', $sql_data );
+                    $db_status = $wpdb->insert( $wpdb->prefix . 'action_logs', $sql_data );
+                    if ( false == $db_status ) {
+                        if ( get_current_user_id() == 27 ) {
+                            die('Log wasn\'t stored');
+                        }
+                    }
                 }
         
                 do_action( 'after_log_user_action' );
@@ -498,14 +503,16 @@
     
             public function al_register_shortcode_logger( $attributes ) {
     
+                $post_title   = get_the_title();
                 $attributes   = shortcode_atts( array(
-                    'action'    => 'page_visit',
-                    'generator' => 'Shortcode on ' . get_the_title() . '"',
-                    'message'   => 'visited "' . get_the_title() . '"',
+                    'action'    => 'post_page_visit',
+                    'generator' => 'Shortcode',
+                    'message'   => 'visited "' . $post_title . '"',
                 ), $attributes, 'actionlogger' );
+                
                 $log_loggedin = get_option( 'al_user_visit_registered' );
                 $log_visitor  = get_option( 'al_user_visit_visitor' );
-                $log_it = true;
+                $log_it       = true;
         
                 if ( is_user_logged_in() ) {
                     $user = get_userdata( get_current_user_id() )->display_name;
