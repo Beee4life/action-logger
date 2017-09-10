@@ -241,7 +241,7 @@
              * Adds a page to admin sidebar menu
              */
             public function al_add_action_logger_dashboard() {
-                add_menu_page( 'Action logger', 'Action Logger', 'access_s2member_level4', 'action-logger', 'action_logger_dashboard', 'dashicons-editor-alignleft' );
+                add_menu_page( 'Action logger', 'Action Logger', 'edit_users', 'action-logger', 'action_logger_dashboard', 'dashicons-editor-alignleft' );
                 include( 'al-dashboard.php' ); // content for the settings page
             }
     
