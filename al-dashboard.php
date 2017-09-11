@@ -78,6 +78,7 @@
                 </table>
                 <?php if ( current_user_can( 'manage_options' ) ) { ?>
                     <br />
+                    <br />
                     <input name="delete" type="submit" class="admin-button admin-button-small" value="<?php esc_html_e( 'Delete selected items', 'action-logger' ); ?>" />
                 <?php } ?>
             </form>

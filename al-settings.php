@@ -87,6 +87,7 @@
                                     <?php } ?>
                                 </select>
                             </p>
+                            <br />
                             <input type="submit" class="admin-button admin-button-small" value="Save settings" />
                         </form>
                 <?php } ?>

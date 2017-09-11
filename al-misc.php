@@ -47,7 +47,7 @@
                 <p><?php esc_html_e( 'Find more info about the plugin on', 'action-logger' ); ?> <a href="https://github.com/Beee4life/action-logger/">GitHub</a>.</p>
 
                 <h2><?php esc_html_e( 'About the author', 'action-logger' ); ?></h2>
-                <p>This plugin is created by Beee, a Wordpress developer from Amsterdam.</p>
+                <p>This plugin is created by <a href="http://www.berryplasman.com">Beee</a>, a Wordpress developer from Amsterdam.</p>
 
             </div><!-- end #action-logger -->
 

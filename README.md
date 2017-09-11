@@ -85,13 +85,7 @@ The default action is `{post_type}_visit`.
 
 The default value for generator is `Shortcode`. 
 
-You can override the default values with 3 variables.
-
-- message
-- action
-- generator
-
-There's only 1 exception. You can't use a " (double quotes) in your message, because a shortcode variable is 'enclosed' by double quotes. If you would use one, the shortcode will think the message ends there.
+You can override the default message with a variable. 
 
 This is defined as this:
 
