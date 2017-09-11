@@ -23,10 +23,10 @@ Next to that I included a few logging options for one of our favourite plugins: 
 
 The overall impact is minimal.
 
-* Upon activation a new database table named `wp_action_logs` is created.
+* Upon activation a new database table named `{your table prefix}_action_logs` is created.
 * Every action is logged real-time, which is 1 row being stored in the database.
-* Upon plugin deactivation all settings are dropped to keep the database clean.
-* Upon plugin deletion (through WP admin) the database table `wp_action_logs` is dropped (unless preserve data is selected in the options panel).
+* Upon plugin deactivation all settings are dropped to keep the database clean (except the preserve data option).
+* Upon plugin deletion (through WP admin) the database table `{your table prefix}_action_logs` is dropped (unless preserve data is selected in the options panel).
 
 ## Usage
 
@@ -119,6 +119,10 @@ This is defined as:
     if ( class_exists( 'ActionLogger' ) ) {
         ActionLogger::log_user_action( $action, $generator, $message );
     }
+
+= Can I export my logs to CSV ? =
+
+Yes, check the Misc page.
 
 = Which plugins do you plan to include in the plugin ? =
 
