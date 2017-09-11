@@ -10,11 +10,19 @@
 #action-logger {
 }
 
+#action-logger p {
+    max-width: 60%;
+}
+
+#action-logger table form {
+}
+
 #action-logger table {
-    max-width: 100%;
+    max-width:       100%;
     border-collapse: collapse;
     border-style:    hidden;
-    border-spacing: 0;
+    border-spacing:  0;
+    margin-bottom:   2em;
 }
 
 #action-logger table th,

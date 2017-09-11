@@ -47,7 +47,7 @@
                 // actions
                 add_action( 'admin_menu',            array( $this, 'al_add_action_logger_dashboard' ) );
                 add_action( 'admin_menu',            array( $this, 'al_add_action_logger_settings_page' ) );
-                // add_action( 'admin_menu',            array( $this, 'al_add_action_logger_support_page' ) );
+                add_action( 'admin_menu',            array( $this, 'al_add_action_logger_support_page' ) );
                 add_action( 'admin_init',            array( $this, 'al_items_overview_functions' ) );
                 add_action( 'admin_init',            array( $this, 'al_admin_page_functions' ) );
                 add_action( 'admin_init',            array( $this, 'al_delete_all_logs' ) );
@@ -67,15 +67,15 @@
                 
             }
     
-            // @TODO: change s2member role
             // @TODO: restrict to roles
             // @TODO: add log rotation
+            // @TODO: add IF for older php versions
     
             // @TODO: log on publish post
             // @TODO: log on edit post
             // @TODO: log on delete post
             
-            // @TODO: S2Member: add log for new registration
+            // @TODO: S2Member: add log for new (paid) registration
             // @TODO: S2Member: add log for demotion
             // @TODO: S2Member: add log for cancel
             // @TODO: S2Member: add log for reject
@@ -85,7 +85,7 @@
              */
             public function al_plugin_activation() {
                 $this->al_prepare_log_table();
-                $this->al_store_available_actions();
+                $this->al_store_default_values();
             }
     
             /**
@@ -102,6 +102,7 @@
                     delete_option( 'al_' . $option[ 'action_name' ] );
                 }
                 delete_option( 'al_available_log_actions' );
+                delete_option( 'al_log_user_role' );
                 
             }
     
@@ -173,7 +174,7 @@
             /**
              * Here we built a simple array of available log actions and store them in an option value.
              */
-            public function al_store_available_actions() {
+            public function al_store_default_values() {
     
                 $available_options = get_option( 'al_available_log_actions' );
                 // $available_options = false;
@@ -234,6 +235,7 @@
                         update_option( 'al_' . $option[ 'action_name' ], true );
                     }
                     update_option( 'al_available_log_actions', $available_options );
+                    update_option( 'al_log_user_role', 'manage_options' );
                 }
             }
     
@@ -241,7 +243,7 @@
              * Adds a page to admin sidebar menu
              */
             public function al_add_action_logger_dashboard() {
-                add_menu_page( 'Action logger', 'Action Logger', 'edit_users', 'action-logger', 'action_logger_dashboard', 'dashicons-editor-alignleft' );
+                add_menu_page( 'Action Logger', 'Action Logger', get_option( 'al_log_user_role' ), 'action-logger', 'action_logger_dashboard', 'dashicons-editor-alignleft' );
                 include( 'al-dashboard.php' ); // content for the settings page
             }
     
@@ -257,8 +259,8 @@
              * Adds a (hidden) settings page, only through the menu on top of the pages.
              */
             public function al_add_action_logger_support_page() {
-                add_submenu_page( NULL, 'Support', 'Support', 'manage_options', 'al-support', 'action_logger_support_page' );
-                include( 'al-support.php' ); // content for the settings page
+                add_submenu_page( NULL, 'Support', 'Support', 'manage_options', 'al-misc', 'action_logger_misc_page' );
+                include( 'al-misc.php' ); // content for the settings page
             }
     
             /**
@@ -315,17 +317,20 @@
              * All form action for the settings page, except the nuke database action
              */
             public function al_admin_page_functions() {
-        
+    
+                /**
+                 *
+                 */
                 if ( isset( $_POST[ 'active_logs_nonce' ] ) ) {
                     if ( ! wp_verify_nonce( $_POST[ 'active_logs_nonce' ], 'active-logs-nonce' ) ) {
                         $this->al_errors()->add( 'error_nonce_no_match', esc_html( __( 'Something went wrong. Please try again.', 'action-logger' ) ) );
-                
+        
                         return;
                     } else {
-                
+        
                         $get_available_actions = get_option( 'al_available_log_actions' );
                         if ( false == $get_available_actions ) {
-                            $this->al_store_available_actions();
+                            $this->al_store_default_values();
                             $get_available_actions = get_option( 'al_available_log_actions' );
                         }
                         foreach( $get_available_actions as $action ) {
@@ -335,17 +340,23 @@
                                 update_option( 'al_' . $action[ 'action_name' ], 1 );
                             }
                         }
+    
+                        update_option( 'al_log_user_role', $_POST[ 'select_cap' ] );
+                        
                         $this->al_errors()->add( 'success_settings_saved', esc_html( __( 'Settings saved.', 'action-logger' ) ) );
                     }
                 }
-        
+    
+                /**
+                 *
+                 */
                 if ( isset( $_POST[ 'preserve_settings_nonce' ] ) ) {
                     if ( ! wp_verify_nonce( $_POST[ 'preserve_settings_nonce' ], 'preserve-settings-nonce' ) ) {
                         $this->al_errors()->add( 'error_nonce_no_match', esc_html( __( 'Something went wrong. Please try again.', 'action-logger' ) ) );
-                
+            
                         return;
                     } else {
-                
+            
                         $preserve_settings = isset( $_POST[ 'preserve_settings' ] ) ? $_POST[ 'preserve_settings' ] : false;
                         if ( true == $preserve_settings ) {
                             update_option( 'al_preserve_settings', 1 );
@@ -354,7 +365,7 @@
                         }
                     }
                 }
-        
+    
                 /**
                  * Export data to CSV
                  */
@@ -549,8 +560,8 @@
             }
     
             public static function al_admin_menu() {
-                if ( current_user_can( 'manage_options' ) ) {
-                    return '<p><a href="' . site_url() . '/wp-admin/admin.php?page=action-logger">' . esc_html( __( 'Logs', 'action-logger' ) ) . '</a> | <a href="' . site_url() . '/wp-admin/admin.php?page=al-settings">' . esc_html( __( 'Settings', 'action-logger' ) ) . '</a> | <a href="' . site_url() . '/wp-admin/admin.php?page=al-support">' . esc_html( __( 'Support', 'action-logger' ) ) . '</a></p>';
+                if ( current_user_can( get_option( 'al_log_user_role' ) ) ) {
+                    return '<p><a href="' . site_url() . '/wp-admin/admin.php?page=action-logger">' . esc_html( __( 'Logs', 'action-logger' ) ) . '</a> | <a href="' . site_url() . '/wp-admin/admin.php?page=al-settings">' . esc_html( __( 'Settings', 'action-logger' ) ) . '</a> | <a href="' . site_url() . '/wp-admin/admin.php?page=al-misc">' . esc_html( __( 'Misc', 'action-logger' ) ) . '</a></p>';
                 }
             }
     
