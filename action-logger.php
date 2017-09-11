@@ -1,6 +1,6 @@
 <?php
     /*
-    Plugin Name: IDF : Action logger
+    Plugin Name: Action logger
     Version: 1.0.0
     Tags: log
     Plugin URI: http://www.berryplasman.com
@@ -57,29 +57,33 @@
                 add_action( 'plugins_loaded',        array( $this, 'al_load_plugin_textdomain' ) );
                 add_action( 'admin_enqueue_scripts', array( $this, 'al_enqueue_action_logger_css' ) );
 
-                // log actions
+                // WP Core actions
                 add_action( 'user_register ',        array( $this, 'al_log_user_create'), 10, 1 );
                 add_action( 'profile_update',        array( $this, 'al_log_user_change'), 10, 2 );
                 add_action( 'delete_user',           array( $this, 'al_log_user_delete'), 10, 1 );
+
+                // EM actions
                 add_action( 'em_bookings_deleted',   array( $this, 'al_log_registration_delete'), 10, 2 );
                 add_action( 'em_booking_save',       array( $this, 'al_log_registration_cancel_reject'), 10, 2 );
+
+                // Shortcode
                 add_shortcode( 'actionlogger',  array( $this, 'al_register_shortcode_logger' ) );
-                
+
             }
-    
+
             // @TODO: restrict to roles
             // @TODO: add log rotation
             // @TODO: add IF for older php versions
-    
+
             // @TODO: log on publish post
             // @TODO: log on edit post
             // @TODO: log on delete post
-            
+
             // @TODO: S2Member: add log for new (paid) registration
             // @TODO: S2Member: add log for demotion
             // @TODO: S2Member: add log for cancel
             // @TODO: S2Member: add log for reject
-    
+
             /**
              * Function which runs upon plugin deactivation
              */
@@ -87,7 +91,7 @@
                 $this->al_prepare_log_table();
                 $this->al_store_default_values();
             }
-    
+
             /**
              * Function which runs upon plugin deactivation
              *
@@ -96,29 +100,29 @@
              * These values will be re-initiated upon plugin activation.
              */
             public function al_plugin_deactivation() {
-    
+
                 $available_options = get_option( 'al_available_log_actions' );
                 foreach( $available_options as $option ) {
                     delete_option( 'al_' . $option[ 'action_name' ] );
                 }
                 delete_option( 'al_available_log_actions' );
                 delete_option( 'al_log_user_role' );
-                
+
             }
-    
+
             /**
              * Function which runs on plugin deletion through the admin panel.
              *
              * The only thing left to do is to nuke the database, unless the preserve option is checked, because
              * all stored values are already deleted upon plugin deactivation.
              */
-    
+
             /**
              * Drop table if exists ( upon plugin activation).
              * Then create a new empty table.
              */
             public function al_prepare_log_table() {
-        
+
                 require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
                 ob_start();
                 global $wpdb;
@@ -136,15 +140,15 @@
                 <?php
                 $sql = ob_get_clean();
                 dbDelta( $sql );
-        
+
             }
-    
+
             /**
              * This runs on each page load, to make sure the database table exists.
              * This because the database can be deleted manually.
              */
             public function al_check_log_table() {
-        
+
                 require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
                 ob_start();
                 global $wpdb;
@@ -161,21 +165,21 @@
                 <?php
                 $sql = ob_get_clean();
                 dbDelta( $sql );
-        
+
             }
-    
+
             /**
              * Load language files
              */
             public function al_load_plugin_textdomain() {
                 load_plugin_textdomain( 'action-logger', FALSE, basename( dirname( __FILE__ ) ) . '/languages/' );
             }
-    
+
             /**
              * Here we built a simple array of available log actions and store them in an option value.
              */
             public function al_store_default_values() {
-    
+
                 $available_options = get_option( 'al_available_log_actions' );
                 // $available_options = false;
                 if ( false == $available_options ) {
@@ -213,7 +217,20 @@
                             'action_description' => esc_html( __( 'Logs when a visitor visits a post/page with the shortcode on it.', 'action-logger' ) ),
                         ),
                     );
-                    $available_options = array_merge( $available_options, $user_options );
+	                $available_options = array_merge( $available_options, $user_options );
+
+	                if ( class_exists( 'CSV_Importer' ) ) {
+		                $csvi_options      = array(
+			                array(
+				                'action_name'        => 'csvi_file_upload',
+				                'action_generator'   => 'CSV Importer',
+				                'action_title'       => 'CSV file uploaded',
+				                'action_description' => esc_html( __( 'Logs when a csv file is uploaded', 'action-logger' ) ),
+			                ),
+		                );
+		                $available_options = array_merge( $available_options, $csvi_options );
+	                }
+
                     if ( class_exists( 'EM_Events' ) ) {
                         $em_options        = array(
                             array(
@@ -238,7 +255,7 @@
                     update_option( 'al_log_user_role', 'manage_options' );
                 }
             }
-    
+
             /**
              * Adds a page to admin sidebar menu
              */
@@ -246,7 +263,7 @@
                 add_menu_page( 'Action Logger', 'Action Logger', get_option( 'al_log_user_role' ), 'action-logger', 'action_logger_dashboard', 'dashicons-editor-alignleft' );
                 include( 'al-dashboard.php' ); // content for the settings page
             }
-    
+
             /**
              * Adds a (hidden) settings page, only through the menu on top of the pages.
              */
@@ -254,7 +271,7 @@
                 add_submenu_page( NULL, 'Settings', 'Settings', 'manage_options', 'al-settings', 'action_logger_settings_page' );
                 include( 'al-settings.php' ); // content for the settings page
             }
-    
+
             /**
              * Adds a (hidden) settings page, only through the menu on top of the pages.
              */
@@ -262,7 +279,7 @@
                 add_submenu_page( NULL, 'Support', 'Support', 'manage_options', 'al-misc', 'action_logger_misc_page' );
                 include( 'al-misc.php' ); // content for the settings page
             }
-    
+
             /**
              * @return WP_Error
              */
@@ -270,14 +287,14 @@
                 static $wp_error; // Will hold global variable safely
                 return isset( $wp_error ) ? $wp_error : ( $wp_error = new WP_Error( null, null, null ) );
             }
-    
+
             /**
              * Displays error messages from form submissions
              */
             public static function al_show_admin_notices() {
                 if ( $codes = ActionLogger::al_errors()->get_error_codes() ) {
                     if ( is_wp_error( ActionLogger::al_errors() ) ) {
-        
+
                         // Loop error codes and display errors
                         $error      = false;
                         $span_class = false;
@@ -312,22 +329,22 @@
                     }
                 }
             }
-    
+
             /**
              * All form action for the settings page, except the nuke database action
              */
             public function al_admin_page_functions() {
-    
+
                 /**
                  *
                  */
                 if ( isset( $_POST[ 'active_logs_nonce' ] ) ) {
                     if ( ! wp_verify_nonce( $_POST[ 'active_logs_nonce' ], 'active-logs-nonce' ) ) {
                         $this->al_errors()->add( 'error_nonce_no_match', esc_html( __( 'Something went wrong. Please try again.', 'action-logger' ) ) );
-        
+
                         return;
                     } else {
-        
+
                         $get_available_actions = get_option( 'al_available_log_actions' );
                         if ( false == $get_available_actions ) {
                             $this->al_store_default_values();
@@ -340,23 +357,23 @@
                                 update_option( 'al_' . $action[ 'action_name' ], 1 );
                             }
                         }
-    
+
                         update_option( 'al_log_user_role', $_POST[ 'select_cap' ] );
-                        
+
                         $this->al_errors()->add( 'success_settings_saved', esc_html( __( 'Settings saved.', 'action-logger' ) ) );
                     }
                 }
-    
+
                 /**
                  *
                  */
                 if ( isset( $_POST[ 'preserve_settings_nonce' ] ) ) {
                     if ( ! wp_verify_nonce( $_POST[ 'preserve_settings_nonce' ], 'preserve-settings-nonce' ) ) {
                         $this->al_errors()->add( 'error_nonce_no_match', esc_html( __( 'Something went wrong. Please try again.', 'action-logger' ) ) );
-            
+
                         return;
                     } else {
-            
+
                         $preserve_settings = isset( $_POST[ 'preserve_settings' ] ) ? $_POST[ 'preserve_settings' ] : false;
                         if ( true == $preserve_settings ) {
                             update_option( 'al_preserve_settings', 1 );
@@ -365,35 +382,35 @@
                         }
                     }
                 }
-    
+
                 /**
                  * Export data to CSV
                  */
                 if ( isset( $_POST[ 'export_csv_nonce' ] ) ) {
                     if ( ! wp_verify_nonce( $_POST[ 'export_csv_nonce' ], 'export-csv-nonce' ) ) {
                         $this->al_errors()->add( 'error_nonce_no_match', esc_html( __( 'Something went wrong. Please try again.', 'action-logger' ) ) );
-                
+
                         return;
                     } else {
-                
+
                         global $wpdb;
                         $items = $wpdb->get_results( "
                             SELECT * FROM " . $wpdb->prefix . "action_logs
                             order by id DESC
                         ");
-                
+
                         if ( count( $items ) > 0 ) {
-                    
+
                             $array = [];
                             foreach( $items as $item ) {
                                 // make array from object
                                 $array[] = (array) $item;
                             }
-                    
+
                             $filename  = "export.csv";
                             $delimiter = ",";
                             $test      = 1;
-                    
+
                             $csv_header = array(
                                 'id'                 => 'ID',
                                 'action_time'        => 'Date/Time',
@@ -402,16 +419,16 @@
                                 'action_generator'   => 'Generated by',
                                 'action_description' => 'Description'
                             );
-                    
+
                             header( 'Content-Type: application/csv' );
                             header( 'Content-Disposition: attachment; filename="' . $filename . '";' );
-                    
+
                             // open the "output" stream
                             // see http://www.php.net/manual/en/wrappers.php.php#refsect2-wrappers.php-unknown-unknown-unknown-descriptioq
                             $f = fopen( 'php://output', 'w' );
-                    
+
                             fputcsv( $f, $csv_header, $delimiter );
-                    
+
                             foreach ( $array as $line ) {
                                 fputcsv( $f, $line, $delimiter );
                             }
@@ -420,66 +437,66 @@
                     }
                 }
             }
-    
+
             /**
              * Function for the overview page. Right now only delete rows is available (for admins only)
              */
             public function al_items_overview_functions() {
-        
+
                 if ( isset( $_POST[ 'delete_action_items_nonce' ] ) ) {
                     if ( ! wp_verify_nonce( $_POST[ 'delete_action_items_nonce' ], 'delete-actions-items-nonce' ) ) {
                         $this->al_errors()->add( 'error_nonce_no_match', esc_html( __( 'Something went wrong. Please try again.', 'action-logger' ) ) );
-                
+
                         return;
                     } else {
-                
+
                         $delete_items = ! empty( $_POST[ 'delete' ] ) ? $_POST[ 'delete' ] : false;
                         if ( isset( $_POST[ 'rows' ] ) ) {
-                    
+
                             if ( $_POST[ 'rows' ] ) {
                                 $where = array();
                                 global $wpdb;
                                 foreach( $_POST[ 'rows' ] as $row_id ) {
                                     $wpdb->delete( $wpdb->prefix . 'action_logs', array( 'ID' => $row_id ) );
                                 }
-                        
+
                                 $this->al_errors()->add( 'success_items_deleted', esc_html( __( 'All selected items are successfully deleted from the database.', 'action-logger' ) ) );
-                        
+
                                 return;
                             }
                         } else {
                             $this->al_errors()->add( 'error_no_selection', esc_html( __( 'You didn\'t select any lines. If you did, then something went wrong.', 'action-logger' ) ) );
-                    
+
                             return;
                         }
                     }
                 }
             }
-    
+
             /**
              * Delete all logs (truncate the table)
              */
             public function al_delete_all_logs() {
-        
+
                 if ( isset( $_POST[ 'delete_all_logs_nonce' ] ) ) {
                     if ( ! wp_verify_nonce( $_POST[ 'delete_all_logs_nonce' ], 'delete-all-logs-nonce' ) ) {
                         $this->al_errors()->add( 'error_nonce_no_match', esc_html( __( 'Something went wrong. Please try again.', 'action-logger' ) ) );
-                
+
                         return;
                     } else {
-                
+
                         $delete_all = $_POST[ 'delete_all' ];
                         if ( false != $delete_all ) {
                             // truncate table
                             $this->al_truncate_log_table( true );
                             $this->al_errors()->add( 'success_logs_deleted', esc_html( __( 'All logs deleted.', 'action-logger' ) ) );
-                    
+
                             return;
                         }
                     }
                 }
             }
-    
+
             /**
              * This is the actual logger function, which is called at the place where you want to log something.
              *
@@ -488,9 +505,9 @@
              * @param string $action_description
              */
             public static function al_log_user_action( $action = false, $action_generator = false, $action_description = false ) {
-        
+
                 do_action( 'before_log_user_action' );
-        
+
                 if ( false != $action_description ) {
                     global $wpdb;
                     $sql_data = array(
@@ -507,13 +524,13 @@
                         }
                     }
                 }
-        
+
                 do_action( 'after_log_user_action' );
-        
+
             }
-    
+
             public function al_register_shortcode_logger( $attributes ) {
-    
+
                 $post_title                = get_the_title();
                 $post_type                 = get_post_type();
                 $log_loggedin              = get_option( 'al_user_visit_registered' );
@@ -534,23 +551,23 @@
                         $log_it = false;
                     }
                 }
-        
+
                 if ( ! is_admin() && true == $log_it ) {
                     $this->al_log_user_action( $post_type . '_visit', 'Shortcode', $user . $attributes[ 'message' ] );
                 }
-        
+
                 return;
             }
-    
+
             public function al_truncate_log_table( $truncate = false ) {
-        
+
                 if ( false != $truncate ) {
                     global $wpdb;
                     $prefix = $wpdb->get_blog_prefix();
                     $wpdb->query( 'TRUNCATE TABLE ' . $prefix . 'action_logs' );
                 }
             }
-    
+
             /**
              * Enqueue CSS
              */
@@ -558,18 +575,18 @@
                 wp_register_style( 'action-logger', plugins_url( 'style.css', __FILE__ ), false, '1.0' );
                 wp_enqueue_style( 'action-logger' );
             }
-    
+
             public static function al_admin_menu() {
                 if ( current_user_can( get_option( 'al_log_user_role' ) ) ) {
                     return '<p><a href="' . site_url() . '/wp-admin/admin.php?page=action-logger">' . esc_html( __( 'Logs', 'action-logger' ) ) . '</a> | <a href="' . site_url() . '/wp-admin/admin.php?page=al-settings">' . esc_html( __( 'Settings', 'action-logger' ) ) . '</a> | <a href="' . site_url() . '/wp-admin/admin.php?page=al-misc">' . esc_html( __( 'Misc', 'action-logger' ) ) . '</a></p>';
                 }
             }
-    
+
             /**
              * Default Wordpress actions
              * These functions hooks into default WP actions like user register, change and delete
              */
-    
+
             /**
              * Log user creation
              *
@@ -580,7 +597,7 @@
                     $this->al_log_user_action( 'user_registered', 'Action Logger', 'New user registered: "' . get_userdata( $user_id )->display_name . '".' );
                 }
             }
-    
+
             /**
              * Log user change
              *
@@ -595,21 +612,31 @@
                     }
                 }
             }
-    
-            /**
-             * Log user delete
-             * @param $user_id
-             */
-            public function al_log_user_delete( $user_id ) {
-                if ( class_exists( 'ActionLogger' ) && false != get_option( 'al_wp_user_delete' ) ) {
-                    $this->al_log_user_action( 'user_deleted', 'Action Logger', get_userdata( get_current_user_id() )->first_name . ' ' . esc_html( __( 'deleted the user of', 'action-logger' ) ) . ' ' . get_userdata( $user_id )->first_name . ' ' . get_userdata( $user_id )->last_name . '.' );
-                }
-            }
-    
-            /**
+
+	        /**
+	         * Log user delete
+	         * @param $user_id
+	         */
+	        public function al_log_user_delete( $user_id ) {
+		        if ( class_exists( 'ActionLogger' ) && false != get_option( 'al_wp_user_delete' ) ) {
+			        $this->al_log_user_action( 'user_deleted', 'Action Logger', get_userdata( get_current_user_id() )->first_name . ' ' . esc_html( __( 'deleted the user of', 'action-logger' ) ) . ' ' . get_userdata( $user_id )->first_name . ' ' . get_userdata( $user_id )->last_name . '.' );
+		        }
+	        }
+
+	        /**
+	         * Log file upload from CSV Importer
+	         * @param $user_id
+	         */
+	        public function al_csvi_file_upload( $user_id ) {
+		        if ( class_exists( 'CSV_Importer' ) && false != get_option( 'al_csvi_file_upload' ) ) {
+			        $this->al_log_user_action( 'csv_upload', 'Action Logger', get_userdata( get_current_user_id() )->first_name . ' ' . esc_html( __( 'uploaded a file', 'action-logger' ) ) . '.' );
+		        }
+	        }
+
+	        /**
              * Events manager actions
              */
-    
+
             /**
              * Log an action when a registration is deleted
              *
@@ -621,7 +648,7 @@
                     $this->al_log_user_action( 'registration_deleted', 'Action Logger', get_userdata( get_current_user_id() )->first_name . ' ' . esc_html( __( 'deleted bookings for an event.', 'action-logger' ) ) );
                 }
             }
-    
+
             /**
              * Log an action when an booking is canceled or rejected
              *
@@ -629,9 +656,9 @@
              * @param $EM_Booking
              */
             public function al_log_registration_cancel_reject( $EM_Event, $EM_Booking ) {
-        
+
                 if ( true == $EM_Event ) {
-            
+
                     $booking_id     = $EM_Booking->booking_id;
                     $booking_user   = $EM_Booking->person_id;
                     $booking_status = $EM_Booking->booking_status;
@@ -645,13 +672,13 @@
                         $action = 'registration_unknown';
                         $status= 'unknown';
                     }
-            
+
                     if ( class_exists( 'ActionLogger' ) && false != get_option( 'al_wp_em_booking_cancel_reject' ) ) {
                         $this->al_log_user_action( $action, 'Action Logger', get_userdata( get_current_user_id() )->first_name . ' ' . $status . ' ' . esc_html( __( 'the booking with booking ID:', 'action-logger' ) )  . ' ' . $booking_id . '.' );
                     }
                 }
             }
-        
+
         }
 
         /**
