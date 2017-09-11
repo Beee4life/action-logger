@@ -114,6 +114,7 @@ The function can contain 3 variables which are default all set to false. Use the
 * $action_generator
 * $action description
 
+This is defined as:
 
     if ( class_exists( 'ActionLogger' ) ) {
         ActionLogger::log_user_action( $action, $generator, $message );
