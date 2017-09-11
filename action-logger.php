@@ -214,6 +214,17 @@
                         ),
                     );
                     $available_options = array_merge( $available_options, $user_options );
+                    if ( class_exists( 'RankingsImport' ) ) {
+                        $csvi_options      = array(
+                            array(
+                                'action_name'        => 'csvi_file_uploaded',
+                                'action_generator'   => 'CSV Importer',
+                                'action_title'       => 'CSV file uploaded',
+                                'action_description' => esc_html( __( 'Logs when a csv file is uploaded', 'action-logger' ) ),
+                            ),
+                        );
+                        $available_options = array_merge( $available_options, $csvi_options );
+                    }
                     if ( class_exists( 'EM_Events' ) ) {
                         $em_options        = array(
                             array(
