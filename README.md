@@ -142,20 +142,17 @@ If you're a plugin author and you would like to see your hooks logged in this pl
 * [X] - Add shortcode to track thank you pages and other status pages
 * [X] - Add panel to select what to track
 * [X] - Add WP errors
-* [ ] - Add apply_filters
+* [X] - Add option to select which user roles can see the logger
 * [ ] - Add pagination in overview
 * [ ] - Add filters in overview to filter certain actions/generators
 * [ ] - Add option to 'keep logs for X days'
 * [ ] - Add auto-purge logs after x days
-* [ ] - Add option to select which user roles can see the logger
-* [ ] - Add option to select which user roles can see the settings
 * [ ] - Add EM registration approve
 * [ ] - Add EM hooks
 * [ ] - Add S2Member hooks
-* [ ] - Add WPSC hooks
+* [ ] - Add WooCommerce hooks
 * [ ] - Add BuddyPress hooks
 * [ ] - Add WP4MC hooks
-* [ ] - Add column chooser
 
 ## Changelog
 

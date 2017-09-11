@@ -90,7 +90,8 @@
                 <input name="delete_all" id="delete-all" type="checkbox" value="1" /> &nbsp;&nbsp;
                 <input name="delete" type="submit" class="admin-button admin-button-small" value="Delete all" />
             </form>
-            <?php } ?>
+            
+        <?php } ?>
 
         </div><!-- end #action-logger -->
 
