@@ -100,12 +100,12 @@ This will trigger a log entry with the following description:
 
 Of course, that's the whole reason I wrote this plugin; 'to be able to log custom actions'. To use the logger, you need to add a piece of code on the place where you want the tracking to occur. This can be in a plugin or a theme.
 
-    ActionLogger::log_user_action();
+    ActionLogger::al_log_user_action();
 
 To make sure your site won't break if you deactivate the plugin, wrap it in a `class_exists()` as follows:     
 
     if ( class_exists( 'ActionLogger' ) ) {
-        ActionLogger::log_user_action();
+        ActionLogger::al_log_user_action();
     }
 
 The function can contain 3 variables which are default all set to false. Use them in this order:
@@ -117,7 +117,7 @@ The function can contain 3 variables which are default all set to false. Use the
 This is defined as:
 
     if ( class_exists( 'ActionLogger' ) ) {
-        ActionLogger::log_user_action( $action, $generator, $message );
+        ActionLogger::al_log_user_action( $action, $generator, $message );
     }
 
 = Can I export my logs to CSV ? =
