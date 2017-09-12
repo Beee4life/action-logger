@@ -45,27 +45,47 @@
                                     <?php $action_counter = 0; ?>
                                     <?php foreach( $available_log_actions as $action ) { ?>
                                         <?php $action_counter++; ?>
-                                        <tr>
-                                            <td class="hidden"><?php echo $action[ 'action_name' ]; ?></td>
-                                            <td class=""><?php echo $action[ 'action_title' ]; ?></td>
-                                            <td class=""><?php echo $action[ 'action_generator' ]; ?></td>
-                                            <td class=""><?php echo $action[ 'action_description' ]; ?></td>
-                                            <td class="checkbox">
-                                                <?php
-                                                    $active    = 0;
-                                                    $checked   = false;
-                                                    $is_active = get_option( 'al_' . $action[ 'action_name' ] );
-                                                    if ( $is_active ) {
-                                                        $checked = 'checked';
-                                                        $active  = 1;
-                                                    }
-                                                ?>
-                                                <label for="action-status" class="screen-reader-text">
-                                                    <?php esc_html_e( 'Active', 'action-logger' ); ?>
-                                                </label>
-                                                <input name="<?php echo $action[ 'action_name' ]; ?>" id="action-status" type="checkbox" value="<?php echo $active; ?>" <?php echo $checked; ?>/>
-                                            </td>
-                                        </tr>
+                                        <?php
+                                            $show = false;
+                                            if ( class_exists( 'EM_Events' ) && 'Events Manager' == $action[ 'action_generator' ] ) {
+                                                $show = true;
+                                            } elseif ( class_exists( 'CSV_Importer' ) && 'CSV Importer' == $action[ 'action_generator' ] ) {
+                                                // $show = true;
+                                            } elseif ( class_exists( 'RankingsImport' ) && 'Rankings Importer' == $action[ 'action_generator' ] ) {
+                                                $show = true;
+                                            } elseif ( class_exists( 'S2Member' ) && 'S2Member' == $action[ 'action_generator' ] ) {
+                                                // $show = true;
+                                            } elseif ( 'WordPress' == $action[ 'action_generator' ] ) {
+                                                $show = true;
+                                            } else {
+                                                $show = false;
+                                            }
+                                            
+                                            if ( $show == true ) {
+                                            ?>
+                                            
+                                            <tr>
+                                                <td class="hidden"><?php echo $action[ 'action_name' ]; ?></td>
+                                                <td class=""><?php echo $action[ 'action_title' ]; ?></td>
+                                                <td class=""><?php echo $action[ 'action_generator' ]; ?></td>
+                                                <td class=""><?php echo $action[ 'action_description' ]; ?></td>
+                                                <td class="checkbox">
+                                                    <?php
+                                                        $active    = 0;
+                                                        $checked   = false;
+                                                        $is_active = get_option( 'al_' . $action[ 'action_name' ] );
+                                                        if ( $is_active ) {
+                                                            $checked = 'checked';
+                                                            $active  = 1;
+                                                        }
+                                                    ?>
+                                                    <label for="action-status" class="screen-reader-text">
+                                                        <?php esc_html_e( 'Active', 'action-logger' ); ?>
+                                                    </label>
+                                                    <input name="<?php echo $action[ 'action_name' ]; ?>" id="action-status" type="checkbox" value="<?php echo $active; ?>" <?php echo $checked; ?>/>
+                                                </td>
+                                            </tr>
+                                        <?php } ?>
                                     <?php } ?>
                                 </tbody>
                             </table>
@@ -81,6 +101,7 @@
                                     $logs_user_role   = get_option( 'al_log_user_role' );
                                     ksort( $all_capabilities );
                                 ?>
+                                <label for="select_cap" class="screen-reader-text"></label>
                                 <select name="select_cap" id="select_cap">
                                     <?php foreach ( $all_capabilities as $key => $value ) { ?>
                                         <option value="<?php echo $key; ?>"<?php echo ( $logs_user_role == $key ? ' selected' : '' ); ?>><?php echo $key; ?></option>';
