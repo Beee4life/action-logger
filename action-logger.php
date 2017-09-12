@@ -56,6 +56,7 @@
                 add_action( 'admin_init',            array( $this, 'al_errors' ) );
                 add_action( 'plugins_loaded',        array( $this, 'al_load_plugin_textdomain' ) );
                 add_action( 'admin_enqueue_scripts', array( $this, 'al_enqueue_action_logger_css' ) );
+                add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), array( $this, 'al_settings_link' ) );
 
                 // WP Core actions
                 add_action( 'user_register ',        array( $this, 'al_log_user_create'), 10, 1 );
@@ -64,7 +65,7 @@
 
                 // EM actions
                 add_action( 'em_bookings_deleted',   array( $this, 'al_log_registration_delete'), 10, 2 );
-                add_action( 'em_booking_save',       array( $this, 'al_log_registration_chance'), 10, 2 );
+                // add_action( 'em_booking_save',       array( $this, 'al_log_registration_chance'), 10, 2 );
 
                 // Shortcode
                 add_shortcode( 'actionlogger',  array( $this, 'al_register_shortcode_logger' ) );
@@ -87,7 +88,7 @@
             // @TODO: S2Member: add log for reject
 
             /**
-             * Function which runs upon plugin deactivation
+             * Function which runs upon plugin activation
              */
             public function al_plugin_activation() {
                 $this->al_prepare_log_table();
@@ -112,6 +113,13 @@
                 delete_option( 'al_available_log_actions' );
                 delete_option( 'al_log_user_role' );
 
+            }
+    
+            public function al_settings_link( $links ) {
+                $add_this = array(
+                    '<a href="' . admin_url( 'admin.php?page=al-settings' ) . '">Settings</a>',
+                );
+                return array_merge( $links, $add_this );
             }
 
             /**
@@ -554,11 +562,6 @@
                         'action_description' => esc_html( $action_description ),
                     );
                     $db_status = $wpdb->insert( $wpdb->prefix . 'action_logs', $sql_data );
-                    if ( false == $db_status ) {
-                        if ( get_current_user_id() == 27 ) {
-                            die('Log wasn\'t stored');
-                        }
-                    }
                 }
 
                 do_action( 'after_log_user_action' );
@@ -693,7 +696,6 @@
              */
             public function al_log_registration_chance( $EM_Event, $EM_Booking ) {
     
-                // die('al_log_registration_chance');
                 if ( true == $EM_Event ) {
     
                     $show           = false;
