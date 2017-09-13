@@ -77,7 +77,7 @@
                 // Shortcode
                 add_shortcode( 'actionlogger',         array( $this, 'al_register_shortcode_logger' ) );
 
-	            $this->al_store_default_values();
+	            $this->al_set_default_values();
 
             }
 
