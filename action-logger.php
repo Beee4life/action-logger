@@ -44,6 +44,9 @@
                 register_activation_hook( __FILE__,     array( $this, 'al_plugin_activation' ) );
                 register_deactivation_hook( __FILE__,   array( $this, 'al_plugin_deactivation' ) );
 
+                // add settings link to plugin
+                add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), array( $this, 'al_plugin_link' ) );
+
                 // actions
                 add_action( 'admin_menu',            array( $this, 'al_add_action_logger_dashboard' ) );
                 add_action( 'admin_menu',            array( $this, 'al_add_action_logger_settings_page' ) );
@@ -56,7 +59,6 @@
                 add_action( 'admin_init',            array( $this, 'al_errors' ) );
                 add_action( 'plugins_loaded',        array( $this, 'al_load_plugin_textdomain' ) );
                 add_action( 'admin_enqueue_scripts', array( $this, 'al_enqueue_action_logger_css' ) );
-                add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), array( $this, 'al_settings_link' ) );
 
                 // WP Core actions
                 add_action( 'user_register ',        array( $this, 'al_log_user_create'), 10, 1 );
@@ -64,8 +66,8 @@
                 add_action( 'delete_user',           array( $this, 'al_log_user_delete'), 10, 1 );
 
                 // EM actions
-                add_action( 'em_bookings_deleted',   array( $this, 'al_log_registration_delete'), 10, 2 );
-                // add_action( 'em_booking_save',       array( $this, 'al_log_registration_chance'), 10, 2 );
+                add_action( 'em_bookings_deleted',   array( $this, 'al_log_registration_delete' ), 10, 2 );
+                add_action( 'em_booking_save',       array( $this, 'al_log_registration_change' ), 10, 2 );
 
                 // Shortcode
                 add_shortcode( 'actionlogger',  array( $this, 'al_register_shortcode_logger' ) );
@@ -115,7 +117,7 @@
 
             }
     
-            public function al_settings_link( $links ) {
+            public function al_plugin_link( $links ) {
                 $add_this = array(
                     '<a href="' . admin_url( 'admin.php?page=al-settings' ) . '">Settings</a>',
                 );
@@ -654,6 +656,7 @@
 
 	        /**
 	         * Log user delete
+             *
 	         * @param $user_id
 	         */
 	        public function al_log_user_delete( $user_id ) {
@@ -664,6 +667,7 @@
 
 	        /**
 	         * Log file upload from CSV Importer
+             *
 	         * @param $user_id
 	         */
 	        public function al_csvi_file_upload( $user_id ) {
@@ -675,7 +679,7 @@
 	        /**
              * Events manager actions
              */
-
+    
             /**
              * Log an action when a registration is deleted
              *
@@ -688,49 +692,49 @@
                 }
             }
     
+            public function test_change( $EM_Event, $EM_Booking ) {
+                $this->al_log_user_action( 'registration_changed', 'Action Logger' );
+            }
+    
             /**
              * Log an action when an booking is canceled or rejected
              *
              * @param $EM_Event
              * @param $EM_Booking
              */
-            public function al_log_registration_chance( $EM_Event, $EM_Booking ) {
+            public function al_log_registration_change( $EM_Event, $EM_Booking ) {
+
+                $log            = false;
+                $booking_id     = $EM_Booking->booking_id;
     
-                if ( true == $EM_Event ) {
-    
-                    $show           = false;
-                    $booking_id     = $EM_Booking->booking_id;
-                    $booking_user   = $EM_Booking->person_id;
-                    $booking_status = $EM_Booking->booking_status;
-    
-                    if ( 1 == $EM_Booking->booking_status ) {
-                        $action = 'registration_approved';
-                        $status = 'approved';
-                        if ( 1 == get_option( 'al_em_booking_approved' ) ) {
-                            $show = true;
-                        }
-                    } elseif ( 2 == $EM_Booking->booking_status ) {
-                        $action = 'registration_reject';
-                        $status = 'rejected';
-                        if ( 1 == get_option( 'al_em_booking_rejected' ) ) {
-                            $show = true;
-                        }
-                    } elseif ( 3 == $EM_Booking->booking_status ) {
-                        $action = 'registration_cancel';
-                        $status = 'canceled';
-                        if ( 1 == get_option( 'al_em_booking_canceled' ) ) {
-                            $show = true;
-                        }
-                    } else {
-                        $action = 'registration_unknown';
-                        $status = 'unknown';
-                        $show   = true;
+                if ( 1 == $EM_Booking->booking_status ) {
+                    $action = 'registration_approved';
+                    $status = 'approved';
+                    if ( 1 == get_option( 'al_em_booking_approved' ) ) {
+                        $log = true;
                     }
-                    
-                    if ( $show == true ) {
-                        $this->al_log_user_action( $action, 'Action Logger', get_userdata( get_current_user_id() )->first_name . ' ' . $status . ' ' . esc_html( __( 'the booking with booking ID:', 'action-logger' ) )  . ' ' . $booking_id . '.' );
+                } elseif ( 2 == $EM_Booking->booking_status ) {
+                    $action = 'registration_reject';
+                    $status = 'rejected';
+                    if ( 1 == get_option( 'al_em_booking_rejected' ) ) {
+                        $log = true;
                     }
+                } elseif ( 3 == $EM_Booking->booking_status ) {
+                    $action = 'registration_cancel';
+                    $status = 'canceled';
+                    if ( 1 == get_option( 'al_em_booking_canceled' ) ) {
+                        $log = true;
+                    }
+                } else {
+                    $action = 'registration_unknown';
+                    $status = 'unknown';
+                    $log   = true;
                 }
+    
+                if ( $log == true ) {
+                    $this->al_log_user_action( $action, 'Action Logger', get_userdata( get_current_user_id() )->first_name . ' ' . $status . ' ' . esc_html( __( 'the booking with booking ID:', 'action-logger' ) )  . ' ' . $booking_id . '.' );
+                }
+
             }
     
         }
