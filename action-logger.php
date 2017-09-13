@@ -3,7 +3,7 @@
     Plugin Name: Action logger
     Version: 1.0.0
     Tags: log
-    Plugin URI: http://www.berryplasman.com
+    Plugin URI: https://github.com/Beee4life/action-logger
     Description: This plugin logs several actions which are interesting to log, to know who did what, such as creating/deleting/promoting users.
     Author: Beee
     Author URI: http://berryplasman.com
