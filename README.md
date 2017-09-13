@@ -23,10 +23,10 @@ Next to that I included a few logging options for one of our favourite plugins: 
 
 The overall impact is minimal.
 
-* Upon activation a new database table named `wp_action_logs` is created.
+* Upon activation a new database table named `{your table prefix}_action_logs` is created.
 * Every action is logged real-time, which is 1 row being stored in the database.
-* Upon plugin deactivation all settings are dropped to keep the database clean.
-* Upon plugin deletion (through WP admin) the database table `wp_action_logs` is dropped (unless preserve data is selected in the options panel).
+* Upon plugin deactivation all settings are dropped to keep the database clean (except the preserve data option).
+* Upon plugin deletion (through WP admin) the database table `{your table prefix}_action_logs` is dropped (unless preserve data is selected in the options panel).
 
 ## Usage
 
@@ -100,12 +100,12 @@ This will trigger a log entry with the following description:
 
 Of course, that's the whole reason I wrote this plugin; 'to be able to log custom actions'. To use the logger, you need to add a piece of code on the place where you want the tracking to occur. This can be in a plugin or a theme.
 
-    ActionLogger::log_user_action();
+    ActionLogger::al_log_user_action();
 
 To make sure your site won't break if you deactivate the plugin, wrap it in a `class_exists()` as follows:     
 
     if ( class_exists( 'ActionLogger' ) ) {
-        ActionLogger::log_user_action();
+        ActionLogger::al_log_user_action();
     }
 
 The function can contain 3 variables which are default all set to false. Use them in this order:
@@ -117,8 +117,12 @@ The function can contain 3 variables which are default all set to false. Use the
 This is defined as:
 
     if ( class_exists( 'ActionLogger' ) ) {
-        ActionLogger::log_user_action( $action, $generator, $message );
+        ActionLogger::al_log_user_action( $action, $generator, $message );
     }
+
+= Can I export my logs to CSV ? =
+
+Yes, check the Misc page.
 
 = Which plugins do you plan to include in the plugin ? =
 

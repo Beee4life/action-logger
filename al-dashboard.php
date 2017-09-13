@@ -79,7 +79,17 @@
                     <?php if ( current_user_can( 'manage_options' ) ) { ?>
                         <input name="delete" type="submit" class="admin-button admin-button-small" value="<?php esc_html_e( 'Delete selected items', 'action-logger' ); ?>" />
                     <?php } ?>
+<<<<<<< HEAD
                 </form>
+=======
+                    </tbody>
+                </table>
+                <?php if ( current_user_can( 'manage_options' ) ) { ?>
+                    <br />
+                    <input name="delete" type="submit" class="admin-button admin-button-small" value="<?php esc_html_e( 'Delete selected items', 'action-logger' ); ?>" />
+                <?php } ?>
+            </form>
+>>>>>>> d688d040fb2609f1bd9ee23deeb3e59cc079a9a4
 
                 <br />
                 <h2><?php esc_html_e( 'Nuke \'em all', 'action-logger' ); ?></h2>
