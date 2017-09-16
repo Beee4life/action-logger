@@ -636,7 +636,7 @@
              */
             public function al_log_user_create( $user_id ) {
                 if ( class_exists( 'ActionLogger' ) && false != get_option( 'al_wp_user_create' ) ) {
-                    $this->al_log_user_action( 'user_registered', 'Action Logger', 'New user registered: "' . get_userdata( $user_id )->display_name . '".' );
+                    $this->al_log_user_action( 'user_registered', 'Action Logger', sprintf( __( 'New user registered: "<a href="%s">' . get_userdata( $user_id )->display_name . '</a>".', 'sexdates' ), get_author_posts_url( $user_id ) ) );
                 }
             }
 
