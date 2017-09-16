@@ -1,7 +1,7 @@
 <?php
     /*
     Plugin Name: Action logger
-    Version: 1.0.0
+    Version: 0.1 beta
     Tags: log
     Plugin URI: https://github.com/Beee4life/action-logger
     Description: This plugin logs several actions which are interesting to log, to know who did what, such as creating/deleting/promoting users.
@@ -41,42 +41,46 @@
                 );
 
                 // (de)activation hooks
-                register_activation_hook( __FILE__,     array( $this, 'al_plugin_activation' ) );
-                register_deactivation_hook( __FILE__,   array( $this, 'al_plugin_deactivation' ) );
+                register_activation_hook( __FILE__,    array( $this, 'al_plugin_activation' ) );
+                register_deactivation_hook( __FILE__,  array( $this, 'al_plugin_deactivation' ) );
 
                 // add settings link to plugin
                 add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), array( $this, 'al_plugin_link' ) );
 
                 // actions
-                add_action( 'admin_menu',            array( $this, 'al_add_action_logger_dashboard' ) );
-                add_action( 'admin_menu',            array( $this, 'al_add_action_logger_settings_page' ) );
-                add_action( 'admin_menu',            array( $this, 'al_add_action_logger_support_page' ) );
-                add_action( 'admin_init',            array( $this, 'al_items_overview_functions' ) );
-                add_action( 'admin_init',            array( $this, 'al_admin_page_functions' ) );
-                add_action( 'admin_init',            array( $this, 'al_delete_all_logs' ) );
-                add_action( 'admin_init',            array( $this, 'al_check_log_table' ) );
-                add_action( 'admin_init',            array( $this, 'al_admin_menu' ) );
-                add_action( 'admin_init',            array( $this, 'al_errors' ) );
-                add_action( 'plugins_loaded',        array( $this, 'al_load_plugin_textdomain' ) );
-                add_action( 'admin_enqueue_scripts', array( $this, 'al_enqueue_action_logger_css' ) );
+                add_action( 'admin_menu',                   array( $this, 'al_add_action_logger_dashboard' ) );
+                add_action( 'admin_menu',                   array( $this, 'al_add_action_logger_settings_page' ) );
+                add_action( 'admin_menu',                   array( $this, 'al_add_action_logger_support_page' ) );
+                add_action( 'admin_init',                   array( $this, 'al_items_overview_functions' ) );
+                add_action( 'admin_init',                   array( $this, 'al_admin_page_functions' ) );
+                add_action( 'admin_init',                   array( $this, 'al_delete_all_logs' ) );
+                add_action( 'admin_init',                   array( $this, 'al_check_log_table' ) );
+                add_action( 'admin_init',                   array( $this, 'al_admin_menu' ) );
+                add_action( 'admin_init',                   array( $this, 'al_errors' ) );
+                add_action( 'plugins_loaded',               array( $this, 'al_load_plugin_textdomain' ) );
+                add_action( 'admin_enqueue_scripts',        array( $this, 'al_enqueue_action_logger_css' ) );
 
                 // WP Core actions
-                add_action( 'user_register ',        array( $this, 'al_log_user_create'), 10, 1 );
-                add_action( 'profile_update',        array( $this, 'al_log_user_change'), 10, 2 );
-                add_action( 'delete_user',           array( $this, 'al_log_user_delete'), 10, 1 );
+                add_action( 'user_register ',               array( $this, 'al_log_user_create' ), 10, 1 );
+                add_action( 'profile_update',               array( $this, 'al_log_user_change' ), 10, 2 );
+                add_action( 'delete_user',                  array( $this, 'al_log_user_delete' ), 10, 1 );
 
-                // EM actions
-                add_action( 'em_bookings_deleted',   array( $this, 'al_log_registration_delete' ), 10, 2 );
-                // add_action( 'em_booking_save',       array( $this, 'al_log_registration_change' ), 10, 2 );
+	            // CSV Importer actions
+	            add_action( 'csvi_successful_csv_upload',   array( $this, 'al_csvi_file_upload' ) );
+	            add_action( 'csvi_successful_csv_validate', array( $this, 'al_csvi_file_validate' ) );
+	            add_action( 'csvi_successful_csv_import',   array( $this, 'al_csvi_file_import' ) );
+
+	            // EM actions
+	            add_action( 'em_bookings_deleted',          array( $this, 'al_log_registration_delete' ), 10, 2 );
+                add_action( 'em_booking_save',              array( $this, 'al_log_registration_cancel_reject' ), 10, 2 );
 
                 // Shortcode
-                add_shortcode( 'actionlogger',  array( $this, 'al_register_shortcode_logger' ) );
-    
-                // $this->al_set_default_values();
-                
+                add_shortcode( 'actionlogger',         array( $this, 'al_register_shortcode_logger' ) );
+
+	            $this->al_set_default_values();
+
             }
 
-            // @TODO: restrict to roles
             // @TODO: add log rotation
             // @TODO: add IF for older php versions
 
@@ -116,7 +120,7 @@
                 delete_option( 'al_log_user_role' );
 
             }
-    
+
             public function al_plugin_link( $links ) {
                 $add_this = array(
                     '<a href="' . admin_url( 'admin.php?page=al-settings' ) . '">Settings</a>',
@@ -195,7 +199,7 @@
             public function al_set_default_values() {
 
                 $available_options = get_option( 'al_available_log_actions' );
-                // $available_options = false;
+                $available_options = false;
                 if ( false == $available_options ) {
                     $available_options = array(
                         array(
@@ -220,7 +224,7 @@
                             'default_value'      => 1,
                         ),
                     );
-                    
+
                     $user_options      = array(
                         array(
                             'action_name'        => 'user_visit_visitor',
@@ -237,8 +241,9 @@
                             'default_value'      => 1,
                         ),
                     );
+
                     $available_options = array_merge( $available_options, $user_options );
-    
+
                     // add option for events manager
                     $em_options        = array(
                         array(
@@ -283,7 +288,7 @@
                         ),
                     );
                     $available_options = array_merge( $available_options, $csvi_options );
-    
+
                     // add option for IDF rankings importer
                     $ri_options      = array(
                         array(
@@ -295,7 +300,7 @@
                         ),
                     );
                     $available_options = array_merge( $available_options, $ri_options );
-    
+
                     foreach ( $available_options as $option ) {
                         update_option( 'al_' . $option[ 'action_name' ], $option[ 'default_value' ] );
                     }
@@ -303,7 +308,7 @@
                     update_option( 'al_log_user_role', 'manage_options' );
                 }
             }
-    
+
             /**
              * Adds a page to admin sidebar menu
              */
@@ -311,7 +316,7 @@
                 add_menu_page( 'Action Logger', 'Action Logger', get_option( 'al_log_user_role' ), 'action-logger', 'action_logger_dashboard', 'dashicons-editor-alignleft' );
                 include( 'al-dashboard.php' ); // content for the settings page
             }
-    
+
             /**
              * Adds a (hidden) settings page, only through the menu on top of the pages.
              */
@@ -553,7 +558,6 @@
             public static function al_log_user_action( $action = false, $action_generator = false, $action_description = false ) {
 
                 do_action( 'before_log_user_action' );
-
                 if ( false != $action_description ) {
                     global $wpdb;
                     $sql_data = array(
@@ -565,7 +569,6 @@
                     );
                     $db_status = $wpdb->insert( $wpdb->prefix . 'action_logs', $sql_data );
                 }
-
                 do_action( 'after_log_user_action' );
 
             }
@@ -666,20 +669,53 @@
 	        }
 
 	        /**
+	         * Log successful file upload from CSV Importer
 	         * Log file upload from CSV Importer
              *
 	         * @param $user_id
 	         */
-	        public function al_csvi_file_upload( $user_id ) {
+	        public function al_csvi_file_upload() {
+		        $user_name = get_userdata( get_current_user_id() )->first_name;
+		        if ( false == $user_name ) {
+			        $user_name = get_userdata( get_current_user_id() )->display_name;
+		        }
 		        if ( class_exists( 'CSV_Importer' ) && false != get_option( 'al_csvi_file_upload' ) ) {
-			        $this->al_log_user_action( 'csv_upload', 'Action Logger', get_userdata( get_current_user_id() )->first_name . ' ' . esc_html( __( 'uploaded a file', 'action-logger' ) ) . '.' );
+			        $this->al_log_user_action( 'csv_upload', 'Action Logger', $user_name . ' ' . esc_html( __( 'successfully uploaded the file: ', 'action-logger' ) ) . '"' . $_FILES[ 'csv_upload' ][ 'name' ] . '".' );
+		        }
+	        }
+
+	        /**
+	         * Log successful csv validate from CSV Importer
+	         * @param $user_id
+	         */
+	        public function al_csvi_file_validate() {
+		        $user_name = get_userdata( get_current_user_id() )->first_name;
+		        if ( false == $user_name ) {
+			        $user_name = get_userdata( get_current_user_id() )->display_name;
+		        }
+		        if ( class_exists( 'CSV_Importer' ) && false != get_option( 'al_csvi_file_validate' ) ) {
+			        $this->al_log_user_action( 'csv_validate', 'Action Logger', $user_name . ' ' . esc_html( __( 'successfully validated the file: ', 'action-logger' ) ) . '"' . $_FILES[ 'csv_upload' ][ 'name' ] . '".' );
+		        }
+	        }
+
+	        /**
+	         * Log successful csv import from CSV Importer
+	         * @param $user_id
+	         */
+	        public function al_csvi_file_import() {
+		        $user_name = get_userdata( get_current_user_id() )->first_name;
+		        if ( false == $user_name ) {
+			        $user_name = get_userdata( get_current_user_id() )->display_name;
+		        }
+		        if ( class_exists( 'CSV_Importer' ) && false != get_option( 'al_csvi_file_import' ) ) {
+			        $this->al_log_user_action( 'csv_imported', 'Action Logger', $user_name . ' successfully imported ' . $line_number . ' lines from file' );
 		        }
 	        }
 
 	        /**
              * Events manager actions
              */
-    
+
             /**
              * Log an action when a registration is deleted
              *
@@ -691,11 +727,11 @@
                     $this->al_log_user_action( 'registration_deleted', 'Action Logger', get_userdata( get_current_user_id() )->first_name . ' ' . esc_html( __( 'deleted bookings for an event.', 'action-logger' ) ) );
                 }
             }
-    
+
             public function test_change( $EM_Event, $EM_Booking ) {
                 $this->al_log_user_action( 'registration_changed', 'Action Logger' );
             }
-    
+
             /**
              * Log an action when an booking is canceled or rejected
              *
@@ -706,7 +742,7 @@
 
                 $log            = false;
                 $booking_id     = $EM_Booking->booking_id;
-    
+
                 if ( 1 == $EM_Booking->booking_status ) {
                     $action = 'registration_approved';
                     $status = 'approved';
@@ -730,13 +766,13 @@
                     $status = 'unknown';
                     $log   = true;
                 }
-    
+
                 if ( $log == true ) {
                     $this->al_log_user_action( $action, 'Action Logger', get_userdata( get_current_user_id() )->first_name . ' ' . $status . ' ' . esc_html( __( 'the booking with booking ID:', 'action-logger' ) )  . ' ' . $booking_id . '.' );
                 }
 
             }
-    
+
         }
 
         /**

@@ -60,7 +60,7 @@
     max-width: 90px;
 }
 
-.notice {
+.is-dismissible {
     margin:  5px 0 15px;
     padding: 10px 0 10px 15px;
 }
