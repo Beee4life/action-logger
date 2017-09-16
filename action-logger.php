@@ -67,7 +67,7 @@
 
                 // EM actions
                 add_action( 'em_bookings_deleted',   array( $this, 'al_log_registration_delete' ), 10, 2 );
-                add_action( 'em_booking_save',       array( $this, 'al_log_registration_change' ), 10, 2 );
+                // add_action( 'em_booking_save',       array( $this, 'al_log_registration_change' ), 10, 2 );
 
                 // Shortcode
                 add_shortcode( 'actionlogger',  array( $this, 'al_register_shortcode_logger' ) );
