@@ -557,7 +557,6 @@
              */
             public static function al_log_user_action( $action = false, $action_generator = false, $action_description = false ) {
 
-                do_action( 'before_log_user_action' );
                 if ( false != $action_description ) {
                     global $wpdb;
                     $sql_data = array(
@@ -569,7 +568,6 @@
                     );
                     $db_status = $wpdb->insert( $wpdb->prefix . 'action_logs', $sql_data );
                 }
-                do_action( 'after_log_user_action' );
 
             }
 
