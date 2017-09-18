@@ -63,7 +63,7 @@
                                     <td class="action"><?php echo $item->action; ?></td>
                                 <?php } ?>
                                 <td class="generator"><?php echo $item->action_generator; ?></td>
-                                <td class="description"><?php echo $item->action_description; ?></td>
+                                <td class="description"><?php esc_html( __( $item->action_description, 'action-logger' ) ); ?></td>
                                 <?php if ( current_user_can( 'manage_options' ) ) { ?>
                                     <td class="checkbox">
                                         <label for="rows" class="screen-reader-text">
@@ -86,9 +86,9 @@
                 <p><?php esc_html_e( 'Delete all items. Watch out, there\'s no confirmation. Delete = delete !', 'action-logger' ); ?></p>
                 <form name="delete-logs" action="" method="post">
                     <input name="delete_all_logs_nonce" type="hidden" value="<?php echo wp_create_nonce( 'delete-all-logs-nonce' ); ?>" />
-                    <label for="delete-all" class="screen-reader-text">Delete</label>
+                    <label for="delete-all" class="screen-reader-text"><?php esc_html_e( 'Delete', 'action-logger' ); ?></label>
                     <input name="delete_all" id="delete-all" type="checkbox" value="1" /> &nbsp;&nbsp;
-                    <input name="delete" type="submit" class="admin-button admin-button-small" value="Delete all" />
+                    <input name="delete" type="submit" class="admin-button admin-button-small" value="<?php esc_html_e( 'Delete all', 'action-logger' ); ?>" />
                 </form>
             <?php } ?>
 

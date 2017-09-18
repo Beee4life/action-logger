@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Action Logger 1.0\n"
-"POT-Creation-Date: 2017-09-18 16:06+0200\n"
-"PO-Revision-Date: 2017-09-18 16:07+0200\n"
+"POT-Creation-Date: 2017-09-18 16:28+0200\n"
+"PO-Revision-Date: 2017-09-18 16:29+0200\n"
 "Last-Translator: Beee\n"
 "Language-Team: \n"
 "Language: nl_NL\n"
@@ -15,9 +15,17 @@ msgstr ""
 "X-Poedit-KeywordsList: __;_x;_e;esc_attr_e;esc_html_e\n"
 "X-Poedit-SearchPath-0: .\n"
 
+#: action-logger.php:208
+msgid "Create user"
+msgstr "Gebruiker aanmaken"
+
 #: action-logger.php:209
 msgid "Logs when a new user is created in WordPress."
 msgstr "Logt wanneer een nieuwe gebruiker wordt aangemaakt in WordPress."
+
+#: action-logger.php:215
+msgid "Change user"
+msgstr "Wijzig gebruiker"
 
 #: action-logger.php:216
 msgid "Logs when a user is changed (by another user) in WordPress."
@@ -25,9 +33,17 @@ msgstr ""
 "Logt wanneer een gebruiker is gewijzigd (door een andere gebruiker) in "
 "WordPress."
 
+#: action-logger.php:222
+msgid "Delete user"
+msgstr "Verwijder gebruiker"
+
 #: action-logger.php:223
-msgid "Logs when a user is deleted in WordPress"
+msgid "Logs when a user is deleted in WordPress."
 msgstr "Logt wanneer een gebruiker verwijderd wordt in WordPress."
+
+#: action-logger.php:232
+msgid "User visit (visitor)"
+msgstr "Gebruikersbezoek (bezoeker)"
 
 #: action-logger.php:233
 msgid ""
@@ -36,29 +52,53 @@ msgstr ""
 "Logt wanneer een geregistreerde gebruiker een post/pagina bezoekt met de "
 "shortcode."
 
+#: action-logger.php:239
+msgid "User visit (registered)"
+msgstr "Gebruikersbezoek (geregistreerd)"
+
 #: action-logger.php:240
 msgid "Logs when a visitor visits a post/page with the shortcode on it."
 msgstr "Logt wanneer een bezoeker een post/pagina bezoekt met de shortcode."
+
+#: action-logger.php:252
+msgid "Booking approved"
+msgstr "Boeking goedgekeurd"
 
 #: action-logger.php:253
 msgid "Logs when a booking is approved."
 msgstr "Logt wanneer een boeking is goedgekeurd/bevestigd."
 
+#: action-logger.php:259
+msgid "Booking canceled"
+msgstr "Boeking geannuleerd"
+
 #: action-logger.php:260
 msgid "Logs when a booking is canceled."
 msgstr "Logt wanneer een boeking geannuleerd is."
+
+#: action-logger.php:266
+msgid "Booking rejected"
+msgstr "Boeking geweigerd"
 
 #: action-logger.php:267
 msgid "Logs when a booking is rejected."
 msgstr "Logt wanneer een boeking geweigerd wordt."
 
+#: action-logger.php:273
+msgid "Booking deleted"
+msgstr "Boeking verwijderd"
+
 #: action-logger.php:274
 msgid "Logs when a booking is deleted."
 msgstr "Logt wanneer een boeking is verwijderd."
 
-#: action-logger.php:286 action-logger.php:298
-msgid "Logs when a csv file is uploaded"
+#: action-logger.php:286
+msgid "Logs when a csv file is uploaded."
 msgstr "Logt wanneer een CSV bestand is ge-upload."
+
+#: action-logger.php:298
+msgid "Logs when a csv file is uploaded"
+msgstr "Logt wanneer een CSV bestand is ge-upload"
 
 #: action-logger.php:361
 msgid "Warning"
@@ -182,7 +222,7 @@ msgstr "Gegenereerd door"
 msgid "Description"
 msgstr "Beschrijving"
 
-#: al-dashboard.php:54 al-dashboard.php:70
+#: al-dashboard.php:54 al-dashboard.php:70 al-dashboard.php:89
 msgid "Delete"
 msgstr "Verwijderen"
 
@@ -198,6 +238,10 @@ msgstr "Alles verwijderen"
 msgid "Delete all items. Watch out, there's no confirmation. Delete = delete !"
 msgstr ""
 "Verwijder alle items. Kijk uit, er is geen bevestiging. Delete = delete !"
+
+#: al-dashboard.php:91
+msgid "Delete all"
+msgstr "Alles verwijderen"
 
 #: al-misc.php:26
 msgid "Export data to CSV"

@@ -66,9 +66,9 @@
 
                                             <tr>
                                                 <td class="hidden"><?php echo $action[ 'action_name' ]; ?></td>
-                                                <td class=""><?php echo $action[ 'action_title' ]; ?></td>
+                                                <td class=""><?php esc_html_e( $action[ 'action_title' ], 'action-logger' ); ?></td>
                                                 <td class=""><?php echo $action[ 'action_generator' ]; ?></td>
-                                                <td class=""><?php echo $action[ 'action_description' ]; ?></td>
+                                                <td class=""><?php esc_html_e( $action[ 'action_description' ], 'action-logger' ); ?></td>
                                                 <td class="checkbox">
                                                     <?php
                                                         $active    = 0;
