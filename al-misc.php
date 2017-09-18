@@ -14,9 +14,9 @@
             <div id="icon-options-general" class="icon32"><br /></div>
 
             <h1>Action Logger misc settings</h1>
-    
+
             <?php ActionLogger::al_show_admin_notices(); ?>
-    
+
             <?php do_action('al_before_settings' ); ?>
 
             <div id="action-logger" class="">
@@ -43,7 +43,7 @@
                 </form>
 
                 <h2><?php esc_html_e( 'Support', 'action-logger' ); ?></h2>
-                <p><?php echo sprintf( __( 'If you know about this plugin, you probably know me and know where to reach me. If not, please report it on GitHub in the %s.', 'action-logger' ), '<a href="https://github.com/Beee4life/action-logger/issues">issues section</a>' ); ?></p>
+                <p><?php echo sprintf( __( 'If you know about this plugin, you probably know me and know where to reach me. If not, please report it on GitHub in the <a href="%s">issues section</a>.', 'action-logger' ), 'https://github.com/Beee4life/action-logger/issues' ); ?></p>
                 <p><?php esc_html_e( 'Find more info about the plugin on', 'action-logger' ); ?> <a href="https://github.com/Beee4life/action-logger/">GitHub</a>.</p>
 
                 <h2><?php esc_html_e( 'About the author', 'action-logger' ); ?></h2>
