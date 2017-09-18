@@ -49,6 +49,35 @@
                 <h2><?php esc_html_e( 'About the author', 'action-logger' ); ?></h2>
                 <p><?php echo sprintf( __( 'This plugin is created by %s, a Wordpress developer from Amsterdam.', 'action-logger' ), '<a href="' . esc_url( 'http://www.berryplasman.com' ) . '">Beee</a>' ); ?></p>
 
+                <h2>Donate</h2>
+                <form action="https://www.paypal.com/cgi-bin/webscr" method="post" class="donation">
+                    <div>
+                        <p>This plugin is free to use and if you like it, I would appreciate a small donation, so I can continue to develop this in my free time.</p>
+
+                        <input type="hidden" name="cmd" value="_xclick">
+                        <input type="hidden" name="business" value="info@berryplasman.com">
+                        <input type="hidden" name="item_name" value="ActionLogger">
+                        <input type="hidden" name="buyer_credit_promo_code" value="">
+                        <input type="hidden" name="buyer_credit_product_category" value="">
+                        <input type="hidden" name="buyer_credit_shipping_method" value="">
+                        <input type="hidden" name="buyer_credit_user_address_change" value="">
+                        <input type="hidden" name="no_shipping" value="1">
+                        <input type="hidden" name="return" value="<?php echo site_url(); ?>/wp-admin/admin.php?page=al-misc">
+                        <input type="hidden" name="no_note" value="1">
+                        <input type="hidden" name="currency_code" value="USD">
+                        <input type="hidden" name="tax" value="0">
+                        <input type="hidden" name="lc" value="US">
+                        <input type="hidden" name="bn" value="PP-DonationsBF">
+                        <div class="donation-amount">$
+                            <label for="donate-amount" class="screen-reader-text">
+                                Donate amount
+                            </label>
+                            <input type="number" id="donate-amount" min="1" name="amount" value="10">
+                            <input type="submit" class="button-primary" value="Donate 💰">
+                        </div>
+                    </div>
+                </form>
+
             </div><!-- end #action-logger -->
 
         <?php do_action('al_after_settings' ); ?>
