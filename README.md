@@ -49,6 +49,9 @@ Yes. This can be done on the settings page.
 * user registration
 * user change
 * user delete
+* post published
+* post changed
+* post deleted
 * post/page visitor visit (through shortcode)
 * post/page registered user visit (through shortcode)
 
