@@ -77,7 +77,7 @@
                 // Shortcode
                 add_shortcode( 'actionlogger',         array( $this, 'al_register_shortcode_logger' ) );
 
-	            $this->al_set_default_values();
+	            // $this->al_set_default_values();
 
             }
 
@@ -205,22 +205,22 @@
                         array(
                             'action_name'        => 'wp_user_create',
                             'action_generator'   => 'WordPress',
-                            'action_title'       => 'Create user',
+                            'action_title'       => esc_html( __( 'Create user', 'action-logger' ) ),
                             'action_description' => esc_html( __( 'Logs when a new user is created in WordPress.', 'action-logger' ) ),
                             'default_value'      => 1,
                         ),
                         array(
                             'action_name'        => 'wp_user_change',
                             'action_generator'   => 'WordPress',
-                            'action_title'       => 'Change user',
+                            'action_title'       => esc_html( __( 'Change user', 'action-logger' ) ),
                             'action_description' => esc_html( __( 'Logs when a user is changed (by another user) in WordPress.', 'action-logger' ) ),
                             'default_value'      => 1,
                         ),
                         array(
                             'action_name'        => 'wp_user_delete',
                             'action_generator'   => 'WordPress',
-                            'action_title'       => 'Delete user',
-                            'action_description' => esc_html( __( 'Logs when a user is deleted in WordPress', 'action-logger' ) ),
+                            'action_title'       => esc_html( __( 'Delete user', 'action-logger' ) ),
+                            'action_description' => esc_html( __( 'Logs when a user is deleted in WordPress.', 'action-logger' ) ),
                             'default_value'      => 1,
                         ),
                     );
@@ -229,14 +229,14 @@
                         array(
                             'action_name'        => 'user_visit_visitor',
                             'action_generator'   => 'WordPress',
-                            'action_title'       => 'User visit (visitor)',
+                            'action_title'       => esc_html( __( 'User visit (visitor)', 'action-logger' ) ),
                             'action_description' => esc_html( __( 'Logs when a registered user visits a post/page with the shortcode on it.', 'action-logger' ) ),
                             'default_value'      => 1,
                         ),
                         array(
                             'action_name'        => 'user_visit_registered',
                             'action_generator'   => 'WordPress',
-                            'action_title'       => 'User visit (registered)',
+                            'action_title'       => esc_html( __( 'User visit (registered)', 'action-logger' ) ),
                             'action_description' => esc_html( __( 'Logs when a visitor visits a post/page with the shortcode on it.', 'action-logger' ) ),
                             'default_value'      => 1,
                         ),
@@ -249,29 +249,29 @@
                         array(
                             'action_name'        => 'em_booking_approved',
                             'action_generator'   => 'Events Manager',
-                            'action_title'       => 'Booking approved',
-                            'action_description' => esc_html( __( 'Logs when a booking is approved', 'action-logger' ) ),
+                            'action_title'       => esc_html( __( 'Booking approved', 'action-logger' ) ),
+                            'action_description' => esc_html( __( 'Logs when a booking is approved.', 'action-logger' ) ),
                             'default_value'      => 0,
                         ),
                         array(
                             'action_name'        => 'em_booking_canceled',
                             'action_generator'   => 'Events Manager',
-                            'action_title'       => 'Booking changed',
-                            'action_description' => esc_html( __( 'Logs when a booking is canceled', 'action-logger' ) ),
+                            'action_title'       => esc_html( __( 'Booking canceled', 'action-logger' ) ),
+                            'action_description' => esc_html( __( 'Logs when a booking is canceled.', 'action-logger' ) ),
                             'default_value'      => 0,
                         ),
                         array(
                             'action_name'        => 'em_booking_rejected',
                             'action_generator'   => 'Events Manager',
-                            'action_title'       => 'Booking canceled/rejected',
-                            'action_description' => esc_html( __( 'Logs when a booking is rejected', 'action-logger' ) ),
+                            'action_title'       => esc_html( __( 'Booking rejected', 'action-logger' ) ),
+                            'action_description' => esc_html( __( 'Logs when a booking is rejected.', 'action-logger' ) ),
                             'default_value'      => 0,
                         ),
                         array(
                             'action_name'        => 'em_booking_deleted',
                             'action_generator'   => 'Events Manager',
-                            'action_title'       => 'Booking delete',
-                            'action_description' => esc_html( __( 'Logs when a booking is deleted', 'action-logger' ) ),
+                            'action_title'       => esc_html( __( 'Booking deleted', 'action-logger' ) ),
+                            'action_description' => esc_html( __( 'Logs when a booking is deleted.', 'action-logger' ) ),
                             'default_value'      => 0,
                         ),
                     );
@@ -283,7 +283,7 @@
                             'action_name'        => 'csvi_file_uploaded',
                             'action_generator'   => 'CSV Importer',
                             'action_title'       => 'CSV file uploaded',
-                            'action_description' => esc_html( __( 'Logs when a csv file is uploaded', 'action-logger' ) ),
+                            'action_description' => esc_html( __( 'Logs when a csv file is uploaded.', 'action-logger' ) ),
                             'default_value'      => 0,
                         ),
                     );
@@ -400,7 +400,7 @@
 
                         $get_available_actions = get_option( 'al_available_log_actions' );
                         if ( false == $get_available_actions ) {
-                            $this->al_store_default_values();
+                            $this->al_set_default_values();
                             $get_available_actions = get_option( 'al_available_log_actions' );
                         }
                         foreach( $get_available_actions as $action ) {
@@ -636,7 +636,7 @@
              */
             public function al_log_user_create( $user_id ) {
                 if ( class_exists( 'ActionLogger' ) && false != get_option( 'al_wp_user_create' ) ) {
-                    $this->al_log_user_action( 'user_registered', 'Action Logger', sprintf( __( 'New user registered: "<a href="%s">' . get_userdata( $user_id )->display_name . '</a>".', 'sexdates' ), get_author_posts_url( $user_id ) ) );
+                    $this->al_log_user_action( 'user_registered', 'Action Logger', sprintf( esc_html( __( 'New user registered: "<a href="%s">%s</a>".', 'sexdates' ) ), get_author_posts_url( $user_id ), get_userdata( $user_id )->display_name ) );
                 }
             }
 
@@ -650,7 +650,7 @@
                 // don't log when a a user edits his own profile
                 if ( $user_id != get_current_user_id() ) {
                     if ( class_exists( 'ActionLogger' ) && false != get_option( 'al_wp_user_change' ) ) {
-                        $this->al_log_user_action( 'user_changed', 'Action Logger', get_userdata( get_current_user_id() )->first_name . ' ' . esc_html( __( 'changed the user of', 'action-logger' ) ) . ' ' . get_userdata( $user_id )->first_name . ' ' . get_userdata( $user_id )->last_name . '.' );
+                        $this->al_log_user_action( 'user_changed', 'Action Logger', sprintf( esc_html( __( '%s changed the user of %s.', 'action-logger' ) ), get_userdata( get_current_user_id() )->first_name, get_userdata( $user_id )->display_name ) );
                     }
                 }
             }
@@ -662,7 +662,7 @@
 	         */
 	        public function al_log_user_delete( $user_id ) {
 		        if ( class_exists( 'ActionLogger' ) && false != get_option( 'al_wp_user_delete' ) ) {
-			        $this->al_log_user_action( 'user_deleted', 'Action Logger', get_userdata( get_current_user_id() )->first_name . ' ' . esc_html( __( 'deleted the user of', 'action-logger' ) ) . ' ' . get_userdata( $user_id )->first_name . ' ' . get_userdata( $user_id )->last_name . '.' );
+			        $this->al_log_user_action( 'user_deleted', 'Action Logger', sprintf( esc_html( __( '%s deleted the user of %s.', 'action-logger' ) ), get_userdata( get_current_user_id() )->first_name, get_userdata( $user_id )->display_name ) );
 		        }
 	        }
 
@@ -678,7 +678,7 @@
 			        $user_name = get_userdata( get_current_user_id() )->display_name;
 		        }
 		        if ( class_exists( 'CSV_Importer' ) && false != get_option( 'al_csvi_file_upload' ) ) {
-			        $this->al_log_user_action( 'csv_upload', 'Action Logger', $user_name . ' ' . esc_html( __( 'successfully uploaded the file: ', 'action-logger' ) ) . '"' . $_FILES[ 'csv_upload' ][ 'name' ] . '".' );
+			        $this->al_log_user_action( 'csv_upload', 'Action Logger', sprintf( esc_html( __( '%s successfully uploaded the file: "%s".', 'action-logger' ) ), $user_name, $_FILES[ 'csv_upload' ][ 'name' ] ) );
 		        }
 	        }
 
@@ -692,7 +692,7 @@
 			        $user_name = get_userdata( get_current_user_id() )->display_name;
 		        }
 		        if ( class_exists( 'CSV_Importer' ) && false != get_option( 'al_csvi_file_validate' ) ) {
-			        $this->al_log_user_action( 'csv_validate', 'Action Logger', $user_name . ' ' . esc_html( __( 'successfully validated the file: ', 'action-logger' ) ) . '"' . $_FILES[ 'csv_upload' ][ 'name' ] . '".' );
+			        $this->al_log_user_action( 'csv_validate', 'Action Logger', sprintf( esc_html( __( '%s successfully validated the file: "%s".', 'action-logger' ) ), $user_name, $_FILES[ 'csv_upload' ][ 'name' ] ) );
 		        }
 	        }
 
@@ -706,7 +706,7 @@
 			        $user_name = get_userdata( get_current_user_id() )->display_name;
 		        }
 		        if ( class_exists( 'CSV_Importer' ) && false != get_option( 'al_csvi_file_import' ) ) {
-			        $this->al_log_user_action( 'csv_imported', 'Action Logger', $user_name . ' successfully imported ' . $line_number . ' lines from file' );
+			        $this->al_log_user_action( 'csv_imported', 'Action Logger', sprintf( esc_html( __( '%s successfully imported %d lines from file.', 'action-logger' ) ), $user_name, $line_number ) );
 		        }
 	        }
 
@@ -722,7 +722,7 @@
              */
             public function al_log_registration_delete( $result, $booking_ids ) {
                 if ( false != get_option( 'al_em_booking_delete' ) ) {
-                    $this->al_log_user_action( 'registration_deleted', 'Action Logger', get_userdata( get_current_user_id() )->first_name . ' ' . esc_html( __( 'deleted bookings for an event.', 'action-logger' ) ) );
+                    $this->al_log_user_action( 'registration_deleted', 'Action Logger', sprintf( esc_html( __( '%s deleted bookings for an event.', 'action-logger' ) ), get_userdata( get_current_user_id() )->first_name ) );
                 }
             }
 
