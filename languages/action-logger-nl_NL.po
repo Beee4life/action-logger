@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Action Logger 1.0\n"
-"POT-Creation-Date: 2017-09-18 16:49+0200\n"
-"PO-Revision-Date: 2017-09-18 17:15+0200\n"
+"POT-Creation-Date: 2017-09-18 17:28+0200\n"
+"PO-Revision-Date: 2017-09-18 17:30+0200\n"
 "Last-Translator: Beee\n"
 "Language-Team: \n"
 "Language: nl_NL\n"
@@ -41,148 +41,172 @@ msgstr "Verwijder gebruiker"
 msgid "Logs when a user is deleted in WordPress."
 msgstr "Logt wanneer een gebruiker verwijderd wordt in WordPress."
 
-#: action-logger.php:232
+#: action-logger.php:229
 msgid "User visit (visitor)"
 msgstr "Gebruikersbezoek (bezoeker)"
 
-#: action-logger.php:233
+#: action-logger.php:230
 msgid ""
 "Logs when a registered user visits a post/page with the shortcode on it."
 msgstr ""
 "Logt wanneer een geregistreerde gebruiker een post/pagina bezoekt met de "
 "shortcode."
 
-#: action-logger.php:239
+#: action-logger.php:236
 msgid "User visit (registered)"
 msgstr "Gebruikersbezoek (geregistreerd)"
 
-#: action-logger.php:240
+#: action-logger.php:237
 msgid "Logs when a visitor visits a post/page with the shortcode on it."
 msgstr "Logt wanneer een bezoeker een post/pagina bezoekt met de shortcode."
 
-#: action-logger.php:252
+#: action-logger.php:243
+msgid "Post published"
+msgstr "Post gepubliceerd"
+
+#: action-logger.php:244
+msgid "Logs when a post is published."
+msgstr "Logt wanneer een post is gepubliceerd."
+
+#: action-logger.php:250
+msgid "Post changed"
+msgstr "Post gewijzigd"
+
+#: action-logger.php:251
+msgid "Logs when a post is changed."
+msgstr "Logt wanneer een post gewijzigd is."
+
+#: action-logger.php:257
+msgid "Post deleted"
+msgstr "Post verwijderd"
+
+#: action-logger.php:258
+msgid "Logs when a post is deleted."
+msgstr "Logt wanneer een post is verwijderd."
+
+#: action-logger.php:268
 msgid "Booking approved"
 msgstr "Boeking goedgekeurd"
 
-#: action-logger.php:253
+#: action-logger.php:269
 msgid "Logs when a booking is approved."
 msgstr "Logt wanneer een boeking is goedgekeurd/bevestigd."
 
-#: action-logger.php:259
+#: action-logger.php:275
 msgid "Booking canceled"
 msgstr "Boeking geannuleerd"
 
-#: action-logger.php:260
+#: action-logger.php:276
 msgid "Logs when a booking is canceled."
 msgstr "Logt wanneer een boeking geannuleerd is."
 
-#: action-logger.php:266
+#: action-logger.php:282
 msgid "Booking rejected"
 msgstr "Boeking geweigerd"
 
-#: action-logger.php:267
+#: action-logger.php:283
 msgid "Logs when a booking is rejected."
 msgstr "Logt wanneer een boeking geweigerd wordt."
 
-#: action-logger.php:273
+#: action-logger.php:289
 msgid "Booking deleted"
 msgstr "Boeking verwijderd"
 
-#: action-logger.php:274
+#: action-logger.php:290
 msgid "Logs when a booking is deleted."
 msgstr "Logt wanneer een boeking is verwijderd."
 
-#: action-logger.php:286
+#: action-logger.php:302
 msgid "Logs when a csv file is uploaded."
 msgstr "Logt wanneer een CSV bestand is ge-upload."
 
-#: action-logger.php:298
+#: action-logger.php:314
 msgid "Logs when a csv file is uploaded"
 msgstr "Logt wanneer een CSV bestand is ge-upload"
 
-#: action-logger.php:361
+#: action-logger.php:377
 msgid "Warning"
 msgstr "Waarschuwing"
 
-#: action-logger.php:367
+#: action-logger.php:383
 msgid "Error"
 msgstr "Fout"
 
-#: action-logger.php:379
+#: action-logger.php:395
 msgid "Dismiss this notice"
 msgstr "Sluit deze melding"
 
-#: action-logger.php:396 action-logger.php:423 action-logger.php:442
-#: action-logger.php:499 action-logger.php:534
+#: action-logger.php:412 action-logger.php:439 action-logger.php:458
+#: action-logger.php:515 action-logger.php:550
 msgid "Something went wrong. Please try again."
 msgstr "Er is iets verkeerd gegaan. Probeer opnieuw."
 
-#: action-logger.php:414
+#: action-logger.php:430
 msgid "Settings saved."
 msgstr "Instellingen opgeslagen."
 
-#: action-logger.php:514
+#: action-logger.php:530
 msgid "All selected items are successfully deleted from the database."
 msgstr "Alle geselecteerde items zijn succesvol verwijderd uit de database."
 
-#: action-logger.php:519
+#: action-logger.php:535
 msgid "You didn't select any lines. If you did, then something went wrong."
 msgstr ""
 "Je hebt geen items geselecteerd. Als je dat wel gedaan hebt is er iets "
 "verkeerd gegaan."
 
-#: action-logger.php:543
+#: action-logger.php:559
 msgid "All logs deleted."
 msgstr "Alle logs verwijderd."
 
-#: action-logger.php:623 al-dashboard.php:40
+#: action-logger.php:639 al-dashboard.php:40
 msgid "Logs"
 msgstr "Logs"
 
-#: action-logger.php:623
+#: action-logger.php:639
 msgid "Settings"
 msgstr "Instellingen"
 
-#: action-logger.php:623
+#: action-logger.php:639
 msgid "Misc"
 msgstr "Misc"
 
-#: action-logger.php:639
+#: action-logger.php:655
 #, php-format
 msgid "New user registered: \"<a href=\"%s\">%s</a>\"."
 msgstr "Nieuwe gebruiker geregistreerd: “<a href=“%s”>%s</a>”."
 
-#: action-logger.php:653
+#: action-logger.php:669
 #, php-format
 msgid "%s changed the user of %s."
 msgstr "%s heeft de user info gewijzigd van %s."
 
-#: action-logger.php:665
+#: action-logger.php:681
 #, php-format
 msgid "%s deleted the user of %s."
 msgstr "%s heeft de gebruiker verwijderd van %s."
 
-#: action-logger.php:681
+#: action-logger.php:697
 #, php-format
 msgid "%s successfully uploaded the file: \"%s\"."
 msgstr "%s heeft succesvol het bestand “%s” ge-upload."
 
-#: action-logger.php:695
+#: action-logger.php:711
 #, php-format
 msgid "%s successfully validated the file: \"%s\"."
 msgstr "%s heeft succesvol het bestand “%s” gevalideerd."
 
-#: action-logger.php:709
+#: action-logger.php:725
 #, php-format
 msgid "%s successfully imported %d lines from file."
 msgstr "%s heeft succesvol %d regels geïmporteerd vanuit een bestand."
 
-#: action-logger.php:725
+#: action-logger.php:741
 #, php-format
 msgid "%s deleted bookings for an event."
 msgstr "%s heeft boekingen verwijderd van een event."
 
-#: action-logger.php:769
+#: action-logger.php:785
 msgid "the booking with booking ID:"
 msgstr "de boeking met boeking ID:"
 
