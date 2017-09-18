@@ -63,7 +63,10 @@
                 // WP Core actions
                 add_action( 'user_register ',               array( $this, 'al_log_user_create' ), 10, 1 );
                 add_action( 'profile_update',               array( $this, 'al_log_user_change' ), 10, 2 );
-                add_action( 'delete_user',                  array( $this, 'al_log_user_delete' ), 10, 1 );
+	            add_action( 'delete_user',                  array( $this, 'al_log_user_delete' ), 10, 1 );
+	            add_action( 'publish_post',                 array( $this, 'al_log_post_publish' ), 10, 1 );
+	            add_action( 'change_post',                  array( $this, 'al_log_post_change' ), 10, 1 );
+	            add_action( 'deleted_post',                 array( $this, 'al_log_post_delete' ), 10, 1 );
 
 	            // CSV Importer actions
 	            add_action( 'csvi_successful_csv_upload',   array( $this, 'al_csvi_file_upload' ) );
@@ -199,9 +202,9 @@
             public function al_set_default_values() {
 
                 $available_options = get_option( 'al_available_log_actions' );
-                $available_options = false;
+                // $available_options = false;
                 if ( false == $available_options ) {
-                    $available_options = array(
+                    $wp_options = array(
                         array(
                             'action_name'        => 'wp_user_create',
                             'action_generator'   => 'WordPress',
@@ -223,9 +226,6 @@
                             'action_description' => esc_html( __( 'Logs when a user is deleted in WordPress.', 'action-logger' ) ),
                             'default_value'      => 1,
                         ),
-                    );
-
-                    $user_options      = array(
                         array(
                             'action_name'        => 'user_visit_visitor',
                             'action_generator'   => 'WordPress',
@@ -233,16 +233,35 @@
                             'action_description' => esc_html( __( 'Logs when a registered user visits a post/page with the shortcode on it.', 'action-logger' ) ),
                             'default_value'      => 1,
                         ),
-                        array(
-                            'action_name'        => 'user_visit_registered',
-                            'action_generator'   => 'WordPress',
-                            'action_title'       => esc_html( __( 'User visit (registered)', 'action-logger' ) ),
-                            'action_description' => esc_html( __( 'Logs when a visitor visits a post/page with the shortcode on it.', 'action-logger' ) ),
-                            'default_value'      => 1,
-                        ),
+	                    array(
+		                    'action_name'        => 'user_visit_registered',
+		                    'action_generator'   => 'WordPress',
+		                    'action_title'       => esc_html( __( 'User visit (registered)', 'action-logger' ) ),
+		                    'action_description' => esc_html( __( 'Logs when a visitor visits a post/page with the shortcode on it.', 'action-logger' ) ),
+		                    'default_value'      => 1,
+	                    ),
+	                    array(
+		                    'action_name'        => 'post_published',
+		                    'action_generator'   => 'WordPress',
+		                    'action_title'       => esc_html( __( 'Post published', 'action-logger' ) ),
+		                    'action_description' => esc_html( __( 'Logs when a post is published.', 'action-logger' ) ),
+		                    'default_value'      => 1,
+	                    ),
+	                    array(
+		                    'action_name'        => 'post_changed',
+		                    'action_generator'   => 'WordPress',
+		                    'action_title'       => esc_html( __( 'Post changed', 'action-logger' ) ),
+		                    'action_description' => esc_html( __( 'Logs when a post is changed.', 'action-logger' ) ),
+		                    'default_value'      => 1,
+	                    ),
+	                    array(
+		                    'action_name'        => 'post_deleted',
+		                    'action_generator'   => 'WordPress',
+		                    'action_title'       => esc_html( __( 'Post deleted', 'action-logger' ) ),
+		                    'action_description' => esc_html( __( 'Logs when a post is deleted.', 'action-logger' ) ),
+		                    'default_value'      => 1,
+	                    ),
                     );
-
-                    $available_options = array_merge( $available_options, $user_options );
 
                     // add option for events manager
                     $em_options        = array(
@@ -275,7 +294,7 @@
                             'default_value'      => 0,
                         ),
                     );
-                    $available_options = array_merge( $available_options, $em_options );
+                    $all_options = array_merge( $wp_options, $em_options );
 
                     // csvi options
                     $csvi_options      = array(
@@ -287,7 +306,7 @@
                             'default_value'      => 0,
                         ),
                     );
-                    $available_options = array_merge( $available_options, $csvi_options );
+                    $all_options = array_merge( $all_options, $csvi_options );
 
                     // add option for IDF rankings importer
                     $ri_options      = array(
@@ -299,12 +318,12 @@
                             'default_value'      => 0,
                         ),
                     );
-                    $available_options = array_merge( $available_options, $ri_options );
+                    $all_options = array_merge( $all_options, $ri_options );
 
-                    foreach ( $available_options as $option ) {
+                    foreach ( $all_options as $option ) {
                         update_option( 'al_' . $option[ 'action_name' ], $option[ 'default_value' ] );
                     }
-                    update_option( 'al_available_log_actions', $available_options );
+                    update_option( 'al_available_log_actions', $all_options );
                     update_option( 'al_log_user_role', 'manage_options' );
                 }
             }
@@ -657,7 +676,7 @@
 
 	        /**
 	         * Log user delete
-             *
+	         *
 	         * @param $user_id
 	         */
 	        public function al_log_user_delete( $user_id ) {
@@ -667,46 +686,35 @@
 	        }
 
 	        /**
-	         * Log successful file upload from CSV Importer
-	         * Log file upload from CSV Importer
-             *
+	         * Log post publish
+	         *
 	         * @param $user_id
 	         */
-	        public function al_csvi_file_upload() {
-		        $user_name = get_userdata( get_current_user_id() )->first_name;
-		        if ( false == $user_name ) {
-			        $user_name = get_userdata( get_current_user_id() )->display_name;
-		        }
-		        if ( class_exists( 'CSV_Importer' ) && false != get_option( 'al_csvi_file_upload' ) ) {
-			        $this->al_log_user_action( 'csv_upload', 'Action Logger', sprintf( esc_html( __( '%s successfully uploaded the file: "%s".', 'action-logger' ) ), $user_name, $_FILES[ 'csv_upload' ][ 'name' ] ) );
+	        public function al_log_post_publish( $user_id ) {
+		        if ( class_exists( 'ActionLogger' ) && false != get_option( 'al_post_published' ) ) {
+			        $this->al_log_user_action( 'post_published', 'Action Logger', sprintf( esc_html( __( '%s published a post.', 'action-logger' ) ), get_userdata( get_current_user_id() )->first_name ) );
 		        }
 	        }
 
 	        /**
-	         * Log successful csv validate from CSV Importer
+	         * Log post change
+	         *
 	         * @param $user_id
 	         */
-	        public function al_csvi_file_validate() {
-		        $user_name = get_userdata( get_current_user_id() )->first_name;
-		        if ( false == $user_name ) {
-			        $user_name = get_userdata( get_current_user_id() )->display_name;
-		        }
-		        if ( class_exists( 'CSV_Importer' ) && false != get_option( 'al_csvi_file_validate' ) ) {
-			        $this->al_log_user_action( 'csv_validate', 'Action Logger', sprintf( esc_html( __( '%s successfully validated the file: "%s".', 'action-logger' ) ), $user_name, $_FILES[ 'csv_upload' ][ 'name' ] ) );
+	        public function al_log_post_change( $user_id ) {
+		        if ( class_exists( 'ActionLogger' ) && false != get_option( 'al_post_changed' ) ) {
+			        $this->al_log_user_action( 'post_changed', 'Action Logger', sprintf( esc_html( __( '%s changed a post.', 'action-logger' ) ), get_userdata( get_current_user_id() )->first_name ) );
 		        }
 	        }
 
 	        /**
-	         * Log successful csv import from CSV Importer
+	         * Log post delete
+	         *
 	         * @param $user_id
 	         */
-	        public function al_csvi_file_import() {
-		        $user_name = get_userdata( get_current_user_id() )->first_name;
-		        if ( false == $user_name ) {
-			        $user_name = get_userdata( get_current_user_id() )->display_name;
-		        }
-		        if ( class_exists( 'CSV_Importer' ) && false != get_option( 'al_csvi_file_import' ) ) {
-			        $this->al_log_user_action( 'csv_imported', 'Action Logger', sprintf( esc_html( __( '%s successfully imported %d lines from file.', 'action-logger' ) ), $user_name, $line_number ) );
+	        public function al_log_post_delete( $user_id ) {
+		        if ( class_exists( 'ActionLogger' ) && false != get_option( 'al_post_deleted' ) ) {
+			        $this->al_log_user_action( 'post_deleted', 'Action Logger', sprintf( esc_html( __( '%s deleted a post.', 'action-logger' ) ), get_userdata( get_current_user_id() )->first_name ) );
 		        }
 	        }
 
@@ -770,6 +778,50 @@
                 }
 
             }
+
+	        /**
+	         * Log successful file upload from CSV Importer
+	         * Log file upload from CSV Importer
+	         *
+	         * @param $user_id
+	         */
+	        public function al_csvi_file_upload() {
+		        $user_name = get_userdata( get_current_user_id() )->first_name;
+		        if ( false == $user_name ) {
+			        $user_name = get_userdata( get_current_user_id() )->display_name;
+		        }
+		        if ( class_exists( 'CSV_Importer' ) && false != get_option( 'al_csvi_file_upload' ) ) {
+			        $this->al_log_user_action( 'csv_upload', 'Action Logger', sprintf( esc_html( __( '%s successfully uploaded the file: "%s".', 'action-logger' ) ), $user_name, $_FILES[ 'csv_upload' ][ 'name' ] ) );
+		        }
+	        }
+
+	        /**
+	         * Log successful csv validate from CSV Importer
+	         * @param $user_id
+	         */
+	        public function al_csvi_file_validate() {
+		        $user_name = get_userdata( get_current_user_id() )->first_name;
+		        if ( false == $user_name ) {
+			        $user_name = get_userdata( get_current_user_id() )->display_name;
+		        }
+		        if ( class_exists( 'CSV_Importer' ) && false != get_option( 'al_csvi_file_validate' ) ) {
+			        $this->al_log_user_action( 'csv_validate', 'Action Logger', sprintf( esc_html( __( '%s successfully validated the file: "%s".', 'action-logger' ) ), $user_name, $_FILES[ 'csv_upload' ][ 'name' ] ) );
+		        }
+	        }
+
+	        /**
+	         * Log successful csv import from CSV Importer
+	         * @param $user_id
+	         */
+	        public function al_csvi_file_import() {
+		        $user_name = get_userdata( get_current_user_id() )->first_name;
+		        if ( false == $user_name ) {
+			        $user_name = get_userdata( get_current_user_id() )->display_name;
+		        }
+		        if ( class_exists( 'CSV_Importer' ) && false != get_option( 'al_csvi_file_import' ) ) {
+			        $this->al_log_user_action( 'csv_imported', 'Action Logger', sprintf( esc_html( __( '%s successfully imported %d lines from file.', 'action-logger' ) ), $user_name, $line_number ) );
+		        }
+	        }
 
         }
 
