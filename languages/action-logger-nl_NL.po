@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Action Logger 1.0\n"
-"POT-Creation-Date: 2017-09-18 15:55+0200\n"
-"PO-Revision-Date: 2017-09-18 15:56+0200\n"
+"POT-Creation-Date: 2017-09-18 16:06+0200\n"
+"PO-Revision-Date: 2017-09-18 16:07+0200\n"
 "Last-Translator: Beee\n"
 "Language-Team: \n"
 "Language: nl_NL\n"
@@ -113,22 +113,24 @@ msgid "New user registered: \"<a href=\"%s\">%s</a>\"."
 msgstr "Nieuwe gebruiker geregistreerd: “<a href=“%s”>%s</a>”."
 
 #: action-logger.php:653
-msgid "changed the user of"
-msgstr "heeft de user info gewijzigd van"
+#, php-format
+msgid "%s changed the user of %s."
+msgstr "%s heeft de user info gewijzigd van %s."
 
 #: action-logger.php:665
-msgid "deleted the user of"
-msgstr "heeft de gebruiker verwijderd van"
+#, php-format
+msgid "%s deleted the user of %s."
+msgstr "%s heeft de gebruiker verwijderd van %s."
 
 #: action-logger.php:681
 #, php-format
-msgid "successfully uploaded the file: \"%s\"."
-msgstr "heeft succesvol het bestand “%s” ge-upload."
+msgid "%s successfully uploaded the file: \"%s\"."
+msgstr "%s heeft succesvol het bestand “%s” ge-upload."
 
 #: action-logger.php:695
 #, php-format
-msgid "successfully validated the file: \"%s\"."
-msgstr "heeft succesvol het bestand “%s” gevalideerd."
+msgid "%s successfully validated the file: \"%s\"."
+msgstr "%s heeft succesvol het bestand “%s” gevalideerd."
 
 #: action-logger.php:709
 #, php-format
@@ -136,8 +138,9 @@ msgid "%s successfully imported %d lines from file."
 msgstr "%s heeft succesvol %d regels geïmporteerd vanuit een bestand."
 
 #: action-logger.php:725
-msgid "deleted bookings for an event."
-msgstr "heeft boekings verwijderd van een event."
+#, php-format
+msgid "%s deleted bookings for an event."
+msgstr "%s heeft boekingen verwijderd van een event."
 
 #: action-logger.php:769
 msgid "the booking with booking ID:"
@@ -275,6 +278,10 @@ msgid ""
 msgstr ""
 "De reden waarom het per ‘recht’ is ingesteld ipv per gebruiker is omdat twee "
 "gebruikers met dezelfde rol, verschillende rechten kunnen hebben."
+
+#: al-settings.php:112
+msgid "Save settings"
+msgstr "Instellingen opslaan"
 
 #~ msgid ""
 #~ "Here you can export the data to csv and set some values for this plugin."
