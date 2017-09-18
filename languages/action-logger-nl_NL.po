@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Action Logger 1.0\n"
-"POT-Creation-Date: 2017-09-18 16:28+0200\n"
-"PO-Revision-Date: 2017-09-18 16:29+0200\n"
+"POT-Creation-Date: 2017-09-18 16:49+0200\n"
+"PO-Revision-Date: 2017-09-18 17:15+0200\n"
 "Last-Translator: Beee\n"
 "Language-Team: \n"
 "Language: nl_NL\n"
@@ -252,8 +252,12 @@ msgid ""
 "By clicking this button you will trigger a download for a CSV (comma "
 "separated value) file."
 msgstr ""
-"Door op deze button te klikken, trigger je een download voor een CSV (coma "
-"separate value) document."
+"Door op deze button te klikken, trigger je een download voor een CSV (komma "
+"gescheiden waarden) document."
+
+#: al-misc.php:31
+msgid "Export to CSV"
+msgstr "Exporteer naar CSV"
 
 #: al-misc.php:34
 msgid "Preserve data when uninstalling"
@@ -289,6 +293,11 @@ msgstr "Vind meer info over de plugin op"
 #: al-misc.php:49
 msgid "About the author"
 msgstr "Over de auteur"
+
+#: al-misc.php:50
+#, php-format
+msgid "This plugin is created by %s, a Wordpress developer from Amsterdam."
+msgstr "Deze plugin is gebouwd door %s, een Wordpress developer uit Amsterdam."
 
 #: al-settings.php:26
 msgid "Select what to log"
