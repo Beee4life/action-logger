@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Action Logger 1.0\n"
-"POT-Creation-Date: 2017-09-10 05:44+0200\n"
-"PO-Revision-Date: 2017-09-10 05:44+0200\n"
+"POT-Creation-Date: 2017-09-18 15:55+0200\n"
+"PO-Revision-Date: 2017-09-18 15:56+0200\n"
 "Last-Translator: Beee\n"
 "Language-Team: \n"
 "Language: nl_NL\n"
@@ -15,95 +15,139 @@ msgstr ""
 "X-Poedit-KeywordsList: __;_x;_e;esc_attr_e;esc_html_e\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: action-logger.php:197
+#: action-logger.php:209
 msgid "Logs when a new user is created in WordPress."
-msgstr ""
+msgstr "Logt wanneer een nieuwe gebruiker wordt aangemaakt in WordPress."
 
-#: action-logger.php:203
+#: action-logger.php:216
 msgid "Logs when a user is changed (by another user) in WordPress."
 msgstr ""
+"Logt wanneer een gebruiker is gewijzigd (door een andere gebruiker) in "
+"WordPress."
 
-#: action-logger.php:209
+#: action-logger.php:223
 msgid "Logs when a user is deleted in WordPress"
-msgstr ""
+msgstr "Logt wanneer een gebruiker verwijderd wordt in WordPress."
 
-#: action-logger.php:217
+#: action-logger.php:233
 msgid ""
 "Logs when a registered user visits a post/page with the shortcode on it."
 msgstr ""
+"Logt wanneer een geregistreerde gebruiker een post/pagina bezoekt met de "
+"shortcode."
 
-#: action-logger.php:223
+#: action-logger.php:240
 msgid "Logs when a visitor visits a post/page with the shortcode on it."
-msgstr ""
+msgstr "Logt wanneer een bezoeker een post/pagina bezoekt met de shortcode."
 
-#: action-logger.php:233
-msgid "Logs when a booking is deleted"
-msgstr ""
+#: action-logger.php:253
+msgid "Logs when a booking is approved."
+msgstr "Logt wanneer een boeking is goedgekeurd/bevestigd."
 
-#: action-logger.php:239
-msgid "Logs when a booking is canceled or rejected"
-msgstr ""
+#: action-logger.php:260
+msgid "Logs when a booking is canceled."
+msgstr "Logt wanneer een boeking geannuleerd is."
 
-#: action-logger.php:291
+#: action-logger.php:267
+msgid "Logs when a booking is rejected."
+msgstr "Logt wanneer een boeking geweigerd wordt."
+
+#: action-logger.php:274
+msgid "Logs when a booking is deleted."
+msgstr "Logt wanneer een boeking is verwijderd."
+
+#: action-logger.php:286 action-logger.php:298
+msgid "Logs when a csv file is uploaded"
+msgstr "Logt wanneer een CSV bestand is ge-upload."
+
+#: action-logger.php:361
 msgid "Warning"
 msgstr "Waarschuwing"
 
-#: action-logger.php:297
+#: action-logger.php:367
 msgid "Error"
 msgstr "Fout"
 
-#: action-logger.php:309
+#: action-logger.php:379
 msgid "Dismiss this notice"
 msgstr "Sluit deze melding"
 
-#: action-logger.php:322 action-logger.php:345 action-logger.php:364
-#: action-logger.php:421 action-logger.php:456
+#: action-logger.php:396 action-logger.php:423 action-logger.php:442
+#: action-logger.php:499 action-logger.php:534
 msgid "Something went wrong. Please try again."
 msgstr "Er is iets verkeerd gegaan. Probeer opnieuw."
 
-#: action-logger.php:339
+#: action-logger.php:414
 msgid "Settings saved."
 msgstr "Instellingen opgeslagen."
 
-#: action-logger.php:436
+#: action-logger.php:514
 msgid "All selected items are successfully deleted from the database."
 msgstr "Alle geselecteerde items zijn succesvol verwijderd uit de database."
 
-#: action-logger.php:441
+#: action-logger.php:519
 msgid "You didn't select any lines. If you did, then something went wrong."
 msgstr ""
 "Je hebt geen items geselecteerd. Als je dat wel gedaan hebt is er iets "
 "verkeerd gegaan."
 
-#: action-logger.php:465
+#: action-logger.php:543
 msgid "All logs deleted."
 msgstr "Alle logs verwijderd."
 
-#: action-logger.php:558 al-dashboard.php:40
+#: action-logger.php:623 al-dashboard.php:40
 msgid "Logs"
 msgstr "Logs"
 
-#: action-logger.php:558
+#: action-logger.php:623
 msgid "Settings"
 msgstr "Instellingen"
 
-#: action-logger.php:588
+#: action-logger.php:623
+msgid "Misc"
+msgstr "Misc"
+
+#: action-logger.php:639
+#, php-format
+msgid "New user registered: \"<a href=\"%s\">%s</a>\"."
+msgstr "Nieuwe gebruiker geregistreerd: “<a href=“%s”>%s</a>”."
+
+#: action-logger.php:653
 msgid "changed the user of"
 msgstr "heeft de user info gewijzigd van"
 
-#: action-logger.php:599
+#: action-logger.php:665
 msgid "deleted the user of"
 msgstr "heeft de gebruiker verwijderd van"
 
-#: action-logger.php:615
+#: action-logger.php:681
+#, php-format
+msgid "successfully uploaded the file: \"%s\"."
+msgstr "heeft succesvol het bestand “%s” ge-upload."
+
+#: action-logger.php:695
+#, php-format
+msgid "successfully validated the file: \"%s\"."
+msgstr "heeft succesvol het bestand “%s” gevalideerd."
+
+#: action-logger.php:709
+#, php-format
+msgid "%s successfully imported %d lines from file."
+msgstr "%s heeft succesvol %d regels geïmporteerd vanuit een bestand."
+
+#: action-logger.php:725
 msgid "deleted bookings for an event."
 msgstr "heeft boekings verwijderd van een event."
 
-#: action-logger.php:644
+#: action-logger.php:769
 msgid "the booking with booking ID:"
 msgstr "de boeking met boeking ID:"
 
-#: al-dashboard.php:34
+#: al-dashboard.php:9 al-misc.php:9 al-settings.php:9
+msgid "Sorry, you do not have sufficient permissions to access this page."
+msgstr "Sorry, je hebt niet genoeg rechten om deze pagina te bekijken."
+
+#: al-dashboard.php:36
 msgid "No logs (yet)..."
 msgstr "Nog geen logs…"
 
@@ -135,38 +179,28 @@ msgstr "Gegenereerd door"
 msgid "Description"
 msgstr "Beschrijving"
 
-#: al-dashboard.php:54 al-dashboard.php:72
+#: al-dashboard.php:54 al-dashboard.php:70
 msgid "Delete"
 msgstr "Verwijderen"
 
-#: al-dashboard.php:85
+#: al-dashboard.php:80
 msgid "Delete selected items"
 msgstr "Verwijder geselecteerde items"
 
-#: al-settings.php:28
-msgid ""
-"Here you can export the data to csv and set some values for this plugin."
+#: al-dashboard.php:85
+msgid "Nuke 'em all"
+msgstr "Alles verwijderen"
+
+#: al-dashboard.php:86
+msgid "Delete all items. Watch out, there's no confirmation. Delete = delete !"
 msgstr ""
-"Hier kun je de data naar een csv exporteren en diverse dingen instellen voor "
-"deze plugin."
+"Verwijder alle items. Kijk uit, er is geen bevestiging. Delete = delete !"
 
-#: al-settings.php:29
-msgid "Select what to log"
-msgstr "Selecteer wat te loggen"
-
-#: al-settings.php:30
-msgid "Here you can select which actions you want to log/ignore."
-msgstr "Hier kun je selecteren welke acties je wilt loggen/negeren."
-
-#: al-settings.php:69
-msgid "Active"
-msgstr "Actief"
-
-#: al-settings.php:82
+#: al-misc.php:26
 msgid "Export data to CSV"
 msgstr "Exporteer data naar CSV"
 
-#: al-settings.php:83
+#: al-misc.php:27
 msgid ""
 "By clicking this button you will trigger a download for a CSV (comma "
 "separated value) file."
@@ -174,26 +208,76 @@ msgstr ""
 "Door op deze button te klikken, trigger je een download voor een CSV (coma "
 "separate value) document."
 
-#: al-settings.php:90
+#: al-misc.php:34
 msgid "Preserve data when uninstalling"
 msgstr "Bewaar data bij plugin verwijdering"
 
-#: al-settings.php:95
+#: al-misc.php:39
 msgid ""
 "If you uninstall the plugin, all data is removed as well. If you check this "
-"box, your data won't be deleted upon uninstall."
+"box, your logs won't be deleted upon uninstall."
 msgstr ""
 "Als je de plugin verwijderd wordt alle data ook verwijderd. Als je deze "
 "optie aanvinkt, wordt je data bewaard als de plugin verwijderd wordt."
 
-#: al-settings.php:101
-msgid "Nuke 'em all"
-msgstr "Alles verwijderen"
+#: al-misc.php:45
+msgid "Support"
+msgstr "Help"
 
-#: al-settings.php:102
-msgid "Delete all items. Watch out, there's no confirmation. Delete = delete !"
+#: al-misc.php:46
+#, php-format
+msgid ""
+"If you know about this plugin, you probably know me and know where to reach "
+"me. If not, please report it on GitHub in the <a href=\"%s\">issues section</"
+"a>."
 msgstr ""
-"Verwijder alle items. Kijk uit, er is geen bevestiging. Delete = delete !"
+"Als je van deze plugin weet, dan ken je mij waarschijnlijk en weet je waar "
+"ik te bereiken ben. Zo niet, dan report het issue aub op GitHub in de <a "
+"href=“%s”>issues sectie</a>."
 
-#~ msgid "Sorry, you do not have sufficient permissions to access this page."
-#~ msgstr "Sorry, je hebt niet genoeg rechten om deze pagina te bekijken."
+#: al-misc.php:47
+msgid "Find more info about the plugin on"
+msgstr "Vind meer info over de plugin op"
+
+#: al-misc.php:49
+msgid "About the author"
+msgstr "Over de auteur"
+
+#: al-settings.php:26
+msgid "Select what to log"
+msgstr "Selecteer wat te loggen"
+
+#: al-settings.php:27
+msgid "Here you can select which actions you want to log/ignore."
+msgstr "Hier kun je selecteren welke acties je wilt loggen/negeren."
+
+#: al-settings.php:83
+msgid "Active"
+msgstr "Actief"
+
+#: al-settings.php:93
+msgid "Who can do what"
+msgstr "Wie kan wat doen"
+
+#: al-settings.php:95
+msgid ""
+"Here you can select what capability a user needs to see the logs. The "
+"default setting is \"manage_options\" which belongs to administrator."
+msgstr ""
+"Hier kun je selecteren wat voor een ‘recht’ de gebruiker moet hebben om de "
+"logs te kunnen zien. De standaard instelling is “manage_options” welke bij "
+"administrators hoort."
+
+#: al-settings.php:96
+msgid ""
+"The reason why it's set per capability instead of per user is because two "
+"users with the same role can have different capabilities."
+msgstr ""
+"De reden waarom het per ‘recht’ is ingesteld ipv per gebruiker is omdat twee "
+"gebruikers met dezelfde rol, verschillende rechten kunnen hebben."
+
+#~ msgid ""
+#~ "Here you can export the data to csv and set some values for this plugin."
+#~ msgstr ""
+#~ "Hier kun je de data naar een csv exporteren en diverse dingen instellen "
+#~ "voor deze plugin."
