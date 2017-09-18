@@ -87,10 +87,6 @@
             // @TODO: add log rotation
             // @TODO: add IF for older php versions
 
-            // @TODO: log on publish post
-            // @TODO: log on edit post
-            // @TODO: log on delete post
-
             // @TODO: S2Member: add log for new (paid) registration
             // @TODO: S2Member: add log for demotion
             // @TODO: S2Member: add log for cancel
