@@ -62,7 +62,7 @@
                 add_action( 'admin_init',                   array( $this, 'al_check_log_table' ) );
                 add_action( 'plugins_loaded',               array( $this, 'al_load_plugin_textdomain' ) );
                 add_action( 'admin_enqueue_scripts',        array( $this, 'al_enqueue_action_logger_css' ) );
-
+    
                 // WP Core actions
                 add_action( 'user_register ',               array( $this, 'al_log_user_create' ), 10, 1 );
                 add_action( 'profile_update',               array( $this, 'al_log_user_change' ), 10, 2 );
@@ -95,7 +95,8 @@
 	            // includes
                 include( 'al-admin-menu.php' );
 	            include( 'al-functions.php' );
-	            include( 'al-logger.php' );
+                include( 'al-logger.php' );
+                // include( 'al-help-tab.php' );
 
             }
     
@@ -106,7 +107,7 @@
                     } else {
                         $user = esc_html__( 'A visitor', 'action-logger' );
                     }
-                    al_log_user_action( 'nuke_all', 'rankings-import', sprintf( esc_html__( '%s nuked all rankings.', 'action-logger' ), $user ) );
+                    al_log_user_action( 'nuke_all', 'Rankings Importer', sprintf( esc_html__( '%s nuked all rankings.', 'action-logger' ), $user ) );
                 }
             }
     
@@ -117,7 +118,7 @@
                     } else {
                         $user = esc_html__( 'A visitor', 'action-logger' );
                     }
-                    al_log_user_action( 'individual_ranking_deleted', 'rankings-import', ' deleted ' . count( $value_array ) . ' ranking lines for ' . get_userdata( $user_id )->display_name );
+                    al_log_user_action( 'individual_ranking_deleted', 'Rankings Importer', ' deleted ' . count( $value_array ) . ' ranking lines for ' . get_userdata( $user_id )->display_name );
                 }
             }
     
@@ -128,7 +129,7 @@
                     } else {
                         $user = esc_html__( 'A visitor', 'action-logger' );
                     }
-                    al_log_user_action( 'import_raw', 'rankings-import', ' uploaded ' . $count . ' lines through raw import' );
+                    al_log_user_action( 'import_raw', 'Rankings Importer', ' uploaded ' . $count . ' lines through raw import' );
                 }
             }
     
@@ -139,7 +140,7 @@
                     } else {
                         $user = esc_html__( 'A visitor', 'action-logger' );
                     }
-                    al_log_user_action( 'upload_rankings_csv', 'rankings-import', sprintf( esc_html__( '%s successfully verified %s.', 'action-logger' ), $user, $_POST[ 'file_name' ][0] ) );
+                    al_log_user_action( 'upload_rankings_csv', 'Rankings Importer', sprintf( esc_html__( '%s successfully verified %s.', 'action-logger' ), $user, $_POST[ 'file_name' ][0] ) );
                 }
             }
     
@@ -150,7 +151,7 @@
                     } else {
                         $user = esc_html__( 'A visitor', 'action-logger' );
                     }
-                    al_log_user_action( 'rankings_imported', 'rankings-import', sprintf( esc_html__( '%s successfully imported %d lines from file.', 'action-logger' ), $user, $line_number ) );
+                    al_log_user_action( 'rankings_imported', 'Rankings Importer', sprintf( esc_html__( '%s successfully imported %d lines from file.', 'action-logger' ), $user, $line_number ) );
                 }
             }
     
@@ -161,7 +162,7 @@
                     } else {
                         $user = esc_html__( 'A visitor', 'action-logger' );
                     }
-                    al_log_user_action( 'upload_rankings_csv', 'rankings-import', sprintf( esc_html__( '%s uploaded a file named %s.', 'action-logger' ), $user, $_FILES[ 'csv_upload' ][ 'name' ] ) );
+                    al_log_user_action( 'upload_rankings_csv', 'Rankings Importer', sprintf( esc_html__( '%s uploaded a file named %s.', 'action-logger' ), $user, $_FILES[ 'csv_upload' ][ 'name' ] ) );
                 }
             }
     
@@ -336,7 +337,8 @@
              * Adds a page to admin sidebar menu
              */
             public function al_add_action_logger_dashboard() {
-                add_menu_page( 'Action Logger', 'Action Logger', 'manage_options', 'action-logger', 'action_logger_dashboard', 'dashicons-editor-alignleft' );
+                global $my_plugin_hook;
+                $my_plugin_hook = add_menu_page( 'Action Logger', 'Action Logger', 'manage_options', 'action-logger', 'action_logger_dashboard', 'dashicons-editor-alignleft' );
                 include( 'al-dashboard.php' ); // content for the settings page
             }
     
