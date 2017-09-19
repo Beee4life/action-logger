@@ -63,7 +63,7 @@
                                     <td class="action"><?php echo $item->action; ?></td>
                                 <?php } ?>
                                 <td class="generator"><?php echo $item->action_generator; ?></td>
-                                <td class="description"><?php esc_html_e( $item->action_description, 'action-logger' ); ?></td>
+                                <td class="description"><?php echo $item->action_description; ?></td>
                                 <?php if ( current_user_can( 'manage_options' ) ) { ?>
                                     <td class="checkbox">
                                         <label for="rows" class="screen-reader-text">
@@ -76,20 +76,21 @@
                         <?php } ?>
                         </tbody>
                     </table>
-                <?php if ( current_user_can( 'manage_options' ) ) { ?>
-                    <input name="delete" type="submit" class="admin-button admin-button-small" value="<?php esc_html_e( 'Delete selected items', 'action-logger' ); ?>" />
-                <?php } ?>
-            </form>
+                    <?php if ( current_user_can( 'manage_options' ) ) { ?>
+                        <input name="delete_selected" type="submit" class="admin-button admin-button-small" value="<?php esc_html_e( 'Delete selected items', 'action-logger' ); ?>" />
+                    <?php } ?>
+                </form>
 
                 <br />
                 <h2><?php esc_html_e( 'Nuke \'em all', 'action-logger' ); ?></h2>
                 <p><?php esc_html_e( 'Delete all items. Watch out, there\'s no confirmation. Delete = delete !', 'action-logger' ); ?></p>
                 <form name="delete-logs" action="" method="post">
                     <input name="delete_all_logs_nonce" type="hidden" value="<?php echo wp_create_nonce( 'delete-all-logs-nonce' ); ?>" />
-                    <label for="delete-all" class="screen-reader-text"><?php esc_html_e( 'Delete', 'action-logger' ); ?></label>
-                    <input name="delete_all" id="delete-all" type="checkbox" value="1" /> &nbsp;&nbsp;
-                    <input name="delete" type="submit" class="admin-button admin-button-small" value="<?php esc_html_e( 'Delete all', 'action-logger' ); ?>" />
+                    <label for="delete-all-checkbox" class="screen-reader-text"><?php esc_html_e( 'Delete', 'action-logger' ); ?></label>
+                    <input name="delete_all_checkbox" id="delete-all-checkbox" type="checkbox" value="1" /> &nbsp;&nbsp;
+                    <input name="delete_all" type="submit" class="admin-button admin-button-small" value="<?php esc_html_e( 'Delete all', 'action-logger' ); ?>" />
                 </form>
+
             <?php } ?>
 
         </div><!-- end #action-logger -->
