@@ -73,7 +73,8 @@
 
 	            // EM actions
 	            add_action( 'em_bookings_deleted',          array( $this, 'al_log_registration_delete' ), 10, 2 );
-                add_action( 'em_booking_save',              array( $this, 'al_log_registration_cancel_reject' ), 10, 2 );
+                // add_action( 'em_booking_save',              array( $this, 'al_log_registration_change' ), 10, 2 );
+                // add_action( 'em_booking_save',              array( $this, 'test_change' ), 20, 2 );
 
                 // Shortcode
                 add_shortcode( 'actionlogger',         array( $this, 'al_register_shortcode_logger' ) );
@@ -88,7 +89,6 @@
             }
 
 	        // @TODO: add log rotation
-            // @TODO: add IF for older php versions
 
             /**
              * Function which runs upon plugin activation
@@ -148,9 +148,9 @@
                 <?php
                 $sql = ob_get_clean();
                 dbDelta( $sql );
-
+    
             }
-
+    
             /**
              * This runs on each page load, to make sure the database table exists.
              * This because the database can be deleted manually.
@@ -691,7 +691,7 @@
             }
 
             public function test_change( $EM_Event, $EM_Booking ) {
-                al_log_user_action( 'registration_changed', 'Action Logger' );
+                // empty
             }
 
             /**
