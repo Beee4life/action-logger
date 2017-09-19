@@ -19,7 +19,7 @@
     */
 
     // @TODO: add log rotation
-    
+
     if ( ! defined( 'ABSPATH' ) ) {
         exit; // Exit if accessed directly
     }
@@ -62,18 +62,21 @@
                 add_action( 'admin_init',                   array( $this, 'al_check_log_table' ) );
                 add_action( 'plugins_loaded',               array( $this, 'al_load_plugin_textdomain' ) );
                 add_action( 'admin_enqueue_scripts',        array( $this, 'al_enqueue_action_logger_css' ) );
-    
-                // WP Core actions
+
+	            // Shortcode
+	            add_shortcode( 'actionlogger',         array( $this, 'al_register_shortcode_logger' ) );
+
+	            // WP Core actions
                 add_action( 'user_register ',               array( $this, 'al_log_user_create' ), 10, 1 );
                 add_action( 'profile_update',               array( $this, 'al_log_user_change' ), 10, 2 );
 	            add_action( 'delete_user',                  array( $this, 'al_log_user_delete' ), 10, 1 );
                 add_action( 'transition_post_status',       array( $this, 'al_post_status_transitions'), 10, 3 );
-    
+
                 // CSV Importer actions
 	            add_action( 'csvi_successful_csv_upload',   array( $this, 'al_csvi_file_upload' ) );
 	            add_action( 'csvi_successful_csv_validate', array( $this, 'al_csvi_file_validate' ) );
 	            add_action( 'csvi_successful_csv_import',   array( $this, 'al_csvi_file_import' ) );
-    
+
 	            // EM actions
 	            add_action( 'em_bookings_deleted',          array( $this, 'al_log_registration_delete' ), 10, 2 );
                 // add_action( 'em_booking_save',              array( $this, 'al_log_registration_change' ), 10, 2 );
@@ -87,9 +90,6 @@
                 add_action( 'ri_rankings_imported',         array( $this, 'al_ri_rankings_imported' ) );
                 add_action( 'ri_csv_file_upload',           array( $this, 'al_ri_csv_uploaded' ) );
 
-                // Shortcode
-                add_shortcode( 'actionlogger',         array( $this, 'al_register_shortcode_logger' ) );
-
 	            // $this->al_set_default_values();
 
 	            // includes
@@ -100,49 +100,7 @@
                 include( 'al-available-actions.php' );
 
             }
-    
-            public function al_ri_all_nuked() {
-                if ( false != get_option( 'al_ri_data_nuked' ) ) {
-                    $user = get_userdata( get_current_user_id() )->display_name;
-                    al_log_user_action( 'nuke_all', 'Rankings Importer', sprintf( esc_html__( '%s nuked all rankings.', 'action-logger' ), $user ) );
-                }
-            }
-    
-            public function al_ri_user_rankings_delete( $user_id, $value_array ) {
-                if ( false != get_option( 'al_ri_rankings_deleted' ) ) {
-                    $user = get_userdata( get_current_user_id() )->display_name;
-                    al_log_user_action( 'individual_ranking_deleted', 'Rankings Importer', ' deleted ' . count( $value_array ) . ' ranking lines for ' . get_userdata( $user_id )->display_name );
-                }
-            }
-    
-            public function al_ri_import_raw_data( $count ) {
-                if ( false != get_option( 'al_ri_import_raw' ) ) {
-                    $user = get_userdata( get_current_user_id() )->display_name;
-                    al_log_user_action( 'import_raw', 'Rankings Importer', ' uploaded ' . $count . ' lines through raw import' );
-                }
-            }
-    
-            public function al_ri_verify_csv() {
-                if ( false != get_option( 'al_ri_data_verified' ) ) {
-                    $user = get_userdata( get_current_user_id() )->display_name;
-                    al_log_user_action( 'upload_rankings_csv', 'Rankings Importer', sprintf( esc_html( __( '%s successfully verified %s.', 'action-logger' ) ), $user, $_POST[ 'file_name' ][0] ) );
-                }
-            }
-    
-            public function al_ri_rankings_imported( $line_number = false ) {
-                if ( false != get_option( 'al_ri_rankings_imported' ) ) {
-                    $user = get_userdata( get_current_user_id() )->display_name;
-                    al_log_user_action( 'rankings_imported', 'Rankings Importer', sprintf( esc_html( __( '%s successfully imported %d lines from file.', 'action-logger' ) ), $user, $line_number ) );
-                }
-            }
-    
-            public function al_ri_csv_uploaded() {
-                if ( false != get_option( 'al_ri_file_uploaded' ) ) {
-                    $user = get_userdata( get_current_user_id() )->display_name;
-                    al_log_user_action( 'upload_rankings_csv', 'Rankings Importer', sprintf( esc_html( __( '%s successfully uploaded the file: "%s".', 'action-logger' ) ), $user, $_FILES[ 'csv_upload' ][ 'name' ] ) );
-                }
-            }
-    
+
             /**
              * Function which runs upon plugin activation
              */
@@ -168,9 +126,13 @@
                 }
                 delete_option( 'al_available_log_actions' );
                 delete_option( 'al_log_user_role' );
+	            if ( false == get_option( 'al_preserve_settings' ) ) {
+	                $this->al_truncate_log_table( true );
+		            delete_option( 'al_preserve_settings' );
+	            }
 
             }
-    
+
             /**
              * Adds a link to plugin actions
              * @param $links
@@ -206,9 +168,9 @@
                 <?php
                 $sql = ob_get_clean();
                 dbDelta( $sql );
-    
+
             }
-    
+
             /**
              * This runs on each page load, to make sure the database table exists.
              * This because the database can be deleted manually.
@@ -249,7 +211,7 @@
                 $available_options = get_option( 'al_available_log_actions' );
                 // $available_options = false;
                 if ( false == $available_options ) {
-                    
+
                     $all_options = get_available_actions();
                     foreach ( $all_options as $option ) {
                         update_option( 'al_' . $option[ 'action_name' ], $option[ 'default_value' ] );
@@ -258,7 +220,7 @@
                     update_option( 'al_log_user_role', 'manage_options' );
                 }
             }
-    
+
             /**
              * @return WP_Error
              */
@@ -266,14 +228,14 @@
                 static $wp_error; // Will hold global variable safely
                 return isset( $wp_error ) ? $wp_error : ( $wp_error = new WP_Error( null, null, null ) );
             }
-    
+
             /**
              * Displays error messages from form submissions
              */
             public static function al_show_admin_notices() {
                 if ( $codes = ActionLogger::al_errors()->get_error_codes() ) {
                     if ( is_wp_error( ActionLogger::al_errors() ) ) {
-                
+
                         // Loop error codes and display errors
                         $error      = false;
                         $span_class = false;
@@ -317,7 +279,7 @@
                 $my_plugin_hook = add_menu_page( 'Action Logger', 'Action Logger', 'manage_options', 'action-logger', 'action_logger_dashboard', 'dashicons-editor-alignleft' );
                 include( 'al-dashboard.php' ); // content for the settings page
             }
-    
+
             /**
              * Adds a (hidden) settings page, only through the menu on top of the pages.
              */
@@ -325,7 +287,7 @@
                 add_submenu_page( NULL, 'Log actions', 'Log actions', 'manage_options', 'al-log-actions', 'action_logger_actions_page' );
                 include( 'al-log-actions.php' ); // content for the settings page
             }
-    
+
             /**
              * Adds a (hidden) settings page, only through the menu on top of the pages.
              */
@@ -333,31 +295,31 @@
                 add_submenu_page( NULL, 'Log actions', 'Log actions', 'manage_options', 'al-settings', 'action_logger_settings_page' );
                 include( 'al-settings.php' ); // content for the settings page
             }
-    
+
             /**
              * Adds a (hidden) support page, only through the menu on top of the pages.
              */
             public function al_add_action_logger_misc_page() {
                 add_submenu_page( NULL, 'Misc', 'Misc', 'manage_options', 'al-misc', 'action_logger_misc_page' );
                 include( 'al-misc.php' ); // content for the settings page
-    
+
             }
-    
+
             /**
              * All form action for the settings page, except the nuke database action
              */
             public function al_log_actions_functions() {
-        
+
                 /**
                  * Update who can manage
                  */
                 if ( isset( $_POST[ 'active_logs_nonce' ] ) ) {
                     if ( ! wp_verify_nonce( $_POST[ 'active_logs_nonce' ], 'active-logs-nonce' ) ) {
                         ActionLogger::al_errors()->add( 'error_nonce_no_match', esc_html( __( 'Something went wrong. Please try again.', 'action-logger' ) ) );
-        
+
                         return;
                     } else {
-    
+
                         $get_available_actions = get_option( 'al_available_log_actions' );
                         if ( false == $get_available_actions ) {
                             $this->al_set_default_values();
@@ -371,7 +333,7 @@
                             }
                         }
                         ActionLogger::al_errors()->add( 'success_settings_saved', esc_html( __( 'Settings saved.', 'action-logger' ) ) );
-    
+
                     }
                 }
             }
@@ -652,7 +614,7 @@
 			        al_log_user_action( 'user_deleted', 'Action Logger', sprintf( esc_html( __( '%s deleted the user of %s.', 'action-logger' ) ), get_userdata( get_current_user_id() )->display_name, get_userdata( $user_id )->display_name ) );
 		        }
 	        }
-    
+
             /**
              * Function to check post transitions and log those
              *
@@ -787,6 +749,48 @@
 		        }
 		        if ( class_exists( 'CSV_Importer' ) && false != get_option( 'al_csvi_file_imported' ) ) {
 			        al_log_user_action( 'csv_imported', 'Action Logger', sprintf( esc_html( __( '%s successfully imported %d lines from file.', 'action-logger' ) ), $user_name, $line_number ) );
+		        }
+	        }
+
+	        public function al_ri_all_nuked() {
+		        if ( false != get_option( 'al_ri_data_nuked' ) ) {
+			        $user = get_userdata( get_current_user_id() )->display_name;
+			        al_log_user_action( 'nuke_all', 'Rankings Importer', sprintf( esc_html__( '%s nuked all rankings.', 'action-logger' ), $user ) );
+		        }
+	        }
+
+	        public function al_ri_user_rankings_delete( $user_id, $value_array ) {
+		        if ( false != get_option( 'al_ri_rankings_deleted' ) ) {
+			        $user = get_userdata( get_current_user_id() )->display_name;
+			        al_log_user_action( 'individual_ranking_deleted', 'Rankings Importer', ' deleted ' . count( $value_array ) . ' ranking lines for ' . get_userdata( $user_id )->display_name );
+		        }
+	        }
+
+	        public function al_ri_import_raw_data( $count ) {
+		        if ( false != get_option( 'al_ri_import_raw' ) ) {
+			        $user = get_userdata( get_current_user_id() )->display_name;
+			        al_log_user_action( 'import_raw', 'Rankings Importer', ' uploaded ' . $count . ' lines through raw import' );
+		        }
+	        }
+
+	        public function al_ri_verify_csv() {
+		        if ( false != get_option( 'al_ri_data_verified' ) ) {
+			        $user = get_userdata( get_current_user_id() )->display_name;
+			        al_log_user_action( 'upload_rankings_csv', 'Rankings Importer', sprintf( esc_html( __( '%s successfully verified %s.', 'action-logger' ) ), $user, $_POST[ 'file_name' ][0] ) );
+		        }
+	        }
+
+	        public function al_ri_rankings_imported( $line_number = false ) {
+		        if ( false != get_option( 'al_ri_rankings_imported' ) ) {
+			        $user = get_userdata( get_current_user_id() )->display_name;
+			        al_log_user_action( 'rankings_imported', 'Rankings Importer', sprintf( esc_html( __( '%s successfully imported %d lines from file.', 'action-logger' ) ), $user, $line_number ) );
+		        }
+	        }
+
+	        public function al_ri_csv_uploaded() {
+		        if ( false != get_option( 'al_ri_file_uploaded' ) ) {
+			        $user = get_userdata( get_current_user_id() )->display_name;
+			        al_log_user_action( 'upload_rankings_csv', 'Rankings Importer', sprintf( esc_html( __( '%s successfully uploaded the file: "%s".', 'action-logger' ) ), $user, $_FILES[ 'csv_upload' ][ 'name' ] ) );
 		        }
 	        }
 
