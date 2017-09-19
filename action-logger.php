@@ -83,16 +83,12 @@
 	            // includes
                 include( 'al-admin-menu.php' );
 	            include( 'al-errors.php' );
+	            include( 'al-logger.php' );
 
             }
 
 	        // @TODO: add log rotation
             // @TODO: add IF for older php versions
-
-            // @TODO: S2Member: add log for new (paid) registration
-            // @TODO: S2Member: add log for demotion
-            // @TODO: S2Member: add log for cancel
-            // @TODO: S2Member: add log for reject
 
             /**
              * Function which runs upon plugin activation
@@ -532,7 +528,7 @@
 	         * @param string $action_generator
 	         * @param string $action_description
 	         */
-	        public static function al_log_user_action( $action = false, $action_generator = false, $action_description = false ) {
+	        public static function xal_log_user_action( $action = false, $action_generator = false, $action_description = false ) {
 
 		        if ( false != $action_description ) {
 			        global $wpdb;
@@ -573,8 +569,8 @@
                 }
 
                 if ( ! is_admin() && true == $log_it ) {
-                    $this->al_log_user_action( $post_type . '_visit', 'Shortcode', $user . ' ' . $attributes[ 'message' ] );
-	                // $this->al_log_user_action( $post_type . '_visit', 'Shortcode', 'message' );
+                    al_log_user_action( $post_type . '_visit', 'Shortcode', $user . ' ' . $attributes[ 'message' ] );
+	                // al_log_user_action( $post_type . '_visit', 'Shortcode', 'message' );
                 }
 
                 return;
@@ -615,7 +611,7 @@
              */
             public function al_log_user_create( $user_id ) {
                 if ( class_exists( 'ActionLogger' ) && false != get_option( 'al_wp_user_create' ) ) {
-                    $this->al_log_user_action( 'user_registered', 'Action Logger', sprintf( esc_html( __( 'New user registered: "<a href="%s">%s</a>".', 'sexdates' ) ), get_author_posts_url( $user_id ), get_userdata( $user_id )->display_name ) );
+                    al_log_user_action( 'user_registered', 'Action Logger', sprintf( esc_html( __( 'New user registered: "<a href="%s">%s</a>".', 'sexdates' ) ), get_author_posts_url( $user_id ), get_userdata( $user_id )->display_name ) );
                 }
             }
 
@@ -629,7 +625,7 @@
                 // don't log when a a user edits his own profile
                 if ( $user_id != get_current_user_id() ) {
                     if ( class_exists( 'ActionLogger' ) && false != get_option( 'al_wp_user_change' ) ) {
-                        $this->al_log_user_action( 'user_changed', 'Action Logger', sprintf( esc_html( __( '%s changed the user of %s.', 'action-logger' ) ), get_userdata( get_current_user_id() )->first_name, get_userdata( $user_id )->display_name ) );
+                        al_log_user_action( 'user_changed', 'Action Logger', sprintf( esc_html( __( '%s changed the user of %s.', 'action-logger' ) ), get_userdata( get_current_user_id() )->first_name, get_userdata( $user_id )->display_name ) );
                     }
                 }
             }
@@ -641,7 +637,7 @@
 	         */
 	        public function al_log_user_delete( $user_id ) {
 		        if ( class_exists( 'ActionLogger' ) && false != get_option( 'al_wp_user_delete' ) ) {
-			        $this->al_log_user_action( 'user_deleted', 'Action Logger', sprintf( esc_html( __( '%s deleted the user of %s.', 'action-logger' ) ), get_userdata( get_current_user_id() )->first_name, get_userdata( $user_id )->display_name ) );
+			        al_log_user_action( 'user_deleted', 'Action Logger', sprintf( esc_html( __( '%s deleted the user of %s.', 'action-logger' ) ), get_userdata( get_current_user_id() )->first_name, get_userdata( $user_id )->display_name ) );
 		        }
 	        }
 
@@ -652,7 +648,7 @@
 	         */
 	        public function al_log_post_publish( $user_id ) {
 		        if ( class_exists( 'ActionLogger' ) && false != get_option( 'al_post_published' ) ) {
-			        $this->al_log_user_action( 'post_published', 'Action Logger', sprintf( esc_html( __( '%s published a post.', 'action-logger' ) ), get_userdata( get_current_user_id() )->first_name ) );
+			        al_log_user_action( 'post_published', 'Action Logger', sprintf( esc_html( __( '%s published a post.', 'action-logger' ) ), get_userdata( get_current_user_id() )->first_name ) );
 		        }
 	        }
 
@@ -663,7 +659,7 @@
 	         */
 	        public function al_log_post_change( $user_id ) {
 		        if ( class_exists( 'ActionLogger' ) && false != get_option( 'al_post_changed' ) ) {
-			        $this->al_log_user_action( 'post_changed', 'Action Logger', sprintf( esc_html( __( '%s changed a post.', 'action-logger' ) ), get_userdata( get_current_user_id() )->first_name ) );
+			        al_log_user_action( 'post_changed', 'Action Logger', sprintf( esc_html( __( '%s changed a post.', 'action-logger' ) ), get_userdata( get_current_user_id() )->first_name ) );
 		        }
 	        }
 
@@ -674,7 +670,7 @@
 	         */
 	        public function al_log_post_delete( $user_id ) {
 		        if ( class_exists( 'ActionLogger' ) && false != get_option( 'al_post_deleted' ) ) {
-			        $this->al_log_user_action( 'post_deleted', 'Action Logger', sprintf( esc_html( __( '%s deleted a post.', 'action-logger' ) ), get_userdata( get_current_user_id() )->first_name ) );
+			        al_log_user_action( 'post_deleted', 'Action Logger', sprintf( esc_html( __( '%s deleted a post.', 'action-logger' ) ), get_userdata( get_current_user_id() )->first_name ) );
 		        }
 	        }
 
@@ -690,12 +686,12 @@
              */
             public function al_log_registration_delete( $result, $booking_ids ) {
                 if ( false != get_option( 'al_em_booking_delete' ) ) {
-                    $this->al_log_user_action( 'registration_deleted', 'Action Logger', sprintf( esc_html( __( '%s deleted bookings for an event.', 'action-logger' ) ), get_userdata( get_current_user_id() )->first_name ) );
+                    al_log_user_action( 'registration_deleted', 'Action Logger', sprintf( esc_html( __( '%s deleted bookings for an event.', 'action-logger' ) ), get_userdata( get_current_user_id() )->first_name ) );
                 }
             }
 
             public function test_change( $EM_Event, $EM_Booking ) {
-                $this->al_log_user_action( 'registration_changed', 'Action Logger' );
+                al_log_user_action( 'registration_changed', 'Action Logger' );
             }
 
             /**
@@ -734,7 +730,7 @@
                 }
 
                 if ( $log == true ) {
-                    $this->al_log_user_action( $action, 'Action Logger', get_userdata( get_current_user_id() )->first_name . ' ' . $status . ' ' . esc_html( __( 'the booking with booking ID:', 'action-logger' ) )  . ' ' . $booking_id . '.' );
+                    al_log_user_action( $action, 'Action Logger', get_userdata( get_current_user_id() )->first_name . ' ' . $status . ' ' . esc_html( __( 'the booking with booking ID:', 'action-logger' ) )  . ' ' . $booking_id . '.' );
                 }
 
             }
@@ -751,7 +747,7 @@
 			        $user_name = get_userdata( get_current_user_id() )->display_name;
 		        }
 		        if ( class_exists( 'CSV_Importer' ) && false != get_option( 'al_csvi_file_uploaded' ) ) {
-			        $this->al_log_user_action( 'csv_upload', 'Action Logger', sprintf( esc_html( __( '%s successfully uploaded the file: "%s".', 'action-logger' ) ), $user_name, $_FILES[ 'csv_upload' ][ 'name' ] ) );
+			        al_log_user_action( 'csv_upload', 'Action Logger', sprintf( esc_html( __( '%s successfully uploaded the file: "%s".', 'action-logger' ) ), $user_name, $_FILES[ 'csv_upload' ][ 'name' ] ) );
 		        }
 	        }
 
@@ -765,7 +761,7 @@
 			        $user_name = get_userdata( get_current_user_id() )->display_name;
 		        }
 		        if ( class_exists( 'CSV_Importer' ) && false != get_option( 'al_csvi_file_validated' ) ) {
-			        $this->al_log_user_action( 'csv_validate', 'Action Logger', sprintf( esc_html( __( '%s successfully validated the file: "%s".', 'action-logger' ) ), $user_name, $_FILES[ 'csv_upload' ][ 'name' ] ) );
+			        al_log_user_action( 'csv_validate', 'Action Logger', sprintf( esc_html( __( '%s successfully validated the file: "%s".', 'action-logger' ) ), $user_name, $_FILES[ 'csv_upload' ][ 'name' ] ) );
 		        }
 	        }
 
@@ -779,7 +775,7 @@
 			        $user_name = get_userdata( get_current_user_id() )->display_name;
 		        }
 		        if ( class_exists( 'CSV_Importer' ) && false != get_option( 'al_csvi_file_imported' ) ) {
-			        $this->al_log_user_action( 'csv_imported', 'Action Logger', sprintf( esc_html( __( '%s successfully imported %d lines from file.', 'action-logger' ) ), $user_name, $line_number ) );
+			        al_log_user_action( 'csv_imported', 'Action Logger', sprintf( esc_html( __( '%s successfully imported %d lines from file.', 'action-logger' ) ), $user_name, $line_number ) );
 		        }
 	        }
 
