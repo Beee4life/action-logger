@@ -97,72 +97,49 @@
 	            include( 'al-functions.php' );
                 include( 'al-logger.php' );
                 include( 'al-help-tab.php' );
+                include( 'al-available-actions.php' );
 
             }
     
             public function al_ri_all_nuked() {
                 if ( false != get_option( 'al_ri_data_nuked' ) ) {
-                    if ( is_user_logged_in() ) {
-                        $user = get_userdata( get_current_user_id() )->display_name;
-                    } else {
-                        $user = esc_html__( 'A visitor', 'action-logger' );
-                    }
+                    $user = get_userdata( get_current_user_id() )->display_name;
                     al_log_user_action( 'nuke_all', 'Rankings Importer', sprintf( esc_html__( '%s nuked all rankings.', 'action-logger' ), $user ) );
                 }
             }
     
-            public function al_ri_user_rankings_delete() {
+            public function al_ri_user_rankings_delete( $user_id, $value_array ) {
                 if ( false != get_option( 'al_ri_rankings_deleted' ) ) {
-                    if ( is_user_logged_in() ) {
-                        $user = get_userdata( get_current_user_id() )->display_name;
-                    } else {
-                        $user = esc_html__( 'A visitor', 'action-logger' );
-                    }
+                    $user = get_userdata( get_current_user_id() )->display_name;
                     al_log_user_action( 'individual_ranking_deleted', 'Rankings Importer', ' deleted ' . count( $value_array ) . ' ranking lines for ' . get_userdata( $user_id )->display_name );
                 }
             }
     
-            public function al_ri_import_raw_data() {
+            public function al_ri_import_raw_data( $count ) {
                 if ( false != get_option( 'al_ri_import_raw' ) ) {
-                    if ( is_user_logged_in() ) {
-                        $user = get_userdata( get_current_user_id() )->display_name;
-                    } else {
-                        $user = esc_html__( 'A visitor', 'action-logger' );
-                    }
+                    $user = get_userdata( get_current_user_id() )->display_name;
                     al_log_user_action( 'import_raw', 'Rankings Importer', ' uploaded ' . $count . ' lines through raw import' );
                 }
             }
     
             public function al_ri_verify_csv() {
                 if ( false != get_option( 'al_ri_data_verified' ) ) {
-                    if ( is_user_logged_in() ) {
-                        $user = get_userdata( get_current_user_id() )->display_name;
-                    } else {
-                        $user = esc_html__( 'A visitor', 'action-logger' );
-                    }
-                    al_log_user_action( 'upload_rankings_csv', 'Rankings Importer', sprintf( esc_html__( '%s successfully verified %s.', 'action-logger' ), $user, $_POST[ 'file_name' ][0] ) );
+                    $user = get_userdata( get_current_user_id() )->display_name;
+                    al_log_user_action( 'upload_rankings_csv', 'Rankings Importer', sprintf( esc_html( __( '%s successfully verified %s.', 'action-logger' ) ), $user, $_POST[ 'file_name' ][0] ) );
                 }
             }
     
             public function al_ri_rankings_imported( $line_number = false ) {
                 if ( false != get_option( 'al_ri_rankings_imported' ) ) {
-                    if ( is_user_logged_in() ) {
-                        $user = get_userdata( get_current_user_id() )->display_name;
-                    } else {
-                        $user = esc_html__( 'A visitor', 'action-logger' );
-                    }
-                    al_log_user_action( 'rankings_imported', 'Rankings Importer', sprintf( esc_html__( '%s successfully imported %d lines from file.', 'action-logger' ), $user, $line_number ) );
+                    $user = get_userdata( get_current_user_id() )->display_name;
+                    al_log_user_action( 'rankings_imported', 'Rankings Importer', sprintf( esc_html( __( '%s successfully imported %d lines from file.', 'action-logger' ) ), $user, $line_number ) );
                 }
             }
     
             public function al_ri_csv_uploaded() {
                 if ( false != get_option( 'al_ri_file_uploaded' ) ) {
-                    if ( is_user_logged_in() ) {
-                        $user = get_userdata( get_current_user_id() )->display_name;
-                    } else {
-                        $user = esc_html__( 'A visitor', 'action-logger' );
-                    }
-                    al_log_user_action( 'upload_rankings_csv', 'Rankings Importer', sprintf( esc_html__( '%s uploaded a file named %s.', 'action-logger' ), $user, $_FILES[ 'csv_upload' ][ 'name' ] ) );
+                    $user = get_userdata( get_current_user_id() )->display_name;
+                    al_log_user_action( 'upload_rankings_csv', 'Rankings Importer', sprintf( esc_html( __( '%s successfully uploaded the file: "%s".', 'action-logger' ) ), $user, $_FILES[ 'csv_upload' ][ 'name' ] ) );
                 }
             }
     
@@ -273,8 +250,7 @@
                 // $available_options = false;
                 if ( false == $available_options ) {
                     
-                    include( 'available-actions.php' );
-
+                    $all_options = get_available_actions();
                     foreach ( $all_options as $option ) {
                         update_option( 'al_' . $option[ 'action_name' ], $option[ 'default_value' ] );
                     }
@@ -804,7 +780,7 @@
 	         * Log successful csv import from CSV Importer
 	         * @param $user_id
 	         */
-	        public function al_csvi_file_import() {
+	        public function al_csvi_file_import( $line_number ) {
 		        $user_name = get_userdata( get_current_user_id() )->display_name;
 		        if ( false == $user_name ) {
 			        $user_name = get_userdata( get_current_user_id() )->display_name;
