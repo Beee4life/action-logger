@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Action Logger 1.0\n"
-"POT-Creation-Date: 2017-09-19 17:49+0200\n"
-"PO-Revision-Date: 2017-09-19 17:50+0200\n"
+"POT-Creation-Date: 2017-09-19 17:59+0200\n"
+"PO-Revision-Date: 2017-09-19 18:03+0200\n"
 "Last-Translator: Beee\n"
 "Language-Team: \n"
 "Language: nl_NL\n"
@@ -168,7 +168,7 @@ msgstr ""
 msgid "All logs deleted."
 msgstr "Alle logs verwijderd."
 
-#: action-logger.php:603 al-dashboard.php:42
+#: action-logger.php:603 al-admin-menu.php:4 al-dashboard.php:42
 msgid "Logs"
 msgstr "Logs"
 
@@ -176,7 +176,7 @@ msgstr "Logs"
 msgid "Settings"
 msgstr "Instellingen"
 
-#: action-logger.php:603
+#: action-logger.php:603 al-admin-menu.php:4
 msgid "Misc"
 msgstr "Misc"
 
@@ -238,7 +238,7 @@ msgstr "%s heeft succesvol %d regels geïmporteerd vanuit een bestand."
 msgid "Log actions"
 msgstr "Log acties"
 
-#: al-dashboard.php:9 al-misc.php:9 al-settings.php:9
+#: al-dashboard.php:9 al-log-actions.php:9 al-settings.php:9
 msgid "Sorry, you do not have sufficient permissions to access this page."
 msgstr "Sorry, je hebt niet genoeg rechten om deze pagina te bekijken."
 
@@ -307,11 +307,23 @@ msgstr "Fout"
 msgid "Dismiss this notice"
 msgstr "Sluit deze melding"
 
-#: al-misc.php:30
+#: al-log-actions.php:28
+msgid "Select what to log"
+msgstr "Selecteer wat te loggen"
+
+#: al-log-actions.php:29
+msgid "Here you can select which actions you want to log/ignore."
+msgstr "Hier kun je selecteren welke acties je wilt loggen/negeren."
+
+#: al-log-actions.php:85
+msgid "Active"
+msgstr "Actief"
+
+#: al-settings.php:30
 msgid "Who can do what"
 msgstr "Wie kan wat doen"
 
-#: al-misc.php:32
+#: al-settings.php:32
 msgid ""
 "Here you can select what capability a user needs to see the logs. The "
 "default setting is \"manage_options\" which belongs to administrator."
@@ -320,7 +332,7 @@ msgstr ""
 "logs te kunnen zien. De standaard instelling is “manage_options” welke bij "
 "administrators hoort."
 
-#: al-misc.php:33
+#: al-settings.php:33
 msgid ""
 "The reason why it's set per capability instead of per user is because two "
 "users with the same role can have different capabilities."
@@ -328,15 +340,15 @@ msgstr ""
 "De reden waarom het per ‘recht’ is ingesteld ipv per gebruiker is omdat twee "
 "gebruikers met dezelfde rol, verschillende rechten kunnen hebben."
 
-#: al-misc.php:49
+#: al-settings.php:48
 msgid "Save settings"
 msgstr "Instellingen opslaan"
 
-#: al-misc.php:52
+#: al-settings.php:52
 msgid "Export data to CSV"
 msgstr "Exporteer data naar CSV"
 
-#: al-misc.php:53
+#: al-settings.php:53
 msgid ""
 "By clicking this button you will trigger a download for a CSV (comma "
 "separated value) file."
@@ -344,15 +356,15 @@ msgstr ""
 "Door op deze button te klikken, trigger je een download voor een CSV (komma "
 "gescheiden waarden) document."
 
-#: al-misc.php:57
+#: al-settings.php:57
 msgid "Export to CSV"
 msgstr "Exporteer naar CSV"
 
-#: al-misc.php:60
+#: al-settings.php:61
 msgid "Preserve data when uninstalling"
 msgstr "Bewaar data bij plugin verwijdering"
 
-#: al-misc.php:65
+#: al-settings.php:66
 msgid ""
 "If you uninstall the plugin, all data is removed as well. If you check this "
 "box, your logs won't be deleted upon uninstall."
@@ -360,11 +372,11 @@ msgstr ""
 "Als je de plugin verwijderd wordt alle data ook verwijderd. Als je deze "
 "optie aanvinkt, wordt je data bewaard als de plugin verwijderd wordt."
 
-#: al-misc.php:71
+#: al-settings.php:73
 msgid "Support"
 msgstr "Help"
 
-#: al-misc.php:72
+#: al-settings.php:74
 #, php-format
 msgid ""
 "If you know about this plugin, you probably know me and know where to reach "
@@ -375,30 +387,28 @@ msgstr ""
 "ik te bereiken ben. Zo niet, dan report het issue aub op GitHub in de <a "
 "href=“%s”>issues sectie</a>."
 
-#: al-misc.php:73
+#: al-settings.php:75
 msgid "Find more info about the plugin on"
 msgstr "Vind meer info over de plugin op"
 
-#: al-misc.php:75
+#: al-settings.php:78
 msgid "About the author"
 msgstr "Over de auteur"
 
-#: al-misc.php:76
+#: al-settings.php:79
 #, php-format
 msgid "This plugin is created by %s, a Wordpress developer from Amsterdam."
 msgstr "Deze plugin is gebouwd door %s, een Wordpress developer uit Amsterdam."
 
-#: al-settings.php:28
-msgid "Select what to log"
-msgstr "Selecteer wat te loggen"
-
-#: al-settings.php:29
-msgid "Here you can select which actions you want to log/ignore."
-msgstr "Hier kun je selecteren welke acties je wilt loggen/negeren."
-
 #: al-settings.php:85
-msgid "Active"
-msgstr "Actief"
+msgid ""
+"This plugin is free to use but a small donation will be very much "
+"appreciated. This will give me more options to continue to develop this in "
+"my free time."
+msgstr ""
+"De plugin is gratis om te gebruiken, maar een kleine donatie wordt zeer "
+"gewaardeerd. Daarmee kan ik doorgaan en de plugin in mijn vrije tijd door "
+"ontwikkelen."
 
 #~ msgid ""
 #~ "Here you can export the data to csv and set some values for this plugin."

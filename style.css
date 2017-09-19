@@ -14,9 +14,6 @@
     max-width: 60%;
 }
 
-#action-logger table form {
-}
-
 #action-logger table {
     max-width:       100%;
     border-collapse: collapse;
@@ -60,7 +57,11 @@
     max-width: 90px;
 }
 
-.is-dismissible {
-    margin:  5px 0 15px;
-    padding: 10px 0 10px 15px;
+#action-logger span.checkbox {
+    line-height: 2em;
 }
+
+/*.is-dismissible {*/
+    /*margin:  5px 0 15px;*/
+    /*padding: 10px 0 10px 15px;*/
+/*}*/

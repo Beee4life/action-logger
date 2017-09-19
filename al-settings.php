@@ -6,14 +6,14 @@
     function action_logger_settings_page() {
 
         if ( ! current_user_can( 'manage_options' ) ) {
-            wp_die( esc_html( __( 'Sorry, you do not have sufficient permissions to access this page.', 'action-logger' ) ) );
+	        wp_die( esc_html( __( 'Sorry, you do not have sufficient permissions to access this page.', 'action-logger' ) ) );
         }
         ?>
 
         <div class="wrap">
             <div id="icon-options-general" class="icon32"><br /></div>
 
-            <h1>Action Logger settings</h1>
+            <h1>Action Logger settings page</h1>
 
             <?php al_show_admin_notices(); ?>
 
@@ -25,74 +25,86 @@
     
                 <?php echo al_check_php_version(); ?>
 
-                <h2><?php esc_html_e( 'Select what to log', 'action-logger' ); ?></h2>
-                <p><?php esc_html_e( 'Here you can select which actions you want to log/ignore.', 'action-logger' ); ?></p>
-                <?php
-                    $available_log_actions = get_option( 'al_available_log_actions' );
-                    if ( $available_log_actions ) {
+                <form name="capabilities-form" action="" method="post">
+                    <input name="active_logs_nonce" type="hidden" value="<?php echo wp_create_nonce( 'active-logs-nonce' ); ?>"/>
+                    <h2><?php esc_html_e( 'Who can do what', 'action-logger' ); ?></h2>
+                    <p>
+                        <?php esc_html_e( 'Here you can select what capability a user needs to see the logs. The default setting is "manage_options" which belongs to administrator.', 'action-logger' ); ?>
+                        <?php esc_html_e( 'The reason why it\'s set per capability instead of per user is because two users with the same role can have different capabilities.', 'action-logger' ); ?>
+                    </p>
+                    <p>
+                        <?php
+                            $all_capabilities = get_role( 'administrator' )->capabilities;
+                            $logs_user_role   = get_option( 'al_log_user_role' );
+                            ksort( $all_capabilities );
                         ?>
-                        <form name="settings-form" id="settings-form" action="" method="post">
-                            <input name="active_logs_nonce" type="hidden" value="<?php echo wp_create_nonce( 'active-logs-nonce' ); ?>"/>
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th class="hidden">Action name</th>
-                                        <th class="">Action</th>
-                                        <th class="">Generator</th>
-                                        <th class="">Description</th>
-                                        <th class="checkbox">Active</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php $action_counter = 0; ?>
-                                    <?php foreach( $available_log_actions as $action ) { ?>
-                                        <?php $action_counter++; ?>
-                                        <?php
-                                            $show = false;
-                                            if ( class_exists( 'EM_Events' ) && 'Events Manager' == $action[ 'action_generator' ] ) {
-                                                $show = true;
-                                            } elseif ( class_exists( 'CSV_Importer' ) && 'CSV Importer' == $action[ 'action_generator' ] ) {
-                                                // $show = true;
-                                            } elseif ( class_exists( 'RankingsImport' ) && 'Rankings Importer' == $action[ 'action_generator' ] ) {
-                                                $show = true;
-                                            } elseif ( class_exists( 'S2Member' ) && 'S2Member' == $action[ 'action_generator' ] ) {
-                                                // $show = true;
-                                            } elseif ( 'WordPress' == $action[ 'action_generator' ] ) {
-                                                $show = true;
-                                            } else {
-                                                $show = false;
-                                            }
+                        <label for="select_cap" class="screen-reader-text"></label>
+                        <select name="select_cap" id="select_cap">
+                            <?php foreach ( $all_capabilities as $key => $value ) { ?>
+                                <option value="<?php echo $key; ?>"<?php echo ( $logs_user_role == $key ? ' selected' : '' ); ?>><?php echo $key; ?></option>';
+                            <?php } ?>
+                        </select>
+                    </p>
+                    <input type="submit" class="admin-button admin-button-small" value="<?php esc_html_e( 'Save settings', 'action-logger' ); ?>" />
+                </form>
 
-                                            if ( $show == true ) {
-                                            ?>
+                <h2><?php esc_html_e( 'Export data to CSV', 'action-logger' ); ?></h2>
+                <p><?php esc_html_e( 'By clicking this button you will trigger a download for a CSV (comma separated value) file.', 'action-logger' ); ?></p>
+                <form name="export-form" action="" method="post">
+                    <input name="export_csv" type="hidden" value="1" />
+                    <input name="export_csv_nonce" type="hidden" value="<?php echo wp_create_nonce( 'export-csv-nonce' ); ?>"/>
+                    <input name="" type="submit" class="admin-button admin-button-small" value="<?php esc_html_e( 'Export to CSV', 'action-logger' ); ?>"/>
+                </form>
 
-                                            <tr>
-                                                <td class="hidden"><?php echo $action[ 'action_name' ]; ?></td>
-                                                <td class=""><?php esc_html_e( $action[ 'action_title' ], 'action-logger' ); ?></td>
-                                                <td class=""><?php echo $action[ 'action_generator' ]; ?></td>
-                                                <td class=""><?php esc_html_e( $action[ 'action_description' ], 'action-logger' ); ?></td>
-                                                <td class="checkbox">
-                                                    <?php
-                                                        $active    = 0;
-                                                        $checked   = false;
-                                                        $is_active = get_option( 'al_' . $action[ 'action_name' ] );
-                                                        if ( $is_active ) {
-                                                            $checked = 'checked';
-                                                            $active  = 1;
-                                                        }
-                                                    ?>
-                                                    <label for="action-status" class="screen-reader-text">
-                                                        <?php esc_html_e( 'Active', 'action-logger' ); ?>
-                                                    </label>
-                                                    <input name="<?php echo $action[ 'action_name' ]; ?>" id="action-status" type="checkbox" value="<?php echo $active; ?>" <?php echo $checked; ?>/>
-                                                </td>
-                                            </tr>
-                                        <?php } ?>
-                                    <?php } ?>
-                                </tbody>
-                            </table>
-                        </form>
-                <?php } ?>
+                <h2><?php esc_html_e( 'Preserve data when uninstalling', 'action-logger' ); ?></h2>
+                <?php $checked = get_option( 'al_preserve_settings' ); ?>
+                <div>
+                    <form name="preserve-form" action="" method="post">
+                        <input name="preserve_settings_nonce" type="hidden" value="<?php echo wp_create_nonce( 'preserve-settings-nonce' ); ?>"/>
+                        <label for="preserve-settings" class="screen-reader-text">Preserve settings</label>
+                        <p>
+                            <input name="preserve_settings" id="preserve-settings" type="checkbox" value="1" <?php if ( false != $checked ) { echo 'checked '; } ?>/> <span class="checkbox"><?php esc_html_e( 'If you uninstall the plugin, all data is removed as well. If you check this box, your logs won\'t be deleted upon uninstall.', 'action-logger' ); ?></span>
+                        </p>
+                        <input name="" type="submit" class="admin-button admin-button-small" value="<?php esc_html_e( 'Save settings', 'action-logger' ); ?>" />
+                    </form>
+                </div>
+
+                <h2><?php esc_html_e( 'Support', 'action-logger' ); ?></h2>
+                <p><?php echo sprintf( __( 'If you know about this plugin, you probably know me and know where to reach me. If not, please report it on GitHub in the <a href="%s">issues section</a>.', 'action-logger' ), esc_url( 'https://github.com/Beee4life/action-logger/issues' ) ); ?></p>
+                <p><?php esc_html_e( 'Find more info about the plugin on', 'action-logger' ); ?> <a href="https://github.com/Beee4life/action-logger/">GitHub</a>.</p>
+
+                <h2><?php esc_html_e( 'About the author', 'action-logger' ); ?></h2>
+                <p>
+                    <?php echo sprintf( esc_html( __( 'This plugin is created by %s, a Wordpress developer from Amsterdam.', 'action-logger' ) ), '<a href="' . esc_url( 'http://www.berryplasman.com' ) . '">Beee</a>' ); ?>
+                    <?php esc_html_e( 'This plugin is free to use but a small donation will be very much appreciated. This will give me more options to continue to develop it in my spare time.', 'action-logger' ); ?>
+                </p>
+
+                <form action="https://www.paypal.com/cgi-bin/webscr" method="post" class="donation">
+                    <div>
+
+                        <input type="hidden" name="cmd" value="_xclick">
+                        <input type="hidden" name="business" value="info@berryplasman.com">
+                        <input type="hidden" name="item_name" value="ActionLogger">
+                        <input type="hidden" name="buyer_credit_promo_code" value="">
+                        <input type="hidden" name="buyer_credit_product_category" value="">
+                        <input type="hidden" name="buyer_credit_shipping_method" value="">
+                        <input type="hidden" name="buyer_credit_user_address_change" value="">
+                        <input type="hidden" name="no_shipping" value="1">
+                        <input type="hidden" name="return" value="<?php echo site_url(); ?>/wp-admin/admin.php?page=al-misc">
+                        <input type="hidden" name="no_note" value="1">
+                        <input type="hidden" name="currency_code" value="USD">
+                        <input type="hidden" name="tax" value="0">
+                        <input type="hidden" name="lc" value="US">
+                        <input type="hidden" name="bn" value="PP-DonationsBF">
+                        <div class="donation-amount">$
+                            <label for="donate-amount" class="screen-reader-text">
+                                Donate amount
+                            </label>
+                            <input type="number" id="donate-amount" min="1" name="amount" value="10">
+                            <input type="submit" class="button-primary" value="Donate 💰">
+                        </div>
+                    </div>
+                </form>
 
             </div><!-- end #action-logger -->
 
