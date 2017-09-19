@@ -51,9 +51,9 @@
                 add_action( 'admin_menu',                   array( $this, 'al_add_action_logger_dashboard' ) );
                 add_action( 'admin_menu',                   array( $this, 'al_add_action_logger_settings_page' ) );
                 add_action( 'admin_menu',                   array( $this, 'al_add_action_logger_support_page' ) );
-                add_action( 'admin_init',                   array( $this, 'al_items_overview_functions' ) );
-                add_action( 'admin_init',                   array( $this, 'al_admin_page_functions' ) );
+                add_action( 'admin_init',                   array( $this, 'al_delete_selected_items' ) );
                 add_action( 'admin_init',                   array( $this, 'al_delete_all_logs' ) );
+                add_action( 'admin_init',                   array( $this, 'al_admin_page_functions' ) );
                 add_action( 'admin_init',                   array( $this, 'al_check_log_table' ) );
                 add_action( 'plugins_loaded',               array( $this, 'al_load_plugin_textdomain' ) );
                 add_action( 'admin_enqueue_scripts',        array( $this, 'al_enqueue_action_logger_css' ) );
@@ -363,7 +363,7 @@
             public function al_admin_page_functions() {
 
 	            /**
-	             * Update options
+	             * Update who can manage
 	             */
                 if ( isset( $_POST[ 'active_logs_nonce' ] ) ) {
                     if ( ! wp_verify_nonce( $_POST[ 'active_logs_nonce' ], 'active-logs-nonce' ) ) {
@@ -388,25 +388,6 @@
                         update_option( 'al_log_user_role', $_POST[ 'select_cap' ] );
 
                         al_errors()->add( 'success_settings_saved', esc_html( __( 'Settings saved.', 'action-logger' ) ) );
-                    }
-                }
-
-                /**
-                 * Preserve settings
-                 */
-                if ( isset( $_POST[ 'preserve_settings_nonce' ] ) ) {
-                    if ( ! wp_verify_nonce( $_POST[ 'preserve_settings_nonce' ], 'preserve-settings-nonce' ) ) {
-                        al_errors()->add( 'error_nonce_no_match', esc_html( __( 'Something went wrong. Please try again.', 'action-logger' ) ) );
-
-                        return;
-                    } else {
-
-                        $preserve_settings = isset( $_POST[ 'preserve_settings' ] ) ? $_POST[ 'preserve_settings' ] : false;
-                        if ( true == $preserve_settings ) {
-                            update_option( 'al_preserve_settings', 1 );
-                        } elseif ( false == $preserve_settings ) {
-                            delete_option( 'al_preserve_settings' );
-                        }
                     }
                 }
 
@@ -463,12 +444,32 @@
                         }
                     }
                 }
+
+                /**
+                 * Preserve settings
+                 */
+                if ( isset( $_POST[ 'preserve_settings_nonce' ] ) ) {
+                    if ( ! wp_verify_nonce( $_POST[ 'preserve_settings_nonce' ], 'preserve-settings-nonce' ) ) {
+                        al_errors()->add( 'error_nonce_no_match', esc_html( __( 'Something went wrong. Please try again.', 'action-logger' ) ) );
+
+                        return;
+                    } else {
+
+                        $preserve_settings = isset( $_POST[ 'preserve_settings' ] ) ? $_POST[ 'preserve_settings' ] : false;
+                        if ( true == $preserve_settings ) {
+                            update_option( 'al_preserve_settings', 1 );
+                        } elseif ( false == $preserve_settings ) {
+                            delete_option( 'al_preserve_settings' );
+                        }
+                    }
+                }
+
             }
 
             /**
              * Function for the overview page. Right now only delete rows is available (for admins only)
              */
-            public function al_items_overview_functions() {
+            public function al_delete_selected_items() {
 
                 if ( isset( $_POST[ 'delete_action_items_nonce' ] ) ) {
                     if ( ! wp_verify_nonce( $_POST[ 'delete_action_items_nonce' ], 'delete-actions-items-nonce' ) ) {
@@ -477,7 +478,7 @@
                         return;
                     } else {
 
-                        $delete_items = ! empty( $_POST[ 'delete' ] ) ? $_POST[ 'delete' ] : false;
+                        $delete_items = ! empty( $_POST[ 'delete_selected' ] ) ? $_POST[ 'delete_selected' ] : false;
                         if ( isset( $_POST[ 'rows' ] ) ) {
 
                             if ( $_POST[ 'rows' ] ) {
@@ -512,7 +513,7 @@
                         return;
                     } else {
 
-                        $delete_all = $_POST[ 'delete_all' ];
+	                    $delete_all = ! empty( $_POST[ 'delete_all' ] ) ? $_POST[ 'delete_all' ] : false;
                         if ( false != $delete_all ) {
                             // truncate table
                             $this->al_truncate_log_table( true );
@@ -533,12 +534,6 @@
 	         */
 	        public static function al_log_user_action( $action = false, $action_generator = false, $action_description = false ) {
 
-		        if ( is_user_logged_in() ) {
-			        $user = get_userdata( get_current_user_id() )->display_name;
-		        } else {
-			        $user = 'A visitor';
-		        }
-
 		        if ( false != $action_description ) {
 			        global $wpdb;
 			        $sql_data = array(
@@ -546,7 +541,7 @@
 				        'action_user'        => get_current_user_id(),
 				        'action'             => $action,
 				        'action_generator'   => $action_generator,
-				        'action_description' => $user . ' ' . $action_description,
+				        'action_description' => $action_description,
 			        );
 			        $db_status = $wpdb->insert( $wpdb->prefix . 'action_logs', $sql_data );
 		        }
@@ -562,12 +557,6 @@
 	         */
 	        public static function al_log_user_action_shortcode( $action = false, $action_generator = false, $action_description = false ) {
 
-		        if ( is_user_logged_in() ) {
-			        $user = get_userdata( get_current_user_id() )->display_name;
-		        } else {
-			        $user = 'A visitor';
-		        }
-
 		        if ( false != $action_description ) {
 			        global $wpdb;
 			        $sql_data = array(
@@ -575,7 +564,7 @@
 				        'action_user'        => get_current_user_id(),
 				        'action'             => $action,
 				        'action_generator'   => $action_generator,
-				        'action_description' => $user . ' ' . $action_description,
+				        'action_description' => $action_description,
 			        );
 			        $db_status = $wpdb->insert( $wpdb->prefix . 'action_logs', $sql_data );
 		        }
@@ -584,28 +573,30 @@
 
 	        public function al_register_shortcode_logger( $attributes ) {
 
-	            $post_title                = get_the_title();
-	            $post_link                 = get_the_permalink();
-                $post_type                 = get_post_type();
-                $log_loggedin              = get_option( 'al_user_visit_registered' );
-                $log_visitor               = get_option( 'al_user_visit_visitor' );
-                $log_it                    = true;
-                $attributes                = shortcode_atts( array(
-	                'message' => ' visited ' . $post_title,
+		        $post_title   = get_the_title();
+		        $post_link    = get_the_permalink();
+		        $post_type    = get_post_type();
+		        $log_loggedin = get_option( 'al_user_visit_registered' );
+		        $log_visitor  = get_option( 'al_user_visit_visitor' );
+		        $log_it       = true;
+		        $attributes   = shortcode_atts( array(
+	                'message' => 'visited <a href="' . $post_link . '">' . $post_title . '</a>',
                 ), $attributes, 'actionlogger' );
 
                 if ( is_user_logged_in() ) {
+	                $user = get_userdata( get_current_user_id() )->display_name;
                     if ( false == $log_loggedin ) {
                         $log_it = false;
                     }
                 } else {
+	                $user = esc_html__( 'A visitor', 'action-logger' );
                     if ( false == $log_visitor ) {
                         $log_it = false;
                     }
                 }
 
                 if ( ! is_admin() && true == $log_it ) {
-                    $this->al_log_user_action_shortcode( $post_type . '_visit', 'Shortcode', $attributes[ 'message' ] );
+                    $this->al_log_user_action( $post_type . '_visit', 'Shortcode', $user . ' ' . $attributes[ 'message' ] );
 	                // $this->al_log_user_action( $post_type . '_visit', 'Shortcode', 'message' );
                 }
 
