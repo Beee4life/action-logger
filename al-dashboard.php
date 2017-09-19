@@ -14,13 +14,13 @@
 
         <h1>Action Logger overview</h1>
 
-        <?php ActionLogger::al_show_admin_notices(); ?>
+        <?php al_show_admin_notices(); ?>
 
         <?php do_action('al_before_overview', '' ); ?>
 
         <div id="action-logger" class="">
 
-            <?php echo ActionLogger::al_admin_menu(); ?>
+            <?php echo al_admin_menu(); ?>
 
             <?php
                 // get results from db

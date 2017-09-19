@@ -47,7 +47,10 @@
                 // add settings link to plugin
                 add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), array( $this, 'al_plugin_link' ) );
 
+	            include('al-errors.php');
+
                 // actions
+                // add_action( 'admin_init',                   array( $this, 'al_admin_menu' ) );
                 add_action( 'admin_menu',                   array( $this, 'al_add_action_logger_dashboard' ) );
                 add_action( 'admin_menu',                   array( $this, 'al_add_action_logger_settings_page' ) );
                 add_action( 'admin_menu',                   array( $this, 'al_add_action_logger_support_page' ) );
@@ -55,8 +58,7 @@
                 add_action( 'admin_init',                   array( $this, 'al_admin_page_functions' ) );
                 add_action( 'admin_init',                   array( $this, 'al_delete_all_logs' ) );
                 add_action( 'admin_init',                   array( $this, 'al_check_log_table' ) );
-                add_action( 'admin_init',                   array( $this, 'al_admin_menu' ) );
-                add_action( 'admin_init',                   array( $this, 'al_errors' ) );
+                // add_action( 'admin_init',                   array( $this, 'al_errors' ) );
                 add_action( 'plugins_loaded',               array( $this, 'al_load_plugin_textdomain' ) );
                 add_action( 'admin_enqueue_scripts',        array( $this, 'al_enqueue_action_logger_css' ) );
 
@@ -128,13 +130,6 @@
             }
 
             /**
-             * Function which runs on plugin deletion through the admin panel.
-             *
-             * The only thing left to do is to nuke the database, unless the preserve option is checked, because
-             * all stored values are already deleted upon plugin deactivation.
-             */
-
-            /**
              * Drop table if exists ( upon plugin activation).
              * Then create a new empty table.
              */
@@ -193,7 +188,7 @@
             }
 
             /**
-             * Here we built a simple array of available log actions and store them in an option value.
+             * Here we build a simple array of available log actions and store them in an option value.
              */
             public function al_set_default_values() {
 
@@ -341,7 +336,7 @@
             }
 
             /**
-             * Adds a (hidden) settings page, only through the menu on top of the pages.
+             * Adds a (hidden) support page, only through the menu on top of the pages.
              */
             public function al_add_action_logger_support_page() {
                 add_submenu_page( NULL, 'Support', 'Support', 'manage_options', 'al-misc', 'action_logger_misc_page' );
@@ -349,63 +344,13 @@
             }
 
             /**
-             * @return WP_Error
-             */
-            public static function al_errors() {
-                static $wp_error; // Will hold global variable safely
-                return isset( $wp_error ) ? $wp_error : ( $wp_error = new WP_Error( null, null, null ) );
-            }
-
-            /**
-             * Displays error messages from form submissions
-             */
-            public static function al_show_admin_notices() {
-                if ( $codes = ActionLogger::al_errors()->get_error_codes() ) {
-                    if ( is_wp_error( ActionLogger::al_errors() ) ) {
-
-                        // Loop error codes and display errors
-                        $error      = false;
-                        $span_class = false;
-                        $prefix     = false;
-                        foreach ( $codes as $code ) {
-                            if ( strpos( $code, 'success' ) !== false ) {
-                                $span_class = 'notice-success ';
-                                $prefix     = false;
-                            } elseif ( strpos( $code, 'warning' ) !== false ) {
-                                $span_class = 'notice-warning ';
-                                $prefix     = esc_html( __( 'Warning', 'action-logger' ) );
-                            } elseif ( strpos( $code, 'info' ) !== false ) {
-                                $span_class = 'notice-info ';
-                                $prefix     = false;
-                            } else {
-                                $error  = true;
-                                $prefix = esc_html( __( 'Error', 'action-logger' ) );
-                            }
-                        }
-                        echo '<div class="notice ' . $span_class . 'is-dismissible">';
-                        foreach( $codes as $code ) {
-                            $message = ActionLogger::al_errors()->get_error_message( $code );
-                            echo '<div class="">';
-                            if ( true == $prefix ) {
-                                echo '<strong>' . $prefix . ':</strong> ';
-                            }
-                            echo $message;
-                            echo '</div>';
-                            echo '<button type="button" class="notice-dismiss"><span class="screen-reader-text">' . esc_html( __( 'Dismiss this notice', 'action-logger' ) ) . '</span></button>';
-                        }
-                        echo '</div>';
-                    }
-                }
-            }
-
-            /**
              * All form action for the settings page, except the nuke database action
              */
             public function al_admin_page_functions() {
 
-                /**
-                 *
-                 */
+	            /**
+	             * Update options
+	             */
                 if ( isset( $_POST[ 'active_logs_nonce' ] ) ) {
                     if ( ! wp_verify_nonce( $_POST[ 'active_logs_nonce' ], 'active-logs-nonce' ) ) {
                         $this->al_errors()->add( 'error_nonce_no_match', esc_html( __( 'Something went wrong. Please try again.', 'action-logger' ) ) );
@@ -431,7 +376,7 @@
                 }
 
                 /**
-                 *
+                 * Preserve settings
                  */
                 if ( isset( $_POST[ 'preserve_settings_nonce' ] ) ) {
                     if ( ! wp_verify_nonce( $_POST[ 'preserve_settings_nonce' ], 'preserve-settings-nonce' ) ) {
@@ -633,7 +578,7 @@
                 wp_enqueue_style( 'action-logger' );
             }
 
-            public static function al_admin_menu() {
+            public function al_admin_menu() {
                 if ( current_user_can( get_option( 'al_log_user_role' ) ) ) {
                     return '<p><a href="' . site_url() . '/wp-admin/admin.php?page=action-logger">' . esc_html( __( 'Logs', 'action-logger' ) ) . '</a> | <a href="' . site_url() . '/wp-admin/admin.php?page=al-settings">' . esc_html( __( 'Settings', 'action-logger' ) ) . '</a> | <a href="' . site_url() . '/wp-admin/admin.php?page=al-misc">' . esc_html( __( 'Misc', 'action-logger' ) ) . '</a></p>';
                 }
