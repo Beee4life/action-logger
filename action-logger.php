@@ -65,9 +65,6 @@
                 add_action( 'user_register ',               array( $this, 'al_log_user_create' ), 10, 1 );
                 add_action( 'profile_update',               array( $this, 'al_log_user_change' ), 10, 2 );
 	            add_action( 'delete_user',                  array( $this, 'al_log_user_delete' ), 10, 1 );
-	            // add_action( 'publish_post',                 array( $this, 'al_log_post_publish' ), 10, 1 );
-	            // add_action( 'change_post',                  array( $this, 'al_log_post_change' ), 10, 1 );
-	            // add_action( 'deleted_post',                 array( $this, 'al_log_post_delete' ), 10, 1 );
                 add_action( 'transition_post_status',       array( $this, 'al_post_status_transitions'), 10, 3 );
     
     
@@ -752,7 +749,6 @@
                         al_log_user_action( 'post_edited', 'Action Logger', sprintf( esc_html( __( '%s edited published post %s.', 'action-logger' ) ), get_userdata( get_current_user_id() )->display_name, '<a href="' . get_the_permalink( $post->ID ) . '">' . $post->post_title . '</a>' ) );
                     } elseif ( $old_status == 'publish' && $new_status != 'publish' ) {
                         // X > !publish
-                        // die('XXX');
                         if ( $old_status == 'publish' && $new_status == 'trash' ) {
                             // publish > trash
                             al_log_user_action( 'post_trashed', 'Action Logger', sprintf( esc_html( __( '%s deleted %s.', 'action-logger' ) ), get_userdata( get_current_user_id() )->display_name, '<a href="' . get_the_permalink( $post->ID ) . '">' . $post->post_title . '</a>' ) );
@@ -764,38 +760,6 @@
                     }
                 }
             }
-	        /**
-	         * Log post publish
-	         *
-	         * @param $user_id int
-	         */
-	        public function al_log_post_publish( $user_id ) {
-		        if ( class_exists( 'ActionLogger' ) && false != get_option( 'al_post_published' ) ) {
-			        // al_log_user_action( 'post_published', 'Action Logger', sprintf( esc_html( __( '%s published a post.', 'action-logger' ) ), get_userdata( get_current_user_id() )->$this->display_name ) );
-		        }
-	        }
-
-	        /**
-	         * Log post change
-	         *
-	         * @param $user_id int
-	         */
-	        public function al_log_post_change( $user_id ) {
-		        if ( class_exists( 'ActionLogger' ) && false != get_option( 'al_post_changed' ) ) {
-			        al_log_user_action( 'post_changed', 'Action Logger', sprintf( esc_html( __( '%s changed a post.', 'action-logger' ) ), get_userdata( get_current_user_id() )->display_name ) );
-		        }
-	        }
-
-	        /**
-	         * Log post delete
-	         *
-	         * @param $user_id
-	         */
-	        public function al_log_post_delete( $user_id ) {
-		        if ( class_exists( 'ActionLogger' ) && false != get_option( 'al_post_deleted' ) ) {
-			        al_log_user_action( 'post_deleted', 'Action Logger', sprintf( esc_html( __( '%s deleted a post.', 'action-logger' ) ), get_userdata( get_current_user_id() )->display_name ) );
-		        }
-	        }
 
 	        /**
              * Events manager actions
