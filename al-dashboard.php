@@ -63,7 +63,7 @@
                                     <td class="action"><?php echo $item->action; ?></td>
                                 <?php } ?>
                                 <td class="generator"><?php echo $item->action_generator; ?></td>
-                                <td class="description"><?php esc_html( __( $item->action_description, 'action-logger' ) ); ?></td>
+                                <td class="description"><?php esc_html_e( $item->action_description, 'action-logger' ); ?></td>
                                 <?php if ( current_user_can( 'manage_options' ) ) { ?>
                                     <td class="checkbox">
                                         <label for="rows" class="screen-reader-text">
