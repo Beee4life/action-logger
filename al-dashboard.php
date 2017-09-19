@@ -6,7 +6,7 @@
     function action_logger_dashboard() {
 
         if ( ! current_user_can( 'edit_users' ) ) {
-            wp_die( __( 'Sorry, you do not have sufficient permissions to access this page.', 'action-logger' ) );
+            wp_die( esc_html( __( 'Sorry, you do not have sufficient permissions to access this page.', 'action-logger' ) ) );
         }
         ?>
 
@@ -27,9 +27,9 @@
                 global $wpdb;
                 $items = array();
                 $items = $wpdb->get_results( "
-                        SELECT * FROM " . $wpdb->prefix . "action_logs
-                        order by id DESC
-                    ");
+                    SELECT * FROM " . $wpdb->prefix . "action_logs
+                    order by id DESC
+                ");
             ?>
 
             <?php if ( count( $items ) == 0 ) { ?>
@@ -94,7 +94,7 @@
 
         </div><!-- end #action-logger -->
 
-        <?php do_action('al_after_overview' ); ?>
+        <?php do_action( 'al_after_overview' ); ?>
 
         </div><!-- end .wrap -->
 <?php } ?>
