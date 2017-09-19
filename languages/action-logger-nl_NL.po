@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Action Logger 1.0\n"
-"POT-Creation-Date: 2017-09-20 00:44+0200\n"
-"PO-Revision-Date: 2017-09-20 00:46+0200\n"
+"POT-Creation-Date: 2017-09-20 00:54+0200\n"
+"PO-Revision-Date: 2017-09-20 01:08+0200\n"
 "Last-Translator: Beee\n"
 "Language-Team: \n"
 "Language: nl_NL\n"
@@ -15,6 +15,11 @@ msgstr ""
 "X-Poedit-KeywordsList: __;_x;_e;esc_attr_e;esc_html_e\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: languages\n"
+
+#: action-logger.php:165 action-logger.php:785
+#, php-format
+msgid "%s successfully uploaded the file: \"%s\"."
+msgstr "%s heeft succesvol het bestand “%s” ge-upload."
 
 #: action-logger.php:311
 msgid "Warning"
@@ -111,11 +116,6 @@ msgstr "%s heeft boekingen verwijderd van een event."
 #: action-logger.php:768
 msgid "the booking with booking ID:"
 msgstr "de boeking met boeking ID:"
-
-#: action-logger.php:785
-#, php-format
-msgid "%s successfully uploaded the file: \"%s\"."
-msgstr "%s heeft succesvol het bestand “%s” ge-upload."
 
 #: action-logger.php:799
 #, php-format
