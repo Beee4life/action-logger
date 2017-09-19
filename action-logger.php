@@ -47,7 +47,6 @@
                 // add settings link to plugin
                 add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), array( $this, 'al_plugin_link' ) );
 
-
                 // actions
                 add_action( 'admin_menu',                   array( $this, 'al_add_action_logger_dashboard' ) );
                 add_action( 'admin_menu',                   array( $this, 'al_add_action_logger_settings_page' ) );
@@ -290,13 +289,27 @@
 
                     // csvi options
                     $csvi_options      = array(
-                        array(
-                            'action_name'        => 'csvi_file_uploaded',
-                            'action_generator'   => 'CSV Importer',
-                            'action_title'       => 'CSV file uploaded',
-                            'action_description' => esc_html( __( 'Logs when a csv file is uploaded.', 'action-logger' ) ),
-                            'default_value'      => 0,
-                        ),
+	                    array(
+		                    'action_name'        => 'csvi_file_uploaded',
+		                    'action_generator'   => 'CSV Importer',
+		                    'action_title'       => esc_html( __( 'CSV file uploaded', 'action-logger' ) ),
+		                    'action_description' => esc_html( __( 'Logs when a csv file is uploaded.', 'action-logger' ) ),
+		                    'default_value'      => 0,
+	                    ),
+	                    array(
+		                    'action_name'        => 'csvi_file_validated',
+		                    'action_generator'   => 'CSV Importer',
+		                    'action_title'       => esc_html( __( 'CSV file validated', 'action-logger' ) ),
+		                    'action_description' => esc_html( __( 'Logs when a csv file is validated.', 'action-logger' ) ),
+		                    'default_value'      => 0,
+	                    ),
+	                    array(
+		                    'action_name'        => 'csvi_file_imported',
+		                    'action_generator'   => 'CSV Importer',
+		                    'action_title'       => esc_html( __( 'CSV data imported', 'action-logger' ) ),
+		                    'action_description' => esc_html( __( 'Logs when csv data is imported', 'action-logger' ) ),
+		                    'default_value'      => 0,
+	                    ),
                     );
                     $all_options = array_merge( $all_options, $csvi_options );
 
@@ -367,6 +380,8 @@
                         foreach( $get_available_actions as $action ) {
                             if ( isset( $_POST[ $action[ 'action_name' ] ] ) ) {
                                 update_option( 'al_' . $action[ 'action_name' ], 1 );
+                            } else {
+	                            update_option( 'al_' . $action[ 'action_name' ], 0 );
                             }
                         }
 
@@ -509,54 +524,89 @@
                 }
             }
 
-            /**
-             * This is the actual logger function, which is called at the place where you want to log something.
-             *
-             * @param string $action
-             * @param string $action_generator
-             * @param string $action_description
-             */
-            public static function al_log_user_action( $action = false, $action_generator = false, $action_description = false ) {
+	        /**
+	         * This is the actual logger function, which is called at the place where you want to log something.
+	         *
+	         * @param string $action
+	         * @param string $action_generator
+	         * @param string $action_description
+	         */
+	        public static function al_log_user_action( $action = false, $action_generator = false, $action_description = false ) {
 
-                if ( false != $action_description ) {
-                    global $wpdb;
-                    $sql_data = array(
-                        'action_time'        => strtotime( date( 'Y-m-d  H:i:s', strtotime( '+' . get_option( 'gmt_offset' ) . ' hours' ) ) ),
-                        'action_user'        => get_current_user_id(),
-                        'action'             => $action,
-                        'action_generator'   => $action_generator,
-                        'action_description' => $action_description,
-                    );
-                    $db_status = $wpdb->insert( $wpdb->prefix . 'action_logs', $sql_data );
-                }
+		        if ( is_user_logged_in() ) {
+			        $user = get_userdata( get_current_user_id() )->display_name;
+		        } else {
+			        $user = 'A visitor';
+		        }
 
-            }
+		        if ( false != $action_description ) {
+			        global $wpdb;
+			        $sql_data = array(
+				        'action_time'        => strtotime( date( 'Y-m-d  H:i:s', strtotime( '+' . get_option( 'gmt_offset' ) . ' hours' ) ) ),
+				        'action_user'        => get_current_user_id(),
+				        'action'             => $action,
+				        'action_generator'   => $action_generator,
+				        'action_description' => $user . ' ' . $action_description,
+			        );
+			        $db_status = $wpdb->insert( $wpdb->prefix . 'action_logs', $sql_data );
+		        }
 
-            public function al_register_shortcode_logger( $attributes ) {
+	        }
 
-                $post_title                = get_the_title();
+	        /**
+	         * This is the actual shortcode logger function, which is called at the place where the shortcode is inserted
+	         *
+	         * @param string $action
+	         * @param string $action_generator
+	         * @param string $action_description
+	         */
+	        public static function al_log_user_action_shortcode( $action = false, $action_generator = false, $action_description = false ) {
+
+		        if ( is_user_logged_in() ) {
+			        $user = get_userdata( get_current_user_id() )->display_name;
+		        } else {
+			        $user = 'A visitor';
+		        }
+
+		        if ( false != $action_description ) {
+			        global $wpdb;
+			        $sql_data = array(
+				        'action_time'        => strtotime( date( 'Y-m-d  H:i:s', strtotime( '+' . get_option( 'gmt_offset' ) . ' hours' ) ) ),
+				        'action_user'        => get_current_user_id(),
+				        'action'             => $action,
+				        'action_generator'   => $action_generator,
+				        'action_description' => $user . ' ' . $action_description,
+			        );
+			        $db_status = $wpdb->insert( $wpdb->prefix . 'action_logs', $sql_data );
+		        }
+
+	        }
+
+	        public function al_register_shortcode_logger( $attributes ) {
+
+	            $post_title                = get_the_title();
+	            $post_link                 = get_the_permalink();
                 $post_type                 = get_post_type();
                 $log_loggedin              = get_option( 'al_user_visit_registered' );
                 $log_visitor               = get_option( 'al_user_visit_visitor' );
                 $log_it                    = true;
                 $attributes                = shortcode_atts( array(
-                    'message' => ' visited ' . $post_title,
+	                'message' => ' visited ' . $post_title,
                 ), $attributes, 'actionlogger' );
 
                 if ( is_user_logged_in() ) {
-                    $user = get_userdata( get_current_user_id() )->display_name;
                     if ( false == $log_loggedin ) {
                         $log_it = false;
                     }
                 } else {
-                    $user = 'A visitor';
                     if ( false == $log_visitor ) {
                         $log_it = false;
                     }
                 }
 
                 if ( ! is_admin() && true == $log_it ) {
-                    $this->al_log_user_action( $post_type . '_visit', 'Shortcode', $user . $attributes[ 'message' ] );
+                    $this->al_log_user_action_shortcode( $post_type . '_visit', 'Shortcode', $attributes[ 'message' ] );
+	                // $this->al_log_user_action( $post_type . '_visit', 'Shortcode', 'message' );
                 }
 
                 return;
@@ -732,7 +782,7 @@
 		        if ( false == $user_name ) {
 			        $user_name = get_userdata( get_current_user_id() )->display_name;
 		        }
-		        if ( class_exists( 'CSV_Importer' ) && false != get_option( 'al_csvi_file_upload' ) ) {
+		        if ( class_exists( 'CSV_Importer' ) && false != get_option( 'al_csvi_file_uploaded' ) ) {
 			        $this->al_log_user_action( 'csv_upload', 'Action Logger', sprintf( esc_html( __( '%s successfully uploaded the file: "%s".', 'action-logger' ) ), $user_name, $_FILES[ 'csv_upload' ][ 'name' ] ) );
 		        }
 	        }
@@ -746,7 +796,7 @@
 		        if ( false == $user_name ) {
 			        $user_name = get_userdata( get_current_user_id() )->display_name;
 		        }
-		        if ( class_exists( 'CSV_Importer' ) && false != get_option( 'al_csvi_file_validate' ) ) {
+		        if ( class_exists( 'CSV_Importer' ) && false != get_option( 'al_csvi_file_validated' ) ) {
 			        $this->al_log_user_action( 'csv_validate', 'Action Logger', sprintf( esc_html( __( '%s successfully validated the file: "%s".', 'action-logger' ) ), $user_name, $_FILES[ 'csv_upload' ][ 'name' ] ) );
 		        }
 	        }
@@ -760,7 +810,7 @@
 		        if ( false == $user_name ) {
 			        $user_name = get_userdata( get_current_user_id() )->display_name;
 		        }
-		        if ( class_exists( 'CSV_Importer' ) && false != get_option( 'al_csvi_file_import' ) ) {
+		        if ( class_exists( 'CSV_Importer' ) && false != get_option( 'al_csvi_file_imported' ) ) {
 			        $this->al_log_user_action( 'csv_imported', 'Action Logger', sprintf( esc_html( __( '%s successfully imported %d lines from file.', 'action-logger' ) ), $user_name, $line_number ) );
 		        }
 	        }
