@@ -117,10 +117,15 @@
                 delete_option( 'al_log_user_role' );
 
             }
-
+    
+            /**
+             * Adds a link to plugin actions
+             * @param $links
+             * @return array
+             */
             public function al_plugin_link( $links ) {
                 $add_this = array(
-                    '<a href="' . admin_url( 'admin.php?page=al-settings' ) . '">Settings</a>',
+                    '<a href="' . admin_url( 'admin.php?page=al-settings' ) . '">' . esc_html__( 'Settings', 'action-logger' ) . '</a>',
                 );
                 return array_merge( $links, $add_this );
             }
