@@ -13,8 +13,8 @@
         <div class="wrap">
 
         <h1>Action Logger overview</h1>
-
-        <?php al_show_admin_notices(); ?>
+    
+        <?php ActionLogger::al_show_admin_notices(); ?>
 
         <?php do_action( 'al_before_overview', '' ); ?>
 
@@ -22,7 +22,7 @@
 
             <?php echo al_admin_menu(); ?>
             
-            <?php echo al_check_php_version(); ?>
+            <?php // echo al_check_php_version(); ?>
 
             <?php
                 // get results from db
@@ -43,7 +43,7 @@
                 <p><small><?php esc_html_e( 'Log items are sorted, newest to oldest.', 'action-logger' ); ?></small></p>
                 <form name="logs-form" action="" method="post">
                     <input name="delete_action_items_nonce" type="hidden" value="<?php echo wp_create_nonce( 'delete-actions-items-nonce' ); ?>" />
-                    <table>
+                    <table class="action-logs">
                         <thead>
                         <tr class="row">
                             <th class="datetime"><?php esc_html_e( 'Date/time', 'action-logger' ); ?></th>

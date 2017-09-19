@@ -15,17 +15,15 @@
 
             <h1>Action Logger log actions</h1>
 
-            <?php al_show_admin_notices(); ?>
-
-            <?php do_action('al_before_settings' ); ?>
+            <?php ActionLogger::al_show_admin_notices(); ?>
 
             <div id="action-logger" class="">
 
                 <?php echo al_admin_menu(); ?>
     
-                <?php echo al_check_php_version(); ?>
+                <?php // echo al_check_php_version(); ?>
 
-                <h2><?php esc_html_e( 'Select what to log', 'action-logger' ); ?></h2>
+                <h2><?php esc_html_e( 'Available log actions', 'action-logger' ); ?></h2>
                 <p><?php esc_html_e( 'Here you can select which actions you want to log/ignore.', 'action-logger' ); ?></p>
                 <?php
                     $available_log_actions = get_option( 'al_available_log_actions' );
@@ -91,12 +89,12 @@
                                     <?php } ?>
                                 </tbody>
                             </table>
+                            <input name="" type="submit" class="admin-button admin-button-small" value="<?php esc_html_e( 'Save settings', 'action-logger' ); ?>" />
                         </form>
                 <?php } ?>
 
             </div><!-- end #action-logger -->
 
-        <?php do_action('al_after_settings' ); ?>
         </div><!-- end .wrap -->
 <?php
     }
