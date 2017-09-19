@@ -62,11 +62,13 @@
                 add_action( 'user_register ',               array( $this, 'al_log_user_create' ), 10, 1 );
                 add_action( 'profile_update',               array( $this, 'al_log_user_change' ), 10, 2 );
 	            add_action( 'delete_user',                  array( $this, 'al_log_user_delete' ), 10, 1 );
-	            add_action( 'publish_post',                 array( $this, 'al_log_post_publish' ), 10, 1 );
-	            add_action( 'change_post',                  array( $this, 'al_log_post_change' ), 10, 1 );
-	            add_action( 'deleted_post',                 array( $this, 'al_log_post_delete' ), 10, 1 );
-
-	            // CSV Importer actions
+	            // add_action( 'publish_post',                 array( $this, 'al_log_post_publish' ), 10, 1 );
+	            // add_action( 'change_post',                  array( $this, 'al_log_post_change' ), 10, 1 );
+	            // add_action( 'deleted_post',                 array( $this, 'al_log_post_delete' ), 10, 1 );
+                add_action( 'transition_post_status',       array( $this, 'al_post_status_transitions'), 10, 3 );
+    
+    
+                // CSV Importer actions
 	            add_action( 'csvi_successful_csv_upload',   array( $this, 'al_csvi_file_upload' ) );
 	            add_action( 'csvi_successful_csv_validate', array( $this, 'al_csvi_file_validate' ) );
 	            add_action( 'csvi_successful_csv_import',   array( $this, 'al_csvi_file_import' ) );
@@ -630,7 +632,7 @@
                 // don't log when a a user edits his own profile
                 if ( $user_id != get_current_user_id() ) {
                     if ( class_exists( 'ActionLogger' ) && false != get_option( 'al_wp_user_change' ) ) {
-                        al_log_user_action( 'user_changed', 'Action Logger', sprintf( esc_html( __( '%s changed the user of %s.', 'action-logger' ) ), get_userdata( get_current_user_id() )->first_name, get_userdata( $user_id )->display_name ) );
+                        al_log_user_action( 'user_changed', 'Action Logger', sprintf( esc_html( __( '%s changed the user of %s.', 'action-logger' ) ), get_userdata( get_current_user_id() )->display_name, get_userdata( $user_id )->display_name ) );
                     }
                 }
             }
@@ -642,10 +644,21 @@
 	         */
 	        public function al_log_user_delete( $user_id ) {
 		        if ( class_exists( 'ActionLogger' ) && false != get_option( 'al_wp_user_delete' ) ) {
-			        al_log_user_action( 'user_deleted', 'Action Logger', sprintf( esc_html( __( '%s deleted the user of %s.', 'action-logger' ) ), get_userdata( get_current_user_id() )->first_name, get_userdata( $user_id )->display_name ) );
+			        al_log_user_action( 'user_deleted', 'Action Logger', sprintf( esc_html( __( '%s deleted the user of %s.', 'action-logger' ) ), get_userdata( get_current_user_id() )->display_name, get_userdata( $user_id )->display_name ) );
 		        }
 	        }
-
+    
+            public function al_post_status_transitions( $new_status, $old_status, $post ) {
+                if ( class_exists( 'ActionLogger' ) ) {
+                    if ( $old_status == 'draft' && $new_status == 'publish' ) {
+                        al_log_user_action( 'post_published', 'Action Logger', sprintf( esc_html( __( '%s published ' . $post->post_title . '.', 'action-logger' ) ), get_userdata( get_current_user_id() )->display_name ) );
+                    } elseif ( $old_status == 'publish' && $new_status == 'publish' ) {
+                        al_log_user_action( 'post_edited', 'Action Logger', sprintf( esc_html( __( '%s edited ' . $post->post_title . '.', 'action-logger' ) ), get_userdata( get_current_user_id() )->display_name ) );
+                    } elseif ( $old_status == 'publish' && $new_status == 'trash' ) {
+                        al_log_user_action( 'post_edited', 'Action Logger', sprintf( esc_html( __( '%s deleted ' . $post->post_title . '.', 'action-logger' ) ), get_userdata( get_current_user_id() )->display_name ) );
+                    }
+                }
+            }
 	        /**
 	         * Log post publish
 	         *
@@ -653,7 +666,7 @@
 	         */
 	        public function al_log_post_publish( $user_id ) {
 		        if ( class_exists( 'ActionLogger' ) && false != get_option( 'al_post_published' ) ) {
-			        al_log_user_action( 'post_published', 'Action Logger', sprintf( esc_html( __( '%s published a post.', 'action-logger' ) ), get_userdata( get_current_user_id() )->first_name ) );
+			        // al_log_user_action( 'post_published', 'Action Logger', sprintf( esc_html( __( '%s published a post.', 'action-logger' ) ), get_userdata( get_current_user_id() )->$this->display_name ) );
 		        }
 	        }
 
@@ -664,7 +677,7 @@
 	         */
 	        public function al_log_post_change( $user_id ) {
 		        if ( class_exists( 'ActionLogger' ) && false != get_option( 'al_post_changed' ) ) {
-			        al_log_user_action( 'post_changed', 'Action Logger', sprintf( esc_html( __( '%s changed a post.', 'action-logger' ) ), get_userdata( get_current_user_id() )->first_name ) );
+			        al_log_user_action( 'post_changed', 'Action Logger', sprintf( esc_html( __( '%s changed a post.', 'action-logger' ) ), get_userdata( get_current_user_id() )->display_name ) );
 		        }
 	        }
 
@@ -675,7 +688,7 @@
 	         */
 	        public function al_log_post_delete( $user_id ) {
 		        if ( class_exists( 'ActionLogger' ) && false != get_option( 'al_post_deleted' ) ) {
-			        al_log_user_action( 'post_deleted', 'Action Logger', sprintf( esc_html( __( '%s deleted a post.', 'action-logger' ) ), get_userdata( get_current_user_id() )->first_name ) );
+			        al_log_user_action( 'post_deleted', 'Action Logger', sprintf( esc_html( __( '%s deleted a post.', 'action-logger' ) ), get_userdata( get_current_user_id() )->display_name ) );
 		        }
 	        }
 
@@ -691,7 +704,7 @@
              */
             public function al_log_registration_delete( $result, $booking_ids ) {
                 if ( false != get_option( 'al_em_booking_delete' ) ) {
-                    al_log_user_action( 'registration_deleted', 'Action Logger', sprintf( esc_html( __( '%s deleted bookings for an event.', 'action-logger' ) ), get_userdata( get_current_user_id() )->first_name ) );
+                    al_log_user_action( 'registration_deleted', 'Action Logger', sprintf( esc_html( __( '%s deleted bookings for an event.', 'action-logger' ) ), get_userdata( get_current_user_id() )->display_name ) );
                 }
             }
 
@@ -735,7 +748,7 @@
                 }
 
                 if ( $log == true ) {
-                    al_log_user_action( $action, 'Action Logger', get_userdata( get_current_user_id() )->first_name . ' ' . $status . ' ' . esc_html( __( 'the booking with booking ID:', 'action-logger' ) )  . ' ' . $booking_id . '.' );
+                    al_log_user_action( $action, 'Action Logger', get_userdata( get_current_user_id() )->display_name . ' ' . $status . ' ' . esc_html( __( 'the booking with booking ID:', 'action-logger' ) )  . ' ' . $booking_id . '.' );
                 }
 
             }
@@ -747,7 +760,7 @@
 	         * @param $user_id
 	         */
 	        public function al_csvi_file_upload() {
-		        $user_name = get_userdata( get_current_user_id() )->first_name;
+		        $user_name = get_userdata( get_current_user_id() )->display_name;
 		        if ( false == $user_name ) {
 			        $user_name = get_userdata( get_current_user_id() )->display_name;
 		        }
@@ -761,7 +774,7 @@
 	         * @param $user_id
 	         */
 	        public function al_csvi_file_validate() {
-		        $user_name = get_userdata( get_current_user_id() )->first_name;
+		        $user_name = get_userdata( get_current_user_id() )->display_name;
 		        if ( false == $user_name ) {
 			        $user_name = get_userdata( get_current_user_id() )->display_name;
 		        }
@@ -775,7 +788,7 @@
 	         * @param $user_id
 	         */
 	        public function al_csvi_file_import() {
-		        $user_name = get_userdata( get_current_user_id() )->first_name;
+		        $user_name = get_userdata( get_current_user_id() )->display_name;
 		        if ( false == $user_name ) {
 			        $user_name = get_userdata( get_current_user_id() )->display_name;
 		        }
