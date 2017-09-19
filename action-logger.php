@@ -47,10 +47,8 @@
                 // add settings link to plugin
                 add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), array( $this, 'al_plugin_link' ) );
 
-	            include('al-errors.php');
 
                 // actions
-                // add_action( 'admin_init',                   array( $this, 'al_admin_menu' ) );
                 add_action( 'admin_menu',                   array( $this, 'al_add_action_logger_dashboard' ) );
                 add_action( 'admin_menu',                   array( $this, 'al_add_action_logger_settings_page' ) );
                 add_action( 'admin_menu',                   array( $this, 'al_add_action_logger_support_page' ) );
@@ -58,7 +56,6 @@
                 add_action( 'admin_init',                   array( $this, 'al_admin_page_functions' ) );
                 add_action( 'admin_init',                   array( $this, 'al_delete_all_logs' ) );
                 add_action( 'admin_init',                   array( $this, 'al_check_log_table' ) );
-                // add_action( 'admin_init',                   array( $this, 'al_errors' ) );
                 add_action( 'plugins_loaded',               array( $this, 'al_load_plugin_textdomain' ) );
                 add_action( 'admin_enqueue_scripts',        array( $this, 'al_enqueue_action_logger_css' ) );
 
@@ -84,9 +81,13 @@
 
 	            // $this->al_set_default_values();
 
+	            // includes
+                include( 'al-admin-menu.php' );
+	            include( 'al-errors.php' );
+
             }
 
-            // @TODO: add log rotation
+	        // @TODO: add log rotation
             // @TODO: add IF for older php versions
 
             // @TODO: S2Member: add log for new (paid) registration
@@ -353,7 +354,7 @@
 	             */
                 if ( isset( $_POST[ 'active_logs_nonce' ] ) ) {
                     if ( ! wp_verify_nonce( $_POST[ 'active_logs_nonce' ], 'active-logs-nonce' ) ) {
-                        $this->al_errors()->add( 'error_nonce_no_match', esc_html( __( 'Something went wrong. Please try again.', 'action-logger' ) ) );
+                        al_errors()->add( 'error_nonce_no_match', esc_html( __( 'Something went wrong. Please try again.', 'action-logger' ) ) );
 
                         return;
                     } else {
@@ -371,7 +372,7 @@
 
                         update_option( 'al_log_user_role', $_POST[ 'select_cap' ] );
 
-                        $this->al_errors()->add( 'success_settings_saved', esc_html( __( 'Settings saved.', 'action-logger' ) ) );
+                        al_errors()->add( 'success_settings_saved', esc_html( __( 'Settings saved.', 'action-logger' ) ) );
                     }
                 }
 
@@ -380,7 +381,7 @@
                  */
                 if ( isset( $_POST[ 'preserve_settings_nonce' ] ) ) {
                     if ( ! wp_verify_nonce( $_POST[ 'preserve_settings_nonce' ], 'preserve-settings-nonce' ) ) {
-                        $this->al_errors()->add( 'error_nonce_no_match', esc_html( __( 'Something went wrong. Please try again.', 'action-logger' ) ) );
+                        al_errors()->add( 'error_nonce_no_match', esc_html( __( 'Something went wrong. Please try again.', 'action-logger' ) ) );
 
                         return;
                     } else {
@@ -399,7 +400,7 @@
                  */
                 if ( isset( $_POST[ 'export_csv_nonce' ] ) ) {
                     if ( ! wp_verify_nonce( $_POST[ 'export_csv_nonce' ], 'export-csv-nonce' ) ) {
-                        $this->al_errors()->add( 'error_nonce_no_match', esc_html( __( 'Something went wrong. Please try again.', 'action-logger' ) ) );
+                        al_errors()->add( 'error_nonce_no_match', esc_html( __( 'Something went wrong. Please try again.', 'action-logger' ) ) );
 
                         return;
                     } else {
@@ -456,7 +457,7 @@
 
                 if ( isset( $_POST[ 'delete_action_items_nonce' ] ) ) {
                     if ( ! wp_verify_nonce( $_POST[ 'delete_action_items_nonce' ], 'delete-actions-items-nonce' ) ) {
-                        $this->al_errors()->add( 'error_nonce_no_match', esc_html( __( 'Something went wrong. Please try again.', 'action-logger' ) ) );
+                        al_errors()->add( 'error_nonce_no_match', esc_html( __( 'Something went wrong. Please try again.', 'action-logger' ) ) );
 
                         return;
                     } else {
@@ -471,12 +472,12 @@
                                     $wpdb->delete( $wpdb->prefix . 'action_logs', array( 'ID' => $row_id ) );
                                 }
 
-                                $this->al_errors()->add( 'success_items_deleted', esc_html( __( 'All selected items are successfully deleted from the database.', 'action-logger' ) ) );
+                                al_errors()->add( 'success_items_deleted', esc_html( __( 'All selected items are successfully deleted from the database.', 'action-logger' ) ) );
 
                                 return;
                             }
                         } else {
-                            $this->al_errors()->add( 'error_no_selection', esc_html( __( 'You didn\'t select any lines. If you did, then something went wrong.', 'action-logger' ) ) );
+                            al_errors()->add( 'error_no_selection', esc_html( __( 'You didn\'t select any lines. If you did, then something went wrong.', 'action-logger' ) ) );
 
                             return;
                         }
@@ -491,7 +492,7 @@
 
                 if ( isset( $_POST[ 'delete_all_logs_nonce' ] ) ) {
                     if ( ! wp_verify_nonce( $_POST[ 'delete_all_logs_nonce' ], 'delete-all-logs-nonce' ) ) {
-                        $this->al_errors()->add( 'error_nonce_no_match', esc_html( __( 'Something went wrong. Please try again.', 'action-logger' ) ) );
+                        al_errors()->add( 'error_nonce_no_match', esc_html( __( 'Something went wrong. Please try again.', 'action-logger' ) ) );
 
                         return;
                     } else {
@@ -500,7 +501,7 @@
                         if ( false != $delete_all ) {
                             // truncate table
                             $this->al_truncate_log_table( true );
-                            $this->al_errors()->add( 'success_logs_deleted', esc_html( __( 'All logs deleted.', 'action-logger' ) ) );
+                            al_errors()->add( 'success_logs_deleted', esc_html( __( 'All logs deleted.', 'action-logger' ) ) );
 
                             return;
                         }
