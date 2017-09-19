@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Action Logger 1.0\n"
 "POT-Creation-Date: 2017-09-19 20:09+0200\n"
-"PO-Revision-Date: 2017-09-19 20:10+0200\n"
+"PO-Revision-Date: 2017-09-19 20:13+0200\n"
 "Last-Translator: Beee\n"
 "Language-Team: \n"
 "Language: nl_NL\n"
@@ -211,7 +211,7 @@ msgstr "%s heeft %s verwijderd."
 #: action-logger.php:762
 #, php-format
 msgid "%s marked %s \"pending review\"."
-msgstr "%s heeft %s gemarkeerd als “pending review”."
+msgstr "%s heeft %s gemarkeerd als “Wachtend op review”."
 
 #: action-logger.php:784
 #, php-format
