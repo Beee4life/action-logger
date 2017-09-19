@@ -16,8 +16,6 @@
     
         <?php ActionLogger::al_show_admin_notices(); ?>
 
-        <?php do_action( 'al_before_overview', '' ); ?>
-
         <div id="action-logger" class="">
 
             <?php echo al_admin_menu(); ?>
@@ -82,22 +80,9 @@
                         <input name="delete_selected" type="submit" class="admin-button admin-button-small" value="<?php esc_html_e( 'Delete selected items', 'action-logger' ); ?>" />
                     <?php } ?>
                 </form>
-
-                <br />
-                <h2><?php esc_html_e( 'Nuke \'em all', 'action-logger' ); ?></h2>
-                <p><?php esc_html_e( 'Delete all items. Watch out, there\'s no confirmation. Delete = delete !', 'action-logger' ); ?></p>
-                <form name="delete-logs" action="" method="post">
-                    <input name="delete_all_logs_nonce" type="hidden" value="<?php echo wp_create_nonce( 'delete-all-logs-nonce' ); ?>" />
-                    <label for="delete-all-checkbox" class="screen-reader-text"><?php esc_html_e( 'Delete', 'action-logger' ); ?></label>
-                    <input name="delete_all_checkbox" id="delete-all-checkbox" type="checkbox" value="1" /> &nbsp;&nbsp;
-                    <input name="delete_all" type="submit" class="admin-button admin-button-small" value="<?php esc_html_e( 'Delete all', 'action-logger' ); ?>" />
-                </form>
-
             <?php } ?>
 
         </div><!-- end #action-logger -->
-
-        <?php do_action( 'al_after_overview' ); ?>
 
         </div><!-- end .wrap -->
 <?php } ?>
