@@ -21,6 +21,8 @@
         <div id="action-logger" class="">
 
             <?php echo al_admin_menu(); ?>
+            
+            <?php echo al_check_php_version(); ?>
 
             <?php
                 // get results from db

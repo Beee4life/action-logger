@@ -22,6 +22,8 @@
             <div id="action-logger" class="">
 
                 <?php echo al_admin_menu(); ?>
+    
+                <?php echo al_check_php_version(); ?>
 
                 <h2><?php esc_html_e( 'Select what to log', 'action-logger' ); ?></h2>
                 <p><?php esc_html_e( 'Here you can select which actions you want to log/ignore.', 'action-logger' ); ?></p>
