@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Action Logger 1.0\n"
-"POT-Creation-Date: 2017-09-19 20:09+0200\n"
-"PO-Revision-Date: 2017-09-19 20:13+0200\n"
+"POT-Creation-Date: 2017-09-19 21:51+0200\n"
+"PO-Revision-Date: 2017-09-19 21:53+0200\n"
 "Last-Translator: Beee\n"
 "Language-Team: \n"
 "Language: nl_NL\n"
@@ -16,233 +16,113 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: languages\n"
 
-#: action-logger.php:208
-msgid "Create user"
-msgstr "Gebruiker aanmaken"
-
-#: action-logger.php:209
-msgid "Logs when a new user is created in WordPress."
-msgstr "Logt wanneer een nieuwe gebruiker wordt aangemaakt in WordPress."
-
-#: action-logger.php:215
-msgid "Change user"
-msgstr "Wijzig gebruiker"
-
-#: action-logger.php:216
-msgid "Logs when a user is changed (by another user) in WordPress."
-msgstr ""
-"Logt wanneer een gebruiker is gewijzigd (door een andere gebruiker) in "
-"WordPress."
-
-#: action-logger.php:222
-msgid "Delete user"
-msgstr "Verwijder gebruiker"
-
-#: action-logger.php:223
-msgid "Logs when a user is deleted in WordPress."
-msgstr "Logt wanneer een gebruiker verwijderd wordt in WordPress."
-
-#: action-logger.php:229
-msgid "User visit (visitor)"
-msgstr "Gebruikersbezoek (bezoeker)"
-
-#: action-logger.php:230
-msgid ""
-"Logs when a registered user visits a post/page with the shortcode on it."
-msgstr ""
-"Logt wanneer een geregistreerde gebruiker een post/pagina bezoekt met de "
-"shortcode."
-
-#: action-logger.php:236
-msgid "User visit (registered)"
-msgstr "Gebruikersbezoek (geregistreerd)"
-
-#: action-logger.php:237
-msgid "Logs when a visitor visits a post/page with the shortcode on it."
-msgstr "Logt wanneer een bezoeker een post/pagina bezoekt met de shortcode."
-
-#: action-logger.php:243
-msgid "Post published"
-msgstr "Post gepubliceerd"
-
-#: action-logger.php:244
-msgid "Logs when a post is published."
-msgstr "Logt wanneer een post is gepubliceerd."
-
-#: action-logger.php:250
-msgid "Post changed"
-msgstr "Post gewijzigd"
-
-#: action-logger.php:251
-msgid "Logs when a post is changed."
-msgstr "Logt wanneer een post gewijzigd is."
-
-#: action-logger.php:257
-msgid "Post deleted"
-msgstr "Post verwijderd"
-
-#: action-logger.php:258
-msgid "Logs when a post is deleted."
-msgstr "Logt wanneer een post is verwijderd."
-
-#: action-logger.php:289
-msgid "Booking deleted"
-msgstr "Boeking verwijderd"
-
-#: action-logger.php:290
-msgid "Logs when a booking is deleted."
-msgstr "Logt wanneer een boeking is verwijderd."
-
-#: action-logger.php:301
-msgid "CSV file uploaded"
-msgstr "CSV bestand geupload"
-
-#: action-logger.php:302
-msgid "Logs when a csv file is uploaded."
-msgstr "Logt wanneer een CSV bestand is ge-upload."
-
-#: action-logger.php:308
-msgid "CSV file validated"
-msgstr "CSV file gevalideerd"
-
-#: action-logger.php:309
-msgid "Logs when a csv file is validated."
-msgstr "Logt wanneer een CSV bestand succesvol is gevalideerd."
-
-#: action-logger.php:315
-msgid "CSV data imported"
-msgstr "CSV data geïmporteerd"
-
-#: action-logger.php:316
-msgid "Logs when csv data is imported"
-msgstr "Logt wanneer CSV data succesvol is geïmporteerd"
-
-#: action-logger.php:328
-msgid "Logs when a csv file is uploaded"
-msgstr "Logt wanneer een CSV bestand is ge-upload"
-
-#: action-logger.php:367
+#: action-logger.php:310
 msgid "Warning"
 msgstr "Waarschuwing"
 
-#: action-logger.php:373
+#: action-logger.php:316
 msgid "Error"
 msgstr "Fout"
 
-#: action-logger.php:385
+#: action-logger.php:328
 msgid "Dismiss this notice"
 msgstr "Sluit deze melding"
 
-#: action-logger.php:435 action-logger.php:468 action-logger.php:486
-#: action-logger.php:540 action-logger.php:563 action-logger.php:598
+#: action-logger.php:378 action-logger.php:411 action-logger.php:429
+#: action-logger.php:483 action-logger.php:506 action-logger.php:541
 msgid "Something went wrong. Please try again."
 msgstr "Er is iets verkeerd gegaan. Probeer opnieuw."
 
-#: action-logger.php:452 action-logger.php:476
+#: action-logger.php:395 action-logger.php:419
 msgid "Settings saved."
 msgstr "Instellingen opgeslagen."
 
-#: action-logger.php:578
+#: action-logger.php:521
 msgid "All selected items are successfully deleted from the database."
 msgstr "Alle geselecteerde items zijn succesvol verwijderd uit de database."
 
-#: action-logger.php:583
+#: action-logger.php:526
 msgid "You didn't select any lines. If you did, then something went wrong."
 msgstr ""
 "Je hebt geen items geselecteerd. Als je dat wel gedaan hebt is er iets "
 "verkeerd gegaan."
 
-#: action-logger.php:607
+#: action-logger.php:550
 msgid "All logs deleted."
 msgstr "Alle logs verwijderd."
 
-#: action-logger.php:689 al-dashboard.php:42
+#: action-logger.php:632 al-dashboard.php:42
 msgid "Logs"
 msgstr "Logs"
 
-#: action-logger.php:689
+#: action-logger.php:632
 msgid "Settings"
 msgstr "Instellingen"
 
-#: action-logger.php:689
+#: action-logger.php:632
 msgid "Misc"
 msgstr "Misc"
 
-#: action-logger.php:705
+#: action-logger.php:648
 #, php-format
 msgid "New user registered: \"<a href=\"%s\">%s</a>\"."
 msgstr "Nieuwe gebruiker geregistreerd: “<a href=“%s”>%s</a>”."
 
-#: action-logger.php:719
+#: action-logger.php:662
 #, php-format
 msgid "%s changed the user of %s."
 msgstr "%s heeft de user info gewijzigd van %s."
 
-#: action-logger.php:731
+#: action-logger.php:674
 #, php-format
 msgid "%s deleted the user of %s."
 msgstr "%s heeft de gebruiker verwijderd van %s."
 
-#: action-logger.php:746
+#: action-logger.php:689
 #, php-format
 msgid "%s published %s."
 msgstr "%s heeft %s gepubliceerd."
 
-#: action-logger.php:749
+#: action-logger.php:692
 #, php-format
 msgid "%s re-published %s."
 msgstr "%s heeft %s opnieuw gepubliceerd."
 
-#: action-logger.php:752
-#, php-format
-msgid "%s took %s offline."
-msgstr "%s heeft %s offline gehaald."
-
-#: action-logger.php:756
+#: action-logger.php:695
 #, php-format
 msgid "%s edited published post %s."
 msgstr "%s heeft de gepubliceerd post %s bijgewerkt."
 
-#: action-logger.php:759
+#: action-logger.php:700
 #, php-format
 msgid "%s deleted %s."
 msgstr "%s heeft %s verwijderd."
 
-#: action-logger.php:762
+#: action-logger.php:704
 #, php-format
-msgid "%s marked %s \"pending review\"."
+msgid "%s marked %s as 'pending review'."
 msgstr "%s heeft %s gemarkeerd als “Wachtend op review”."
 
-#: action-logger.php:784
-#, php-format
-msgid "%s changed a post."
-msgstr "%s heeft een post gewijzigd."
-
-#: action-logger.php:795
-#, php-format
-msgid "%s deleted a post."
-msgstr "%s heeft een post verwijderd."
-
-#: action-logger.php:811
+#: action-logger.php:722
 #, php-format
 msgid "%s deleted bookings for an event."
 msgstr "%s heeft boekingen verwijderd van een event."
 
-#: action-logger.php:855
+#: action-logger.php:766
 msgid "the booking with booking ID:"
 msgstr "de boeking met boeking ID:"
 
-#: action-logger.php:872
+#: action-logger.php:783
 #, php-format
 msgid "%s successfully uploaded the file: \"%s\"."
 msgstr "%s heeft succesvol het bestand “%s” ge-upload."
 
-#: action-logger.php:886
+#: action-logger.php:797
 #, php-format
 msgid "%s successfully validated the file: \"%s\"."
 msgstr "%s heeft succesvol het bestand “%s” gevalideerd."
 
-#: action-logger.php:900
+#: action-logger.php:811
 #, php-format
 msgid "%s successfully imported %d lines from file."
 msgstr "%s heeft succesvol %d regels geïmporteerd vanuit een bestand."
@@ -406,6 +286,156 @@ msgid ""
 msgstr ""
 "Als je de plugin verwijderd wordt alle data ook verwijderd. Als je deze "
 "optie aanvinkt, wordt je data bewaard als de plugin verwijderd wordt."
+
+#: available-actions.php:6
+msgid "Create user"
+msgstr "Gebruiker aanmaken"
+
+#: available-actions.php:7
+msgid "Logs when a new user is created in WordPress."
+msgstr "Logt wanneer een nieuwe gebruiker wordt aangemaakt in WordPress."
+
+#: available-actions.php:13
+msgid "Change user"
+msgstr "Wijzig gebruiker"
+
+#: available-actions.php:14
+msgid "Logs when a user is changed (by another user) in WordPress."
+msgstr ""
+"Logt wanneer een gebruiker is gewijzigd (door een andere gebruiker) in "
+"WordPress."
+
+#: available-actions.php:20
+msgid "Delete user"
+msgstr "Verwijder gebruiker"
+
+#: available-actions.php:21
+msgid "Logs when a user is deleted in WordPress."
+msgstr "Logt wanneer een gebruiker verwijderd wordt in WordPress."
+
+#: available-actions.php:27
+msgid "User visit (visitor)"
+msgstr "Gebruikersbezoek (bezoeker)"
+
+#: available-actions.php:28
+msgid ""
+"Logs when a registered user visits a post/page with the shortcode on it."
+msgstr ""
+"Logt wanneer een geregistreerde gebruiker een post/pagina bezoekt met de "
+"shortcode."
+
+#: available-actions.php:34
+msgid "User visit (registered)"
+msgstr "Gebruikersbezoek (geregistreerd)"
+
+#: available-actions.php:35
+msgid "Logs when a visitor visits a post/page with the shortcode on it."
+msgstr "Logt wanneer een bezoeker een post/pagina bezoekt met de shortcode."
+
+#: available-actions.php:41
+msgid "Post published"
+msgstr "Post gepubliceerd"
+
+#: available-actions.php:42
+msgid "Logs when a post is published."
+msgstr "Logt wanneer een post is gepubliceerd."
+
+#: available-actions.php:48
+msgid "Post changed"
+msgstr "Post gewijzigd"
+
+#: available-actions.php:49
+msgid "Logs when a post is changed."
+msgstr "Logt wanneer een post gewijzigd is."
+
+#: available-actions.php:55
+msgid "Post deleted"
+msgstr "Post verwijderd"
+
+#: available-actions.php:56
+msgid "Logs when a post is deleted."
+msgstr "Logt wanneer een post is verwijderd."
+
+#: available-actions.php:87
+msgid "Booking deleted"
+msgstr "Boeking verwijderd"
+
+#: available-actions.php:88
+msgid "Logs when a booking is deleted."
+msgstr "Logt wanneer een boeking is verwijderd."
+
+#: available-actions.php:99 available-actions.php:160
+msgid "CSV file uploaded"
+msgstr "CSV bestand geupload"
+
+#: available-actions.php:100
+msgid "Logs when a csv file is uploaded."
+msgstr "Logt wanneer een CSV bestand is ge-upload."
+
+#: available-actions.php:106
+msgid "CSV file validated"
+msgstr "CSV file gevalideerd"
+
+#: available-actions.php:107
+msgid "Logs when a csv file is validated."
+msgstr "Logt wanneer een CSV bestand succesvol is gevalideerd."
+
+#: available-actions.php:113
+msgid "CSV data imported"
+msgstr "CSV data geïmporteerd"
+
+#: available-actions.php:114
+msgid "Logs when csv data is imported"
+msgstr "Logt wanneer CSV data succesvol is geïmporteerd"
+
+#: available-actions.php:126
+msgid "Logs when all data is deleted"
+msgstr "Logt wanneer alle data verwijderd is"
+
+#: available-actions.php:132
+msgid "Ind. rankings deleted"
+msgstr "Individuele rankings verwijderd"
+
+#: available-actions.php:133
+msgid "Logs when individual rankings are deleted."
+msgstr "Logt wanneer individuele rankings worden verwijderd."
+
+#: available-actions.php:139
+msgid "Raw CSV import"
+msgstr "Raw CSV data geïmporteerd"
+
+#: available-actions.php:140
+msgid "Logs when raw data is imported"
+msgstr "Logt wanneer raw CSV data succesvol is geïmporteerd"
+
+#: available-actions.php:146
+msgid "CSV file verified"
+msgstr "CSV file gevalideerd"
+
+#: available-actions.php:147
+msgid "Logs when a csv file is succssful verified"
+msgstr "Logt wanneer een CSV bestand succesvol is geverifieerd"
+
+#: available-actions.php:153
+msgid "Rankings imported from file"
+msgstr "Rankings geïmporteerd vanuit bestand"
+
+#: available-actions.php:154
+msgid "Logs when a rankings are imported"
+msgstr "Logt wanneer rankings succesvol zijn geïmporteerd"
+
+#: available-actions.php:161
+msgid "Logs when a csv file is uploaded"
+msgstr "Logt wanneer een CSV bestand is ge-upload"
+
+#~ msgid "%s took %s offline."
+#~ msgstr "%s heeft %s offline gehaald."
+
+#~ msgid "%s changed a post."
+#~ msgstr "%s heeft een post gewijzigd."
+
+#~ msgid "%s deleted a post."
+#~ msgstr "%s heeft een post verwijderd."
 
 #~ msgid "Booking approved"
 #~ msgstr "Boeking goedgekeurd"
