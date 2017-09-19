@@ -12,9 +12,14 @@ This plugin gives you the option to log various actions on your website. Default
 * user registration
 * user change
 * user delete
+* post/page visit (through a shortcode)
+* post published
+* post changed
+* post deleted
 
 #### Events manager
-Next to that I included a few logging options for one of our favourite plugins: [Events Manager](http://wp-events-plugin.com/) + [Pro](https://eventsmanagerpro.com/). Right now you can track the following actions but more expected to follow:
+Next to that I included a few logging options for one of our favourite plugins: [Events Manager](http://wp-events-plugin.com/). Right now you can track the following actions but more expected to follow:
+* registration approved (not working yet)
 * registration canceled
 * registration rejected
 * registration deleted
@@ -24,9 +29,25 @@ Next to that I included a few logging options for one of our favourite plugins: 
 The overall impact is minimal.
 
 * Upon activation a new database table named `{your table prefix}_action_logs` is created.
+* Upon activation a handful of default settings are stored in the database which was just created.
 * Every action is logged real-time, which is 1 row being stored in the database.
 * Upon plugin deactivation all settings are dropped to keep the database clean (except the preserve data option).
 * Upon plugin deletion (through WP admin) the database table `{your table prefix}_action_logs` is dropped (unless preserve data is selected in the options panel).
+* Upon plugin deletion (through WP admin) the `preserve data` option is deleted.
+
+## Installation
+
+Uploading a zip file
+1. Go to your WordPress Admin plugins page.
+1. Click on the "Upload" link near the top of the page and browse for the Action Logger zip file
+1. Activate the plugin by clicking `Activate` after installation.
+
+Uploading the extracted zip by FTP
+1. Extract the Action Logger zip file.
+1. Upload them by FTP to your plugins directory (mostly wp-content/plugins).
+1. Go to your WordPress Admin plugins page.
+1. Activate the plugin by clicking `Activate` after installation.
+
 
 ## Usage
 
@@ -43,7 +64,7 @@ Both options are explained in the F.A.Q.
 
 Yes. This can be done on the settings page.
 
-= Which plugins/actions are included in the plugin =
+= Which plugins/actions are default included in the plugin =
 
 ### WP core
 * user registration
@@ -59,10 +80,10 @@ Yes. This can be done on the settings page.
 * event registration canceled
 * event registration rejected
 * event registration deleted
-* event registration approved (in progress)
+* event registration approved (not finished)
 * more actions to follow...
 
-= Can I use this plugin to track visit to special pages like registration confirmations or so ? =
+= Can I use this plugin to track visit to posts/pages like registration confirmations or so ? =
 
 Yes. You can do this by inserting a simple shortcode to the page you want to track. Insert the following shortcode at the end of your post/page:
     
@@ -72,14 +93,14 @@ This will trigger a default log entry with the following description:
 
 If a user is logged in, it will trigger the following log entry:
 
-    {user->display_name} has visited {post title}
+    {user->display_name} visited {post title}
 
 If it's a visitor (not logged in), it will trigger the following log entry:
 
-    A visitor has visited {post title}
+    A visitor visited {post title}
 
 * user->display_name will be taken from the user who triggers the action
-* post title will be taken from the post/page where the shortcode is inserted.
+* post title will be taken from the post/page where the shortcode is inserted and create a link to it.
 
 Next to that 2 other values are stored:
 1. action
@@ -104,12 +125,12 @@ This will trigger a log entry with the following description:
 
 Of course, that's the whole reason I wrote this plugin; 'to be able to log custom actions'. To use the logger, you need to add a piece of code on the place where you want the tracking to occur. This can be in a plugin or a theme.
 
-    ActionLogger::al_log_user_action();
+    al_log_user_action();
 
 To make sure your site won't break if you deactivate the plugin, wrap it in a `class_exists()` as follows:     
 
     if ( class_exists( 'ActionLogger' ) ) {
-        ActionLogger::al_log_user_action();
+        al_log_user_action();
     }
 
 The function can contain 3 variables which are default all set to false. Use them in this order:
@@ -121,7 +142,7 @@ The function can contain 3 variables which are default all set to false. Use the
 This is defined as:
 
     if ( class_exists( 'ActionLogger' ) ) {
-        ActionLogger::al_log_user_action( $action, $generator, $message );
+        al_log_user_action( $action, $generator, $message );
     }
 
 = Can I export my logs to CSV ? =
@@ -150,12 +171,6 @@ If you're a plugin author and you would like to see your hooks logged in this pl
 * [ ] - Add filters in overview to filter certain actions/generators
 * [ ] - Add option to 'keep logs for X days'
 * [ ] - Add auto-purge logs after x days
-* [ ] - Add EM registration approve
-* [ ] - Add EM hooks
-* [ ] - Add S2Member hooks
-* [ ] - Add WooCommerce hooks
-* [ ] - Add BuddyPress hooks
-* [ ] - Add WP4MC hooks
 
 ## Changelog
 
