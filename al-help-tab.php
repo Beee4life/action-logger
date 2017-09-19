@@ -1,33 +1,64 @@
 <?php
     
-    function my_admin_help( $old_help, $screen_id, $screen ) {
+    /**
+     * Add help tabs
+     *
+     * @param $old_help  string
+     * @param $screen_id int
+     * @param $screen    object
+     */
+    function al_help_tabs( $old_help, $screen_id, $screen ) {
     
-        // echo '<pre>'; var_dump($screen_id); echo '</pre>'; exit;
-    
-        // Not our screen, exit earlier
-        if ( 'toplevel_page_action-logger' != $screen_id ) {
-            return;
+        $screen_array = array(
+            'toplevel_page_action-logger',
+            'admin_page_al-log-actions',
+            'admin_page_al-settings',
+            'admin_page_al-misc',
+        );
+        if ( ! in_array( $screen_id, $screen_array ) ) {
+            return false;
+        }
+        
+        if ( 'toplevel_page_action-logger' == $screen_id ) {
+            $screen->add_help_tab( array(
+                'id'      => 'logs-overview',
+                'title'   => esc_html__( 'Dashboard', 'action-logger' ),
+                'content' => '<h5>All log entries</h5><p>' . esc_html__( 'This page will show all your logged entries.', 'action-logger' ) . '</p>' .
+                    '<p>' . esc_html__( 'You can select individual logs by checking the checkbox and click "Delete selected items".', 'action-logger' ) . '</p>' .
+                    '<p>' . sprintf( __( 'If you want to delete all logs, <a href="%s">click here</a>.', 'action-logger' ), esc_url( site_url() . '/wp-admin/admin.php?page=al-settings' ) ) . '</p>'
+                // Use 'callback' to use callback function to display tab content
+            ) );
         }
     
-        // echo '<pre>'; var_dump('HIT'); echo '</pre>'; exit;
-
-        // Add one help tab
-        $screen->add_help_tab( array(
-            'id'      => 'my-admin-help',
-            'title'   => esc_html__( 'My Help Tab', 'action-logger' ),
-            'content' => '<p>' . esc_html__( 'Descriptive content that will show in My Help Tab-body goes here.', 'action-logger' ) . '</p>',
-            // Use 'callback' to use callback function to display tab content
-        ) );
-        
-        // This sets the sidebar for help screen, if required
-        get_current_screen()->set_help_sidebar(
-            '<p><strong>' . esc_html__( 'For more information:', 'action-logger' ) . '</strong></p>' .
-            '<p><a href="https://wordpress.org/">WordPress</a></p>' .
-            '<p><a href="https://wordpress.org/support/" target="_blank">' . esc_html__( 'Support Forums', 'action-logger' ) . '</a></p>'
-        );
+        if ( 'admin_page_al-log-actions' == $screen_id ) {
+            $screen->add_help_tab( array(
+                'id'      => 'log-actions',
+                'title'   => esc_html__( 'Log actions', 'action-logger' ),
+                'content' => '<h4>Log actions</h4><p>' . esc_html__( 'If you activate a plugin for which we have incorporated the actions, then the loggable actions will show on this page, when the plugin is activated.', 'action-logger' ) . '</p>' .
+                    '<p>' . esc_html__( 'You can enable/disbale each individual action. Just (de)select it and click "Save settings".', 'action-logger' ) . '</p>',
+                // Use 'callback' to use callback function to display tab content
+            ) );
+        }
     
-        // echo '<pre>'; var_dump($screen); echo '</pre>'; exit;
+        if ( 'admin_page_al-settings' == $screen_id ) {
+            $screen->add_help_tab( array(
+                'id'      => 'log-settings',
+                'title'   => esc_html__( 'Log settings', 'action-logger' ),
+                'content' => '<h4>Log sttings</h4><p>' . esc_html__( 'On this page you can:', 'action-logger' ) . '</p>' .
+                '<ul>
+                    <li>' . esc_html__( 'select who see the logs', 'action-logger' ) . '</li>
+                    <li>' . esc_html__( 'select to preserve the data when uninstalling', 'action-logger' ) . '</li>
+                    <li>' . esc_html__( 'delete all logs', 'action-logger' ) . '</li>
+                </ul>',
+                // Use 'callback' to use callback function to display tab content
+            ) );
+        }
+    
+        get_current_screen()->set_help_sidebar(
+            '<p><strong>' . esc_html__( 'Author\'s website', 'action-logger' ) . '</strong></p>' .
+            '<p><a href="http://www.berryplasman.com?utm_source=' . $_SERVER[ 'SERVER_NAME' ] . '&utm_medium=plugin_admin&utm_campaign=free_promo">berryplasman.com</a></p>'
+        );
     
         return $old_help;
     }
-    add_filter( 'contextual_help', 'my_admin_help', 5, 3 );
+    add_filter( 'contextual_help', 'al_help_tabs', 5, 3 );

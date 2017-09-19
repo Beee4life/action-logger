@@ -96,7 +96,7 @@
                 include( 'al-admin-menu.php' );
 	            include( 'al-functions.php' );
                 include( 'al-logger.php' );
-                // include( 'al-help-tab.php' );
+                include( 'al-help-tab.php' );
 
             }
     
