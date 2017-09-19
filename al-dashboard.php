@@ -16,7 +16,7 @@
 
         <?php al_show_admin_notices(); ?>
 
-        <?php do_action('al_before_overview', '' ); ?>
+        <?php do_action( 'al_before_overview', '' ); ?>
 
         <div id="action-logger" class="">
 
