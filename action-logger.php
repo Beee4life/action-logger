@@ -689,26 +689,24 @@
              * @param $post       object
              */
 	        public function al_post_status_transitions( $new_status, $old_status, $post ) {
-                if ( class_exists( 'ActionLogger' ) ) {
-                    if ( $old_status == 'draft' && $new_status == 'publish' ) {
-                        // draft > publish
-                        al_log_user_action( 'post_published', 'Action Logger', sprintf( esc_html( __( '%s published %s.', 'action-logger' ) ), get_userdata( get_current_user_id() )->display_name, '<a href="' . get_the_permalink( $post->ID ) . '">' . $post->post_title . '</a>' ) );
-                    } elseif ( $old_status == 'pending' && $new_status == 'publish' ) {
-                        // pending > publish
-                        al_log_user_action( 'post_published', 'Action Logger', sprintf( esc_html( __( '%s re-published %s.', 'action-logger' ) ), get_userdata( get_current_user_id() )->display_name, '<a href="' . get_the_permalink( $post->ID ) . '">' . $post->post_title . '</a>' ) );
-                    } elseif ( $old_status == 'publish' && $new_status == 'publish' ) {
-                        // publish > publish
-                        al_log_user_action( 'post_edited', 'Action Logger', sprintf( esc_html( __( '%s edited published post %s.', 'action-logger' ) ), get_userdata( get_current_user_id() )->display_name, '<a href="' . get_the_permalink( $post->ID ) . '">' . $post->post_title . '</a>' ) );
-                    } elseif ( $old_status == 'publish' && $new_status != 'publish' ) {
-                        // X > !publish
-                        if ( $old_status == 'publish' && $new_status == 'trash' ) {
-                            // publish > trash
-                            al_log_user_action( 'post_trashed', 'Action Logger', sprintf( esc_html( __( '%s deleted %s.', 'action-logger' ) ), get_userdata( get_current_user_id() )->display_name, '<a href="' . get_the_permalink( $post->ID ) . '">' . $post->post_title . '</a>' ) );
-                        } elseif ( $old_status == 'publish' && $new_status == 'pending' ) {
-                            // publish > pending
-                            // die('XYZ');
-                            al_log_user_action( 'post_pending', 'Action Logger', sprintf( esc_html( __( '%s marked %s as \'pending review\'.', 'action-logger' ) ), get_userdata( get_current_user_id() )->display_name, '<a href="' . get_the_permalink( $post->ID ) . '">' . $post->post_title . '</a>' ) );
-                        }
+                if ( $old_status == 'draft' && $new_status == 'publish' ) {
+                    // draft > publish
+                    al_log_user_action( 'post_published', 'Action Logger', sprintf( esc_html( __( '%s published %s.', 'action-logger' ) ), get_userdata( get_current_user_id() )->display_name, '<a href="' . get_the_permalink( $post->ID ) . '">' . $post->post_title . '</a>' ) );
+                } elseif ( $old_status == 'pending' && $new_status == 'publish' ) {
+                    // pending > publish
+                    al_log_user_action( 'post_published', 'Action Logger', sprintf( esc_html( __( '%s re-published %s.', 'action-logger' ) ), get_userdata( get_current_user_id() )->display_name, '<a href="' . get_the_permalink( $post->ID ) . '">' . $post->post_title . '</a>' ) );
+                } elseif ( $old_status == 'publish' && $new_status == 'publish' ) {
+                    // publish > publish
+                    al_log_user_action( 'post_edited', 'Action Logger', sprintf( esc_html__( '%s edited published post %s.', 'action-logger' ), get_userdata( get_current_user_id() )->display_name, '<a href="' . esc_url( get_the_permalink( $post->ID ) ) . '">' . $post->post_title . '</a>' ) );
+                } elseif ( $old_status == 'publish' && $new_status != 'publish' ) {
+                    // X > !publish
+                    if ( $old_status == 'publish' && $new_status == 'trash' ) {
+                        // publish > trash
+                        al_log_user_action( 'post_trashed', 'Action Logger', sprintf( esc_html( __( '%s deleted %s.', 'action-logger' ) ), get_userdata( get_current_user_id() )->display_name, '<a href="' . get_the_permalink( $post->ID ) . '">' . $post->post_title . '</a>' ) );
+                    } elseif ( $old_status == 'publish' && $new_status == 'pending' ) {
+                        // publish > pending
+                        // die('XYZ');
+                        al_log_user_action( 'post_pending', 'Action Logger', sprintf( esc_html( __( '%s marked %s as \'pending review\'.', 'action-logger' ) ), get_userdata( get_current_user_id() )->display_name, '<a href="' . get_the_permalink( $post->ID ) . '">' . $post->post_title . '</a>' ) );
                     }
                 }
             }
