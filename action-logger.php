@@ -738,8 +738,6 @@
              */
             public function al_log_registration_change( $EM_Event, $EM_Booking ) {
 
-                // echo '<pre>'; var_dump($EM_Booking); echo '</pre>'; exit;
-
                 $log            = false;
                 $booking_id     = $EM_Booking->booking_id;
 
