@@ -25,7 +25,6 @@
                 'title'   => esc_html__( 'Dashboard', 'action-logger' ),
                 'content' => '<h5>All log entries</h5><p>' . esc_html__( 'This page will show all your logged entries.', 'action-logger' ) . '</p>' .
                     '<p>' . esc_html__( 'You can select individual logs by checking the checkbox and click "Delete selected items".', 'action-logger' ) . '</p>'
-                // Use 'callback' to use callback function to display tab content
             ) );
 
         }
@@ -36,7 +35,6 @@
                 'title'   => esc_html__( 'Log actions', 'action-logger' ),
                 'content' => '<h4>Log actions</h4><p>' . esc_html__( 'If you activate a plugin for which we have incorporated the actions, then the loggable actions will show on this page, when the plugin is activated.', 'action-logger' ) . '</p>' .
                     '<p>' . esc_html__( 'You can enable/disbale each individual action. Just (de)select it and click "Save settings".', 'action-logger' ) . '</p>',
-                // Use 'callback' to use callback function to display tab content
             ) );
         }
 
@@ -50,7 +48,6 @@
                     <li>' . esc_html__( 'select to preserve the data when uninstalling', 'action-logger' ) . '</li>
                     <li>' . esc_html__( 'delete all logs', 'action-logger' ) . '</li>
                 </ul>',
-                // Use 'callback' to use callback function to display tab content
             ) );
         }
 
