@@ -1,5 +1,5 @@
 <?php
-    
+
     /**
      * Add help tabs
      *
@@ -8,7 +8,7 @@
      * @param $screen    object
      */
     function al_help_tabs( $old_help, $screen_id, $screen ) {
-    
+
         $screen_array = array(
             'toplevel_page_action-logger',
             'admin_page_al-log-actions',
@@ -18,7 +18,7 @@
         if ( ! in_array( $screen_id, $screen_array ) ) {
             return false;
         }
-        
+
         if ( 'toplevel_page_action-logger' == $screen_id ) {
             $screen->add_help_tab( array(
                 'id'      => 'logs-overview',
@@ -28,8 +28,9 @@
                     '<p>' . sprintf( __( 'If you want to delete all logs, <a href="%s">click here</a>.', 'action-logger' ), esc_url( site_url() . '/wp-admin/admin.php?page=al-settings' ) ) . '</p>'
                 // Use 'callback' to use callback function to display tab content
             ) );
+
         }
-    
+
         if ( 'admin_page_al-log-actions' == $screen_id ) {
             $screen->add_help_tab( array(
                 'id'      => 'log-actions',
@@ -39,7 +40,7 @@
                 // Use 'callback' to use callback function to display tab content
             ) );
         }
-    
+
         if ( 'admin_page_al-settings' == $screen_id ) {
             $screen->add_help_tab( array(
                 'id'      => 'log-settings',
@@ -53,12 +54,12 @@
                 // Use 'callback' to use callback function to display tab content
             ) );
         }
-    
+
         get_current_screen()->set_help_sidebar(
             '<p><strong>' . esc_html__( 'Author\'s website', 'action-logger' ) . '</strong></p>' .
             '<p><a href="http://www.berryplasman.com?utm_source=' . $_SERVER[ 'SERVER_NAME' ] . '&utm_medium=plugin_admin&utm_campaign=free_promo">berryplasman.com</a></p>'
         );
-    
+
         return $old_help;
     }
     add_filter( 'contextual_help', 'al_help_tabs', 5, 3 );
