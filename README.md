@@ -1,10 +1,12 @@
 # Action Logger
 
-Welcome to the Action Logger plugin for [Wordpress](http://wordpress.org). I built this initially for the IDF (International Downhill Federation), to keep tabs on actions from other users, but along the way I though many more users would find this interesting to use so that's why it's here now :)
+Welcome to the Action Logger plugin for [Wordpress](http://wordpress.org). 
+
+Do you run a website with more than 1 user and do you want to keep tabs on what is happening within your WordPress wesite ? Then this plugin might be something for you.
 
 ## Description 
 
-This plugin gives you the option to log various actions on your website. Default there are a few actions which can be tracked from within WordPress' core and some from plugins I like/use.
+This plugin gives you the option to log various (user) actions on your website. Default there are a few actions which can be tracked from within WordPress' core and some from plugins I like/use.
 
 ### Loggable actions
 
@@ -19,10 +21,10 @@ This plugin gives you the option to log various actions on your website. Default
 
 #### Events manager
 Next to that I included a few logging options for one of our favourite plugins: [Events Manager](http://wp-events-plugin.com/). Right now you can track the following actions but more expected to follow:
-* registration approved (not working yet)
 * registration canceled
 * registration rejected
 * registration deleted
+* registration approved (in progress)
 
 ## Impact
 
@@ -167,7 +169,7 @@ If you're a plugin author and you would like to see your hooks logged in this pl
 * [X] - Add panel to select what to track
 * [X] - Add WP errors
 * [X] - Add option to select which user roles can see the logger
-* [ ] - Add pagination in overview
+* [X] - Add pagination in overview
 * [ ] - Add filters in overview to filter certain actions/generators
 * [ ] - Add option to 'keep logs for X days'
 * [ ] - Add auto-purge logs after x days
