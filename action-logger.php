@@ -8,6 +8,7 @@
     Author: Beee
     Author URI: http://berryplasman.com
     Text-domain: action-logger
+    Domain Path: /languages
     License: GPL v2
 
             http://www.berryplasman.com
