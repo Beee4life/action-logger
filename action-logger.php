@@ -483,8 +483,8 @@
                         return;
                     } else {
 
-	                    $delete_all = ! empty( $_POST[ 'delete_all' ] ) ? $_POST[ 'delete_all' ] : false;
-                        if ( false != $delete_all ) {
+	                    // $delete_all = ! empty( $_POST[ 'delete_all' ] ) ? $_POST[ 'delete_all' ] : false;
+                        if ( isset( $_POST ) && $_POST[ 'delete_all_checkbox' ] == 1 ) {
                             // truncate table
                             $this->al_truncate_log_table( true );
                             ActionLogger::al_errors()->add( 'success_logs_deleted', esc_html( __( 'All logs deleted.', 'action-logger' ) ) );
