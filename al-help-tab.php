@@ -24,8 +24,7 @@
                 'id'      => 'logs-overview',
                 'title'   => esc_html__( 'Dashboard', 'action-logger' ),
                 'content' => '<h5>All log entries</h5><p>' . esc_html__( 'This page will show all your logged entries.', 'action-logger' ) . '</p>' .
-                    '<p>' . esc_html__( 'You can select individual logs by checking the checkbox and click "Delete selected items".', 'action-logger' ) . '</p>' .
-                    '<p>' . sprintf( __( 'If you want to delete all logs, <a href="%s">click here</a>.', 'action-logger' ), esc_url( site_url() . '/wp-admin/admin.php?page=al-settings' ) ) . '</p>'
+                    '<p>' . esc_html__( 'You can select individual logs by checking the checkbox and click "Delete selected items".', 'action-logger' ) . '</p>'
                 // Use 'callback' to use callback function to display tab content
             ) );
 
