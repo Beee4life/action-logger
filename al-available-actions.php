@@ -5,7 +5,7 @@
      * @return array
      */
     function get_available_actions() {
-    
+
         $wp_options = array(
             array(
                 'action_name'        => 'wp_user_create',
@@ -64,30 +64,30 @@
                 'default_value'      => 1,
             ),
         );
-    
+
         // add option for events manager
         $em_options        = array(
-            // array(
-            //     'action_name'        => 'em_booking_approved',
-            //     'action_generator'   => 'Events Manager',
-            //     'action_title'       => esc_html( __( 'Booking approved', 'action-logger' ) ),
-            //     'action_description' => esc_html( __( 'Logs when a booking is approved.', 'action-logger' ) ),
-            //     'default_value'      => 0,
-            // ),
-            // array(
-            //     'action_name'        => 'em_booking_canceled',
-            //     'action_generator'   => 'Events Manager',
-            //     'action_title'       => esc_html( __( 'Booking canceled', 'action-logger' ) ),
-            //     'action_description' => esc_html( __( 'Logs when a booking is canceled.', 'action-logger' ) ),
-            //     'default_value'      => 0,
-            // ),
-            // array(
-            //     'action_name'        => 'em_booking_rejected',
-            //     'action_generator'   => 'Events Manager',
-            //     'action_title'       => esc_html( __( 'Booking rejected', 'action-logger' ) ),
-            //     'action_description' => esc_html( __( 'Logs when a booking is rejected.', 'action-logger' ) ),
-            //     'default_value'      => 0,
-            // ),
+            array(
+                'action_name'        => 'em_booking_approved',
+                'action_generator'   => 'Events Manager',
+                'action_title'       => esc_html( __( 'Booking approved', 'action-logger' ) ),
+                'action_description' => esc_html( __( 'Logs when a booking is approved.', 'action-logger' ) ),
+                'default_value'      => 0,
+            ),
+            array(
+                'action_name'        => 'em_booking_canceled',
+                'action_generator'   => 'Events Manager',
+                'action_title'       => esc_html( __( 'Booking canceled', 'action-logger' ) ),
+                'action_description' => esc_html( __( 'Logs when a booking is canceled.', 'action-logger' ) ),
+                'default_value'      => 0,
+            ),
+            array(
+                'action_name'        => 'em_booking_rejected',
+                'action_generator'   => 'Events Manager',
+                'action_title'       => esc_html( __( 'Booking rejected', 'action-logger' ) ),
+                'action_description' => esc_html( __( 'Logs when a booking is rejected.', 'action-logger' ) ),
+                'default_value'      => 0,
+            ),
             array(
                 'action_name'        => 'em_booking_deleted',
                 'action_generator'   => 'Events Manager',
@@ -97,7 +97,7 @@
             ),
         );
         $all_options = array_merge( $wp_options, $em_options );
-    
+
         // csvi options
         $csvi_options      = array(
             array(
@@ -123,7 +123,7 @@
             ),
         );
         $all_options = array_merge( $all_options, $csvi_options );
-    
+
         // add option for IDF rankings importer
         $ri_options      = array(
             array(
@@ -170,7 +170,7 @@
             ),
         );
         $all_options = array_merge( $all_options, $ri_options );
-        
+
         return $all_options;
-    
+
     }
