@@ -13,32 +13,55 @@
         <div class="wrap">
 
         <h1>Action Logger overview</h1>
-    
+
         <?php ActionLogger::al_show_admin_notices(); ?>
 
         <div id="action-logger" class="">
 
             <?php echo al_admin_menu(); ?>
-            
+
             <?php // echo al_check_php_version(); ?>
 
             <?php
                 // get results from db
-                global $wpdb;
-                $items = array();
+	            global $wpdb;
+	            $ppp       = 5;
+	            $all_items = array();
+	            $items     = array();
+
+	            $all_items = $wpdb->get_results( "
+                    SELECT * 
+                    FROM " . $wpdb->prefix . "action_logs
+                ");
+
+	            if ( ! isset( $_GET['paged'] ) || $_GET['paged'] == 1 ) {
+		            $page_number = 1;
+		            $offset      = 0;
+	            } else {
+		            $page_number = $_GET['paged'];
+		            $offset      = ( $page_number - 1 ) * $ppp;
+                }
+
                 $items = $wpdb->get_results( "
-                    SELECT * FROM " . $wpdb->prefix . "action_logs
-                    order by id DESC
+                    SELECT * 
+                    FROM " . $wpdb->prefix . "action_logs
+                    ORDER BY id DESC
+                    LIMIT " . $ppp . " OFFSET " . $offset . "
                 ");
             ?>
 
             <?php if ( count( $items ) == 0 ) { ?>
                 <p><?php esc_html_e( 'No logs (yet)...', 'action-logger' ); ?></p>
             <?php } elseif ( count( $items ) > 0 ) { ?>
+
                 <?php rsort( $items ); ?>
+	            <?php $pages = ceil( ( count( $all_items ) / $ppp ) ); ?>
+                <?php $item_count = 0; ?>
+
                 <p><?php esc_html_e( 'This page shows a log of all actions done by users, which are "interesting" to log.', 'action-logger' ); ?></p>
                 <h2><?php esc_html_e( 'Logs', 'action-logger' ); ?></h2>
                 <p><small><?php esc_html_e( 'Log items are sorted, newest to oldest.', 'action-logger' ); ?></small></p>
+
                 <form name="logs-form" action="" method="post">
                     <input name="delete_action_items_nonce" type="hidden" value="<?php echo wp_create_nonce( 'delete-actions-items-nonce' ); ?>" />
                     <table class="action-logs">
@@ -57,6 +80,7 @@
                         </thead>
                         <tbody>
                         <?php foreach( $items as $item ) { ?>
+                            <?php //if ( ! isset( $_GET[ 'paged' ] ) ) { $item_count++; } ?>
                             <tr class="row">
                                 <td class="datetime"><?php echo date( 'M j @ H:i:s', $item->action_time ); ?> (+<?php echo get_option( 'gmt_offset' ); ?>)</td>
                                 <?php if ( current_user_can( 'manage_options' ) ) { ?>
@@ -73,13 +97,38 @@
                                     </td>
                                 <?php } ?>
                             </tr>
+                            <?php if ( $item_count == $ppp ) { break; } ?>
                         <?php } ?>
                         </tbody>
                     </table>
+	                <?php
+		                $big = 999999999; // need an unlikely integer
+                        if ( isset( $_GET[ 'paged' ] ) ) {
+                            $page_number = $_GET[ 'paged' ];
+                        } else {
+                            $page_number = 1;
+                        }
+		                $pagination_args = array(
+                            'base'      => str_replace( $big, '%#%', esc_url( get_pagenum_link( $big ) ) ),
+                            'format'    => '/page/%#%',
+                            'total'     => $pages,
+                            'current'   => max(1, $page_number),
+                            'show_all'  => false,
+                            'end_size'  => 3,
+                            'mid_size'  => 2,
+                            'prev_next' => true,
+                            'prev_text' => __( '&laquo; Previous' ),
+                            'next_text' => __( 'Next &raquo;' ),
+                            'type'      => 'list',
+                        );
+		                echo sprintf( '<div class="paginator">%s</div>', paginate_links( $pagination_args ) );
+
+	                ?>
                     <?php if ( current_user_can( 'manage_options' ) ) { ?>
                         <input name="delete_selected" type="submit" class="admin-button admin-button-small" value="<?php esc_html_e( 'Delete selected items', 'action-logger' ); ?>" />
                     <?php } ?>
                 </form>
+
             <?php } ?>
 
         </div><!-- end #action-logger -->
