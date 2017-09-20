@@ -20,7 +20,7 @@
             <div id="action-logger" class="">
 
                 <?php echo al_admin_menu(); ?>
-    
+
                 <?php // echo al_check_php_version(); ?>
 
                 <h2><?php esc_html_e( 'Available log actions', 'action-logger' ); ?></h2>
@@ -43,14 +43,15 @@
                                 </thead>
                                 <tbody>
                                     <?php $action_counter = 0; ?>
+                                    <?php //echo '<pre>'; var_dump($available_log_actions); echo '</pre>'; exit; ?>
                                     <?php foreach( $available_log_actions as $action ) { ?>
                                         <?php $action_counter++; ?>
                                         <?php
                                             $show = false;
                                             if ( class_exists( 'EM_Events' ) && 'Events Manager' == $action[ 'action_generator' ] ) {
                                                 $show = true;
-                                            } elseif ( class_exists( 'CSV_Importer' ) && 'CSV Importer' == $action[ 'action_generator' ] ) {
-                                                // $show = true;
+                                            } elseif ( class_exists( 'CSV_WP' ) && 'CSV Importer' == $action[ 'action_generator' ] ) {
+                                                $show = true;
                                             } elseif ( class_exists( 'RankingsImport' ) && 'Rankings Importer' == $action[ 'action_generator' ] ) {
                                                 $show = true;
                                             } elseif ( class_exists( 'S2Member' ) && 'S2Member' == $action[ 'action_generator' ] ) {
