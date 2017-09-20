@@ -167,7 +167,9 @@
                 }
                 delete_option( 'al_available_log_actions' );
                 delete_option( 'al_log_user_role' );
-	            if ( false == get_option( 'al_preserve_settings' ) ) {
+                delete_option( 'al_posts_per_page' );
+    
+                if ( false == get_option( 'al_preserve_settings' ) ) {
 	                $this->al_truncate_log_table( true );
 		            delete_option( 'al_preserve_settings' );
 	            }
@@ -562,61 +564,6 @@
                 }
             }
 
-	        /**
-	         * This is the actual logger function, which is called at the place where you want to log something.
-	         *
-	         * @param string $action
-	         * @param string $action_generator
-	         * @param string $action_description
-	         */
-	        public static function xal_log_user_action( $action = false, $action_generator = false, $action_description = false ) {
-
-		        if ( false != $action_description ) {
-			        global $wpdb;
-			        $sql_data = array(
-				        'action_time'        => strtotime( date( 'Y-m-d  H:i:s', strtotime( '+' . get_option( 'gmt_offset' ) . ' hours' ) ) ),
-				        'action_user'        => get_current_user_id(),
-				        'action'             => $action,
-				        'action_generator'   => $action_generator,
-				        'action_description' => $action_description,
-			        );
-			        $db_status = $wpdb->insert( $wpdb->prefix . 'action_logs', $sql_data );
-		        }
-
-	        }
-
-	        public function al_register_shortcode_logger( $attributes ) {
-
-		        $post_title   = get_the_title();
-		        $post_link    = get_the_permalink();
-		        $post_type    = get_post_type();
-		        $log_loggedin = get_option( 'al_user_visit_registered' );
-		        $log_visitor  = get_option( 'al_user_visit_visitor' );
-		        $log_it       = true;
-		        $attributes   = shortcode_atts( array(
-	                'message' => 'visited <a href="' . $post_link . '">' . $post_title . '</a>',
-                ), $attributes, 'actionlogger' );
-
-                if ( is_user_logged_in() ) {
-	                $user = get_userdata( get_current_user_id() )->display_name;
-                    if ( false == $log_loggedin ) {
-                        $log_it = false;
-                    }
-                } else {
-	                $user = esc_html__( 'A visitor', 'action-logger' );
-                    if ( false == $log_visitor ) {
-                        $log_it = false;
-                    }
-                }
-
-                if ( ! is_admin() && true == $log_it ) {
-                    al_log_user_action( $post_type . '_visit', 'Shortcode', $user . ' ' . $attributes[ 'message' ] );
-	                // al_log_user_action( $post_type . '_visit', 'Shortcode', 'message' );
-                }
-
-                return;
-            }
-
             public function al_truncate_log_table( $truncate = false ) {
 
                 if ( false != $truncate ) {
@@ -639,12 +586,100 @@
                     return '<p><a href="' . site_url() . '/wp-admin/admin.php?page=action-logger">' . esc_html( __( 'Logs', 'action-logger' ) ) . '</a> | <a href="' . site_url() . '/wp-admin/admin.php?page=al-settings">' . esc_html( __( 'Settings', 'action-logger' ) ) . '</a> | <a href="' . site_url() . '/wp-admin/admin.php?page=al-misc">' . esc_html( __( 'Misc', 'action-logger' ) ) . '</a></p>';
                 }
             }
-
+    
+            /**
+             * This is the actual logger function, which is called at the place where you want to log something.
+             *
+             * @param string $action
+             * @param string $action_generator
+             * @param string $action_description
+             */
+            public static function xal_log_user_action( $action = false, $action_generator = false, $action_description = false ) {
+        
+                if ( false != $action_description ) {
+                    global $wpdb;
+                    $sql_data = array(
+                        'action_time'        => strtotime( date( 'Y-m-d  H:i:s', strtotime( '+' . get_option( 'gmt_offset' ) . ' hours' ) ) ),
+                        'action_user'        => get_current_user_id(),
+                        'action'             => $action,
+                        'action_generator'   => $action_generator,
+                        'action_description' => $action_description,
+                    );
+                    $db_status = $wpdb->insert( $wpdb->prefix . 'action_logs', $sql_data );
+                }
+        
+            }
+    
+            public function al_register_shortcode_logger( $attributes ) {
+        
+                $post_title   = get_the_title();
+                $post_link    = get_permalink();
+                // $post_link    = '#';
+                $post_type    = get_post_type();
+                $log_loggedin = get_option( 'al_user_visit_registered' );
+                $log_visitor  = get_option( 'al_user_visit_visitor' );
+                $log_it       = true;
+                $attributes   = shortcode_atts( array(
+                    'message' => 'visited <a href="' . $post_link . '">' . $post_title . '</a>',
+                ), $attributes, 'actionlogger' );
+        
+                if ( is_user_logged_in() ) {
+                    $user = get_userdata( get_current_user_id() )->display_name;
+                    if ( false == $log_loggedin ) {
+                        $log_it = false;
+                    }
+                } else {
+                    $user = esc_html__( 'A visitor', 'action-logger' );
+                    if ( false == $log_visitor ) {
+                        $log_it = false;
+                    }
+                }
+        
+                if ( ! is_admin() && true == $log_it ) {
+                    al_log_user_action( $post_type . '_visit', 'Shortcode', $user . ' ' . $attributes[ 'message' ] );
+                    // al_log_user_action( $post_type . '_visit', 'Shortcode', 'message' );
+                }
+        
+                return;
+            }
+    
             /**
              * Default Wordpress actions
              * These functions hooks into default WP actions like user register, change and delete
              */
-
+    
+            /**
+             * Function to check post transitions and log those
+             *
+             * @param $new_status string
+             * @param $old_status string
+             * @param $post       object
+             */
+            public function al_post_status_transitions( $new_status, $old_status, $post ) {
+                if ( $old_status == 'draft' && $new_status == 'publish' ) {
+                    // draft > publish
+                    al_log_user_action( 'post_published', 'Action Logger', sprintf( esc_html( __( '%s published %s.', 'action-logger' ) ), get_userdata( get_current_user_id() )->display_name, '<a href="' . get_permalink( $post->ID ) . '">' . $post->post_title . '</a>' ) );
+                } elseif ( $old_status == 'pending' && $new_status == 'publish' ) {
+                    // pending > publish
+                    al_log_user_action( 'post_published', 'Action Logger', sprintf( esc_html( __( '%s re-published %s.', 'action-logger' ) ), get_userdata( get_current_user_id() )->display_name, '<a href="' . get_permalink( $post->ID ) . '">' . $post->post_title . '</a>' ) );
+                } elseif ( $old_status == 'publish' && $new_status == 'publish' ) {
+                    // publish > publish
+                    $link = '<a href="' . apply_filters( 'the_permalink', esc_url( get_permalink( $post->ID ) ) . '">' . $post->post_title . '</a>' );
+                    // $link = '<a href="' . esc_url( get_permalink( $post->ID ) ) . '">' . $post->post_title . '</a>';
+                    al_log_user_action( 'post_edited', 'Action Logger', sprintf( esc_html__( '%s edited published post %s.', 'action-logger' ), get_userdata( get_current_user_id() )->display_name, $link ) );
+                } elseif ( $old_status == 'publish' && $new_status != 'publish' ) {
+                    // X > !publish
+                    if ( $old_status == 'publish' && $new_status == 'trash' ) {
+                        // publish > trash
+                        al_log_user_action( 'post_trashed', 'Action Logger', sprintf( esc_html( __( '%s deleted %s.', 'action-logger' ) ), get_userdata( get_current_user_id() )->display_name, '<a href="' . get_permalink( $post->ID ) . '">' . $post->post_title . '</a>' ) );
+                    } elseif ( $old_status == 'publish' && $new_status == 'pending' ) {
+                        // publish > pending
+                        // die('XYZ');
+                        al_log_user_action( 'post_pending', 'Action Logger', sprintf( esc_html( __( '%s marked %s as \'pending review\'.', 'action-logger' ) ), get_userdata( get_current_user_id() )->display_name, '<a href="' . get_permalink( $post->ID ) . '">' . $post->post_title . '</a>' ) );
+                    }
+                }
+            }
+        
             /**
              * Log user creation
              *
@@ -681,36 +716,6 @@
 			        al_log_user_action( 'user_deleted', 'Action Logger', sprintf( esc_html( __( '%s deleted the user of %s.', 'action-logger' ) ), get_userdata( get_current_user_id() )->display_name, get_userdata( $user_id )->display_name ) );
 		        }
 	        }
-
-            /**
-             * Function to check post transitions and log those
-             *
-             * @param $new_status string
-             * @param $old_status string
-             * @param $post       object
-             */
-	        public function al_post_status_transitions( $new_status, $old_status, $post ) {
-                if ( $old_status == 'draft' && $new_status == 'publish' ) {
-                    // draft > publish
-                    al_log_user_action( 'post_published', 'Action Logger', sprintf( esc_html( __( '%s published %s.', 'action-logger' ) ), get_userdata( get_current_user_id() )->display_name, '<a href="' . get_the_permalink( $post->ID ) . '">' . $post->post_title . '</a>' ) );
-                } elseif ( $old_status == 'pending' && $new_status == 'publish' ) {
-                    // pending > publish
-                    al_log_user_action( 'post_published', 'Action Logger', sprintf( esc_html( __( '%s re-published %s.', 'action-logger' ) ), get_userdata( get_current_user_id() )->display_name, '<a href="' . get_the_permalink( $post->ID ) . '">' . $post->post_title . '</a>' ) );
-                } elseif ( $old_status == 'publish' && $new_status == 'publish' ) {
-                    // publish > publish
-                    al_log_user_action( 'post_edited', 'Action Logger', sprintf( esc_html__( '%s edited published post %s.', 'action-logger' ), get_userdata( get_current_user_id() )->display_name, '<a href="' . esc_url( get_the_permalink( $post->ID ) ) . '">' . $post->post_title . '</a>' ) );
-                } elseif ( $old_status == 'publish' && $new_status != 'publish' ) {
-                    // X > !publish
-                    if ( $old_status == 'publish' && $new_status == 'trash' ) {
-                        // publish > trash
-                        al_log_user_action( 'post_trashed', 'Action Logger', sprintf( esc_html( __( '%s deleted %s.', 'action-logger' ) ), get_userdata( get_current_user_id() )->display_name, '<a href="' . get_the_permalink( $post->ID ) . '">' . $post->post_title . '</a>' ) );
-                    } elseif ( $old_status == 'publish' && $new_status == 'pending' ) {
-                        // publish > pending
-                        // die('XYZ');
-                        al_log_user_action( 'post_pending', 'Action Logger', sprintf( esc_html( __( '%s marked %s as \'pending review\'.', 'action-logger' ) ), get_userdata( get_current_user_id() )->display_name, '<a href="' . get_the_permalink( $post->ID ) . '">' . $post->post_title . '</a>' ) );
-                    }
-                }
-            }
 
 	        /**
              * Events manager actions
