@@ -126,6 +126,7 @@
 	                ?>
                     <?php if ( current_user_can( 'manage_options' ) ) { ?>
                         <input name="delete_selected" type="submit" class="admin-button admin-button-small" value="<?php esc_html_e( 'Delete selected items', 'action-logger' ); ?>" />
+                        <input name="delete_all" type="submit" class="admin-button admin-button-small" onclick="return confirm( 'Are you sure you want to delete all logs ?' )" value="<?php esc_html_e( 'Delete all', 'action-logger' ); ?>" />
                     <?php } ?>
                 </form>
 

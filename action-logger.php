@@ -510,24 +510,29 @@
                     } else {
 
                         $delete_items = ! empty( $_POST[ 'delete_selected' ] ) ? $_POST[ 'delete_selected' ] : false;
-                        if ( isset( $_POST[ 'rows' ] ) ) {
+	                    if ( isset( $_POST['delete_all'] ) ) {
+		                    $this->al_truncate_log_table( true );
+		                    ActionLogger::al_errors()->add( 'success_logs_deleted', esc_html( __( 'All logs deleted.', 'action-logger' ) ) );
 
-                            if ( $_POST[ 'rows' ] ) {
-                                $where = array();
-                                global $wpdb;
-                                foreach( $_POST[ 'rows' ] as $row_id ) {
-                                    $wpdb->delete( $wpdb->prefix . 'action_logs', array( 'ID' => $row_id ) );
-                                }
+		                    return;
+	                    } elseif ( isset( $_POST['rows'] ) ) {
 
-                                ActionLogger::al_errors()->add( 'success_items_deleted', esc_html( __( 'All selected items are successfully deleted from the database.', 'action-logger' ) ) );
+		                    if ( $_POST['rows'] ) {
+			                    $where = array();
+			                    global $wpdb;
+			                    foreach ( $_POST['rows'] as $row_id ) {
+				                    $wpdb->delete( $wpdb->prefix . 'action_logs', array( 'ID' => $row_id ) );
+			                    }
 
-                                return;
-                            }
-                        } else {
-                            ActionLogger::al_errors()->add( 'error_no_selection', esc_html( __( 'You didn\'t select any lines. If you did, then something went wrong.', 'action-logger' ) ) );
+			                    ActionLogger::al_errors()->add( 'success_items_deleted', esc_html( __( 'All selected items are successfully deleted from the database.', 'action-logger' ) ) );
 
-                            return;
-                        }
+			                    return;
+		                    }
+	                    } else {
+		                    ActionLogger::al_errors()->add( 'error_no_selection', esc_html( __( 'You didn\'t select any lines. If you did, then something went wrong.', 'action-logger' ) ) );
+
+		                    return;
+	                    }
                     }
                 }
             }
@@ -545,7 +550,7 @@
                     } else {
 
 	                    // $delete_all = ! empty( $_POST[ 'delete_all' ] ) ? $_POST[ 'delete_all' ] : false;
-                        if ( isset( $_POST ) && $_POST[ 'delete_all_checkbox' ] == 1 ) {
+                        if ( isset( $_POST[ 'delete_all' ] ) ) {
                             // truncate table
                             $this->al_truncate_log_table( true );
                             ActionLogger::al_errors()->add( 'success_logs_deleted', esc_html( __( 'All logs deleted.', 'action-logger' ) ) );
