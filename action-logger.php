@@ -62,8 +62,7 @@
                 add_action( 'admin_init',                   array( $this, 'al_check_log_table' ) );
                 add_action( 'plugins_loaded',               array( $this, 'al_load_plugin_textdomain' ) );
                 add_action( 'admin_enqueue_scripts',        array( $this, 'al_enqueue_action_logger_css' ) );
-
-	            add_action( 'admin_head',                   array( $this, 'al_add_screen_options' ) );
+	            add_filter( 'set-screen-option',            array( $this, 'al_set_screen_option' ), 10, 3 );
 
 	            // Shortcode
 	            add_shortcode( 'actionlogger',         array( $this, 'al_register_shortcode_logger' ) );
@@ -97,31 +96,55 @@
 	            include( 'al-functions.php' );
                 include( 'al-logger.php' );
                 include( 'al-help-tab.php' );
-                include( 'al-available-actions.php' );
+	            include( 'al-available-actions.php' );
 
 	            // $this->al_set_default_values();
 
             }
 
+	        /**
+	         * @return bool
+	         */
 	        public function al_add_screen_options() {
 
-                $screen = get_current_screen();
-                // echo '<pre>'; var_dump($screen->id); echo '</pre>'; exit;
+		        $screen = get_current_screen();
+		        // echo '<pre>'; var_dump($screen); echo '</pre>'; exit;
 
 		        if ( 'toplevel_page_action-logger' != $screen->id ) {
 			        return false;
 		        }
 
+		        $option   = $screen->get_option( 'al_ppp', 'option' );
+		        $per_page = get_user_meta( get_current_user_id(), $option, true );
+		        if ( empty ( $per_page ) || $per_page < 1 ) {
+			        $per_page = $screen->get_option( 'per_page', 'default' );
+		        }
+
 		        add_screen_option(
-		                'per_page',
-                        array(
-                            'label' => sprintf( __( 'Log entries (%d max)', 'action-logger' ), 200 ),
-                            'default' => get_option( 'al_posts_per_page' ),
-                            'option' => 'al_posts_per_page'
-                        ) );
+			        'per_page',
+			        array(
+				        'label'   => sprintf( __( 'Log entries (%d max)', 'action-logger' ), 200 ),
+				        'default' => get_option( 'al_posts_per_page' ),
+				        'option'  => 'al_ppp'
+			        )
+		        );
 
 	        }
-            /**
+
+	        public function al_set_screen_option( $status, $option, $value ) {
+
+		        // echo '<pre>'; var_dump($value); echo '</pre>'; exit;
+
+		        if ( 'al_ppp' == $option ) {
+		            update_user_meta( get_current_user_id(), $option, $value );
+			        return $value;
+		        }
+
+		        return $status;
+
+	        }
+
+	        /**
              * Function which runs upon plugin activation
              */
             public function al_plugin_activation() {
@@ -298,6 +321,7 @@
             public function al_add_action_logger_dashboard() {
                 global $my_plugin_hook;
                 $my_plugin_hook = add_menu_page( 'Action Logger', 'Action Logger', 'manage_options', 'action-logger', 'action_logger_dashboard', 'dashicons-editor-alignleft' );
+	            add_action( "load-$my_plugin_hook", array( $this, 'al_add_screen_options' ) );
                 include( 'al-dashboard.php' ); // content for the settings page
             }
 
