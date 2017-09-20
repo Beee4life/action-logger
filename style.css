@@ -73,3 +73,34 @@
 #contextual-help-columns h5 {
     margin-top: 10px;
 }
+
+.paginator ul {
+    list-style-type: none;
+    margin:          0;
+    padding:         0 0 20px 0;
+}
+
+.paginator ul li {
+    display: inline-block;
+    margin:  2px;
+}
+
+.paginator span,
+.paginator a {
+    margin: 0;
+}
+
+.paginator span:hover,
+.paginator a:hover {
+}
+
+.paginator span.current,
+.paginator a.current {
+}
+
+.paginator span.separator,
+.paginator a.separator {
+    background:     none;
+    pointer-events: none;
+    padding:        0 10px;
+}
