@@ -9,10 +9,6 @@
 	 */
 	function al_log_user_action( $action = false, $action_generator = false, $action_description = false ) {
         
-        // echo '<pre>'; var_dump($action); echo '</pre>';
-        // echo '<pre>'; var_dump($action_generator); echo '</pre>';
-        // echo '<pre>'; var_dump($action_description); echo '</pre>'; exit;
-
         if ( false != $action_description ) {
             global $wpdb;
             $sql_data = array(
