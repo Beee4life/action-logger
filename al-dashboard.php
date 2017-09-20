@@ -25,7 +25,7 @@
             <?php
                 // get results from db
 	            global $wpdb;
-	            $ppp       = 5;
+	            $ppp       = ! empty( get_option( 'al_posts_per_page' ) ) ? get_option( 'al_posts_per_page' ) : 5;
 	            $all_items = array();
 	            $items     = array();
 

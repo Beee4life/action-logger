@@ -52,7 +52,7 @@
                 // actions
                 add_action( 'admin_menu',                   array( $this, 'al_add_action_logger_dashboard' ) );
                 add_action( 'admin_menu',                   array( $this, 'al_add_action_logger_actions_page' ) );
-                add_action( 'admin_menu',                   array( $this, 'al_add_settings_page' ) );
+                add_action( 'admin_menu',                   array( $this, 'al_add_action_logger_settings_page' ) );
                 add_action( 'admin_menu',                   array( $this, 'al_add_action_logger_misc_page' ) );
                 add_action( 'admin_init',                   array( $this, 'al_delete_selected_items' ) );
                 add_action( 'admin_init',                   array( $this, 'al_delete_all_logs' ) );
@@ -62,6 +62,8 @@
                 add_action( 'admin_init',                   array( $this, 'al_check_log_table' ) );
                 add_action( 'plugins_loaded',               array( $this, 'al_load_plugin_textdomain' ) );
                 add_action( 'admin_enqueue_scripts',        array( $this, 'al_enqueue_action_logger_css' ) );
+
+	            add_action( 'admin_head',                   array( $this, 'al_add_screen_options' ) );
 
 	            // Shortcode
 	            add_shortcode( 'actionlogger',         array( $this, 'al_register_shortcode_logger' ) );
@@ -90,8 +92,6 @@
                 add_action( 'ri_rankings_imported',         array( $this, 'al_ri_rankings_imported' ) );
                 add_action( 'ri_csv_file_upload',           array( $this, 'al_ri_csv_uploaded' ) );
 
-	            // $this->al_set_default_values();
-
 	            // includes
                 include( 'al-admin-menu.php' );
 	            include( 'al-functions.php' );
@@ -99,8 +99,28 @@
                 include( 'al-help-tab.php' );
                 include( 'al-available-actions.php' );
 
+	            // $this->al_set_default_values();
+
             }
 
+	        public function al_add_screen_options() {
+
+                $screen = get_current_screen();
+                // echo '<pre>'; var_dump($screen->id); echo '</pre>'; exit;
+
+		        if ( 'toplevel_page_action-logger' != $screen->id ) {
+			        return false;
+		        }
+
+		        add_screen_option(
+		                'per_page',
+                        array(
+                            'label' => sprintf( __( 'Log entries (%d max)', 'action-logger' ), 200 ),
+                            'default' => get_option( 'al_posts_per_page' ),
+                            'option' => 'al_posts_per_page'
+                        ) );
+
+	        }
             /**
              * Function which runs upon plugin activation
              */
@@ -217,7 +237,8 @@
                         update_option( 'al_' . $option[ 'action_name' ], $option[ 'default_value' ] );
                     }
                     update_option( 'al_available_log_actions', $all_options );
-                    update_option( 'al_log_user_role', 'manage_options' );
+	                update_option( 'al_log_user_role', 'manage_options' );
+	                update_option( 'al_posts_per_page', 100 );
                 }
             }
 
@@ -291,7 +312,7 @@
             /**
              * Adds a (hidden) settings page, only through the menu on top of the pages.
              */
-            public function al_add_settings_page() {
+            public function al_add_action_logger_settings_page() {
                 add_submenu_page( NULL, 'Log actions', 'Log actions', 'manage_options', 'al-settings', 'action_logger_settings_page' );
                 include( 'al-settings.php' ); // content for the settings page
             }
