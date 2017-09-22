@@ -87,27 +87,11 @@
                 add_action( 'ri_rankings_imported',         array( $this, 'al_ri_rankings_imported' ) );
                 add_action( 'ri_csv_file_upload',           array( $this, 'al_ri_csv_uploaded' ) );
 
-	            // includes
-	            // include( 'al-errors.php' );
-	            // include( 'al-logger.php' );
-	            // include( 'al-functions.php' );
-                // include( 'al-help-tabs.php' );
-
 	            // load on each page load
 	            $this->al_load_includes();
 	            $this->al_log_user_action();
 
             }
-
-	        /**
-	         * Load included files
-	         */
-            public function al_load_includes() {
-		        include( 'al-errors.php' );
-		        include( 'al-help-tabs.php' );
-		        include( 'al-functions.php' );
-		        include( 'al-admin-menu.php' );
-	        }
 
 	        /**
              * Function which runs upon plugin activation
@@ -242,7 +226,17 @@
 		        include( 'al-misc.php' ); // content for the settings page
 	        }
 
-            /**
+	        /**
+	         * Load included files
+	         */
+	        public function al_load_includes() {
+		        include( 'al-errors.php' );
+		        include( 'al-help-tabs.php' );
+		        include( 'al-functions.php' );
+		        include( 'al-admin-menu.php' );
+	        }
+
+	        /**
              * All form action for the settings page, except the nuke database action
              */
             public function al_log_actions_functions() {
