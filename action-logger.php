@@ -54,7 +54,6 @@
 	            add_action( 'admin_menu',                   array( $this, 'al_add_admin_pages' ) );
                 add_action( 'admin_init',                   array( $this, 'al_delete_selected_items' ) );
                 add_action( 'admin_init',                   array( $this, 'al_delete_all_logs' ) );
-                add_action( 'admin_init',                   array( $this, 'al_errors' ) );
                 add_action( 'admin_init',                   array( $this, 'al_log_actions_functions' ) );
                 add_action( 'admin_init',                   array( $this, 'al_settings_page_functions' ) );
                 add_action( 'admin_init',                   array( $this, 'al_check_log_table' ) );
@@ -89,15 +88,26 @@
                 add_action( 'ri_csv_file_upload',           array( $this, 'al_ri_csv_uploaded' ) );
 
 	            // includes
-                include( 'al-admin-menu.php' );
-	            include( 'al-functions.php' );
-                include( 'al-logger.php' );
-                include( 'al-help-tab.php' );
-	            include( 'al-available-actions.php' );
+	            // include( 'al-errors.php' );
+	            // include( 'al-logger.php' );
+	            // include( 'al-functions.php' );
+                // include( 'al-help-tabs.php' );
 
-	            // $this->al_set_default_values();
+	            // load on each page load
+	            $this->al_load_includes();
+	            $this->al_log_user_action();
 
             }
+
+	        /**
+	         * Load included files
+	         */
+            public function al_load_includes() {
+		        include( 'al-errors.php' );
+		        include( 'al-help-tabs.php' );
+		        include( 'al-functions.php' );
+		        include( 'al-admin-menu.php' );
+	        }
 
 	        /**
              * Function which runs upon plugin activation
@@ -213,57 +223,6 @@
                 }
             }
 
-            /**
-             * @return WP_Error
-             */
-            public static function al_errors() {
-                static $wp_error; // Will hold global variable safely
-                return isset( $wp_error ) ? $wp_error : ( $wp_error = new WP_Error( null, null, null ) );
-            }
-
-            /**
-             * Displays error messages from form submissions
-             */
-            public static function al_show_admin_notices() {
-                if ( $codes = ActionLogger::al_errors()->get_error_codes() ) {
-                    if ( is_wp_error( ActionLogger::al_errors() ) ) {
-
-                        // Loop error codes and display errors
-                        $error      = false;
-                        $span_class = false;
-                        $prefix     = false;
-                        foreach ( $codes as $code ) {
-                            if ( strpos( $code, 'success' ) !== false ) {
-                                $span_class = 'notice-success ';
-                                $prefix     = false;
-                            } elseif ( strpos( $code, 'error' ) !== false ) {
-                                $span_class = 'notice-error ';
-                                $prefix     = esc_html( __( 'Warning', 'action-logger' ) );
-                            } elseif ( strpos( $code, 'info' ) !== false ) {
-                                $span_class = 'notice-info ';
-                                $prefix     = false;
-                            } else {
-	                            $error      = true;
-	                            $span_class = 'notice-error ';
-	                            $prefix     = esc_html( __( 'Error', 'action-logger' ) );
-                            }
-                        }
-                        echo '<div class="notice ' . $span_class . 'is-dismissible">';
-                        foreach( $codes as $code ) {
-                            $message = ActionLogger::al_errors()->get_error_message( $code );
-                            echo '<div class="">';
-                            if ( true == $prefix ) {
-                                echo '<strong>' . $prefix . ':</strong> ';
-                            }
-                            echo $message;
-                            echo '</div>';
-                            echo '<button type="button" class="notice-dismiss"><span class="screen-reader-text">' . esc_html( __( 'Dismiss this notice', 'action-logger' ) ) . '</span></button>';
-                        }
-                        echo '</div>';
-                    }
-                }
-            }
-
 	        /**
 	         * Adds a page to admin sidebar menu
 	         */
@@ -293,7 +252,7 @@
                  */
                 if ( isset( $_POST[ 'active_logs_nonce' ] ) ) {
                     if ( ! wp_verify_nonce( $_POST[ 'active_logs_nonce' ], 'active-logs-nonce' ) ) {
-                        ActionLogger::al_errors()->add( 'error_nonce_no_match', esc_html( __( 'Something went wrong. Please try again.', 'action-logger' ) ) );
+                        al_errors()->add( 'error_nonce_no_match', esc_html( __( 'Something went wrong. Please try again.', 'action-logger' ) ) );
 
                         return;
                     } else {
@@ -310,7 +269,7 @@
                                 update_option( 'al_' . $action[ 'action_name' ], 0 );
                             }
                         }
-                        ActionLogger::al_errors()->add( 'success_settings_saved', esc_html( __( 'Settings saved.', 'action-logger' ) ) );
+                        al_errors()->add( 'success_settings_saved', esc_html( __( 'Settings saved.', 'action-logger' ) ) );
 
                     }
                 }
@@ -326,7 +285,7 @@
 	             */
                 if ( isset( $_POST[ 'settings_page_nonce' ] ) ) {
                     if ( ! wp_verify_nonce( $_POST[ 'settings_page_nonce' ], 'settings-page-nonce' ) ) {
-                        ActionLogger::al_errors()->add( 'error_nonce_no_match', esc_html( __( 'Something went wrong. Please try again.', 'action-logger' ) ) );
+                        al_errors()->add( 'error_nonce_no_match', esc_html( __( 'Something went wrong. Please try again.', 'action-logger' ) ) );
 
                         return;
                     } else {
@@ -334,7 +293,7 @@
                         if ( isset( $_POST[ 'select_cap' ] ) ) {
                             update_option( 'al_log_user_role', $_POST[ 'select_cap' ] );
                         }
-                        ActionLogger::al_errors()->add( 'success_settings_saved', esc_html( __( 'Settings saved.', 'action-logger' ) ) );
+                        al_errors()->add( 'success_settings_saved', esc_html( __( 'Settings saved.', 'action-logger' ) ) );
 
                     }
                 }
@@ -344,7 +303,7 @@
                  */
                 if ( isset( $_POST[ 'export_csv_nonce' ] ) ) {
                     if ( ! wp_verify_nonce( $_POST[ 'export_csv_nonce' ], 'export-csv-nonce' ) ) {
-                        ActionLogger::al_errors()->add( 'error_nonce_no_match', esc_html( __( 'Something went wrong. Please try again.', 'action-logger' ) ) );
+                        al_errors()->add( 'error_nonce_no_match', esc_html( __( 'Something went wrong. Please try again.', 'action-logger' ) ) );
 
                         return;
                     } else {
@@ -398,7 +357,7 @@
                  */
                 if ( isset( $_POST[ 'preserve_settings_nonce' ] ) ) {
                     if ( ! wp_verify_nonce( $_POST[ 'preserve_settings_nonce' ], 'preserve-settings-nonce' ) ) {
-                        ActionLogger::al_errors()->add( 'error_nonce_no_match', esc_html( __( 'Something went wrong. Please try again.', 'action-logger' ) ) );
+                        al_errors()->add( 'error_nonce_no_match', esc_html( __( 'Something went wrong. Please try again.', 'action-logger' ) ) );
 
                         return;
                     } else {
@@ -409,6 +368,7 @@
                         } elseif ( false == $preserve_settings ) {
                             delete_option( 'al_preserve_settings' );
                         }
+	                    al_errors()->add( 'success_settings_saved', esc_html( __( 'Settings saved.', 'action-logger' ) ) );
                     }
                 }
 
@@ -421,7 +381,7 @@
 
                 if ( isset( $_POST[ 'delete_action_items_nonce' ] ) ) {
                     if ( ! wp_verify_nonce( $_POST[ 'delete_action_items_nonce' ], 'delete-actions-items-nonce' ) ) {
-                        ActionLogger::al_errors()->add( 'error_nonce_no_match', esc_html( __( 'Something went wrong. Please try again.', 'action-logger' ) ) );
+                        al_errors()->add( 'error_nonce_no_match', esc_html( __( 'Something went wrong. Please try again.', 'action-logger' ) ) );
 
                         return;
                     } else {
@@ -429,7 +389,7 @@
                         $delete_items = ! empty( $_POST[ 'delete_selected' ] ) ? $_POST[ 'delete_selected' ] : false;
 	                    if ( isset( $_POST['delete_all'] ) ) {
 		                    $this->al_truncate_log_table( true );
-		                    ActionLogger::al_errors()->add( 'success_logs_deleted', esc_html( __( 'All logs deleted.', 'action-logger' ) ) );
+		                    al_errors()->add( 'success_logs_deleted', esc_html( __( 'All logs deleted.', 'action-logger' ) ) );
 
 		                    return;
 	                    } elseif ( isset( $_POST['rows'] ) ) {
@@ -441,12 +401,12 @@
 				                    $wpdb->delete( $wpdb->prefix . 'action_logs', array( 'ID' => $row_id ) );
 			                    }
 
-			                    ActionLogger::al_errors()->add( 'success_items_deleted', esc_html( __( 'All selected items are successfully deleted from the database.', 'action-logger' ) ) );
+			                    al_errors()->add( 'success_items_deleted', esc_html( __( 'All selected items are successfully deleted from the database.', 'action-logger' ) ) );
 
 			                    return;
 		                    }
 	                    } else {
-		                    ActionLogger::al_errors()->add( 'error_no_selection', esc_html( __( 'You didn\'t select any lines. If you did, then something went wrong.', 'action-logger' ) ) );
+		                    al_errors()->add( 'error_no_selection', esc_html( __( 'You didn\'t select any lines. If you did, then something went wrong.', 'action-logger' ) ) );
 
 		                    return;
 	                    }
@@ -461,7 +421,7 @@
 
                 if ( isset( $_POST[ 'delete_all_logs_nonce' ] ) ) {
                     if ( ! wp_verify_nonce( $_POST[ 'delete_all_logs_nonce' ], 'delete-all-logs-nonce' ) ) {
-                        ActionLogger::al_errors()->add( 'error_nonce_no_match', esc_html( __( 'Something went wrong. Please try again.', 'action-logger' ) ) );
+                        al_errors()->add( 'error_nonce_no_match', esc_html( __( 'Something went wrong. Please try again.', 'action-logger' ) ) );
 
                         return;
                     } else {
@@ -470,7 +430,7 @@
                         if ( isset( $_POST[ 'delete_all' ] ) ) {
                             // truncate table
                             $this->al_truncate_log_table( true );
-                            ActionLogger::al_errors()->add( 'success_logs_deleted', esc_html( __( 'All logs deleted.', 'action-logger' ) ) );
+                            al_errors()->add( 'success_logs_deleted', esc_html( __( 'All logs deleted.', 'action-logger' ) ) );
 
                             return;
                         }
@@ -497,8 +457,8 @@
 
 
             public function al_admin_menu() {
-                if ( current_user_can( get_option( 'al_log_user_role' ) ) ) {
                     return '<p><a href="' . site_url() . '/wp-admin/admin.php?page=action-logger">' . esc_html( __( 'Logs', 'action-logger' ) ) . '</a> | <a href="' . site_url() . '/wp-admin/admin.php?page=al-settings">' . esc_html( __( 'Settings', 'action-logger' ) ) . '</a> | <a href="' . site_url() . '/wp-admin/admin.php?page=al-misc">' . esc_html( __( 'Misc', 'action-logger' ) ) . '</a></p>';
+                if ( current_user_can( 'manage_options' ) ) {
                 }
             }
 
@@ -546,28 +506,27 @@
 
 
 	        /**
-             * This is the actual logger function, which is called at the place where you want to log something.
-             *
-             * @param string $action
-             * @param string $action_generator
-             * @param string $action_description
-             */
-            public static function xal_log_user_action( $action = false, $action_generator = false, $action_description = false ) {
+	         * This is the actual logger function, which is called at the place where you want to log something.
+	         *
+	         * @param string $action
+	         * @param string $action_generator
+	         * @param string $action_description
+	         */
+	        public static function al_log_user_action( $action = false, $action_generator = false, $action_description = false ) {
 
-                if ( false != $action_description ) {
-                    global $wpdb;
-                    $sql_data = array(
-                        'action_time'        => strtotime( date( 'Y-m-d  H:i:s', strtotime( '+' . get_option( 'gmt_offset' ) . ' hours' ) ) ),
-                        'action_user'        => get_current_user_id(),
-                        'action'             => $action,
-                        'action_generator'   => $action_generator,
-                        'action_description' => $action_description,
-                    );
-                    $db_status = $wpdb->insert( $wpdb->prefix . 'action_logs', $sql_data );
-                }
+		        if ( false != $action_description ) {
+			        global $wpdb;
+			        $sql_data = array(
+				        'action_time'        => strtotime( date( 'Y-m-d  H:i:s', strtotime( '+' . get_option( 'gmt_offset' ) . ' hours' ) ) ),
+				        'action_user'        => get_current_user_id(),
+				        'action'             => $action,
+				        'action_generator'   => $action_generator,
+				        'action_description' => $action_description,
+			        );
+			        $db_status = $wpdb->insert( $wpdb->prefix . 'action_logs', $sql_data );
+		        }
 
-            }
-
+	        }
             public function al_register_shortcode_logger( $attributes ) {
 
                 $post_title   = get_the_title();
@@ -594,7 +553,7 @@
                 }
 
                 if ( ! is_admin() && true == $log_it ) {
-                    al_log_user_action( $post_type . '_visit', 'Shortcode', $user . ' ' . $attributes[ 'message' ] );
+                    ActionLogger::al_log_user_action( $post_type . '_visit', 'Shortcode', $user . ' ' . $attributes[ 'message' ] );
                     // al_log_user_action( $post_type . '_visit', 'Shortcode', 'message' );
                 }
 
@@ -620,17 +579,17 @@
 		        if ( $old_status == 'draft' && $new_status == 'publish' ) {
 
                     // draft > publish
-			        al_log_user_action( $post_type . '_published', 'Action Logger', sprintf( esc_html( __( '%s published %s.', 'action-logger' ) ), $user_name, $post_link ) );
+			        ActionLogger::al_log_user_action( $post_type . '_published', 'Action Logger', sprintf( esc_html( __( '%s published %s.', 'action-logger' ) ), $user_name, $post_link ) );
 
 		        } elseif ( $old_status == 'pending' && $new_status == 'publish' ) {
 
 		            // pending > publish
-			        al_log_user_action( $post_type . '_republished', 'Action Logger', sprintf( esc_html( __( '%s re-published %s.', 'action-logger' ) ), $user_name, $post_link ) );
+			        ActionLogger::al_log_user_action( $post_type . '_republished', 'Action Logger', sprintf( esc_html( __( '%s re-published %s.', 'action-logger' ) ), $user_name, $post_link ) );
 
 		        } elseif ( $old_status == 'publish' && $new_status == 'publish' ) {
 
 		            // publish > publish
-			        al_log_user_action( $post_type . '_edited', 'Action Logger', sprintf( esc_html__( '%s edited published post %s.', 'action-logger' ), $user_name, $post_link ) );
+			        ActionLogger::al_log_user_action( $post_type . '_edited', 'Action Logger', sprintf( esc_html__( '%s edited published post %s.', 'action-logger' ), $user_name, $post_link ) );
 
 		        } elseif ( $old_status == 'publish' && $new_status != 'publish' ) {
 
@@ -638,12 +597,12 @@
 			        if ( $old_status == 'publish' && $new_status == 'trash' ) {
 
                         // publish > trash
-				        al_log_user_action( $post_type . '_deleted', 'Action Logger', sprintf( esc_html( __( '%s deleted %s.', 'action-logger' ) ), $user_name, get_the_title() ) );
+				        ActionLogger::al_log_user_action( $post_type . '_deleted', 'Action Logger', sprintf( esc_html( __( '%s deleted %s.', 'action-logger' ) ), $user_name, get_the_title() ) );
 
 			        } elseif ( $old_status == 'publish' && $new_status == 'pending' ) {
 
                         // publish > pending
-				        al_log_user_action( $post_type . '_pending', 'Action Logger', sprintf( esc_html( __( '%s marked %s as \'pending review\'.', 'action-logger' ) ), $user_name, $post_link ) );
+				        ActionLogger::al_log_user_action( $post_type . '_pending', 'Action Logger', sprintf( esc_html( __( '%s marked %s as \'pending review\'.', 'action-logger' ) ), $user_name, $post_link ) );
 			        }
 		        }
 	        }
@@ -654,9 +613,8 @@
              * @param $user_id
              */
             public function al_log_user_create( $user_id ) {
-	            al_log_user_action( 'user_registered', 'Action Logger', sprintf( esc_html( __( 'New user registered: %s.', 'sexdates' ) ), get_userdata( $user_id )->display_name ) );
                 if ( false != get_option( 'al_wp_user_create' ) ) {
-                    die('XXXX');
+	                ActionLogger::al_log_user_action( 'user_registered', 'Action Logger', sprintf( esc_html( __( 'New user registered: %s.', 'sexdates' ) ), get_userdata( $user_id )->display_name ) );
                 }
             }
 
@@ -670,7 +628,7 @@
                 // don't log when a a user edits his own profile
                 if ( $user_id != get_current_user_id() ) {
                     if ( false != get_option( 'al_wp_user_change' ) ) {
-                        al_log_user_action( 'user_changed', 'Action Logger', sprintf( esc_html( __( '%s changed the user of %s.', 'action-logger' ) ), get_userdata( get_current_user_id() )->display_name, get_userdata( $user_id )->display_name ) );
+                        ActionLogger::al_log_user_action( 'user_changed', 'Action Logger', sprintf( esc_html( __( '%s changed the user of %s.', 'action-logger' ) ), get_userdata( get_current_user_id() )->display_name, get_userdata( $user_id )->display_name ) );
                     }
                 }
             }
@@ -682,7 +640,7 @@
 	         */
 	        public function al_log_user_delete( $user_id ) {
 		        if ( false != get_option( 'al_wp_user_delete' ) ) {
-			        al_log_user_action( 'user_deleted', 'Action Logger', sprintf( esc_html( __( '%s deleted the user of %s.', 'action-logger' ) ), get_userdata( get_current_user_id() )->display_name, get_userdata( $user_id )->display_name ) );
+			        ActionLogger::al_log_user_action( 'user_deleted', 'Action Logger', sprintf( esc_html( __( '%s deleted the user of %s.', 'action-logger' ) ), get_userdata( get_current_user_id() )->display_name, get_userdata( $user_id )->display_name ) );
 		        }
 	        }
 
@@ -726,7 +684,7 @@
                 }
 
                 if ( $log == true ) {
-                    al_log_user_action( $action, 'Action Logger', get_userdata( get_current_user_id() )->display_name . ' ' . $status . ' ' . esc_html( __( 'the booking with booking ID:', 'action-logger' ) )  . ' ' . $booking_id . '.' );
+                    ActionLogger::al_log_user_action( $action, 'Action Logger', get_userdata( get_current_user_id() )->display_name . ' ' . $status . ' ' . esc_html( __( 'the booking with booking ID:', 'action-logger' ) )  . ' ' . $booking_id . '.' );
                 }
 
             }
@@ -739,7 +697,7 @@
              */
             public function al_log_registration_delete( $result, $booking_ids ) {
                 if ( false != get_option( 'al_em_booking_deleted' ) ) {
-                    al_log_user_action( 'registration_deleted', 'Action Logger', sprintf( esc_html( __( '%s deleted bookings for an event.', 'action-logger' ) ), get_userdata( get_current_user_id() )->display_name ) );
+                    ActionLogger::al_log_user_action( 'registration_deleted', 'Action Logger', sprintf( esc_html( __( '%s deleted bookings for an event.', 'action-logger' ) ), get_userdata( get_current_user_id() )->display_name ) );
                 }
             }
 
@@ -752,7 +710,7 @@
 	        public function al_csvi_file_upload() {
 		        $user_name = get_userdata( get_current_user_id() )->display_name;
 		        if ( class_exists( 'CSV_WP' ) && false != get_option( 'al_csvi_file_uploaded' ) ) {
-			        al_log_user_action( 'csv_upload', 'Action Logger', sprintf( esc_html( __( '%s successfully uploaded the file: "%s".', 'action-logger' ) ), $user_name, $_FILES[ 'csv_upload' ][ 'name' ] ) );
+			        ActionLogger::al_log_user_action( 'csv_upload', 'Action Logger', sprintf( esc_html( __( '%s successfully uploaded the file: "%s".', 'action-logger' ) ), $user_name, $_FILES[ 'csv_upload' ][ 'name' ] ) );
 		        }
 	        }
 
@@ -763,7 +721,7 @@
 	        public function al_csvi_file_validate( $file_name ) {
 		        $user_name = get_userdata( get_current_user_id() )->display_name;
 		        if ( class_exists( 'CSV_WP' ) && false != get_option( 'al_csvi_file_validated' ) ) {
-		            al_log_user_action( 'csv_validate', 'Action Logger', sprintf( esc_html( __( '%s successfully validated the file: "%s".', 'action-logger' ) ), $user_name, $file_name ) );
+		            ActionLogger::al_log_user_action( 'csv_validate', 'Action Logger', sprintf( esc_html( __( '%s successfully validated the file: "%s".', 'action-logger' ) ), $user_name, $file_name ) );
 		        }
 	        }
 
@@ -774,49 +732,49 @@
 	        public function al_csvi_file_import( $line_number ) {
 		        $user_name = get_userdata( get_current_user_id() )->display_name;
 		        if ( class_exists( 'CSV_WP' ) && false != get_option( 'al_csvi_file_imported' ) ) {
-			        al_log_user_action( 'csv_imported', 'Action Logger', sprintf( esc_html( __( '%s successfully imported %d lines from file.', 'action-logger' ) ), $user_name, $line_number ) );
+			        ActionLogger::al_log_user_action( 'csv_imported', 'Action Logger', sprintf( esc_html( __( '%s successfully imported %d lines from file.', 'action-logger' ) ), $user_name, $line_number ) );
 		        }
 	        }
 
 	        public function al_ri_all_nuked() {
 		        if ( false != get_option( 'al_ri_data_nuked' ) ) {
 			        $user = get_userdata( get_current_user_id() )->display_name;
-			        al_log_user_action( 'nuke_all', 'Rankings Importer', sprintf( esc_html__( '%s nuked all rankings.', 'action-logger' ), $user ) );
+			        ActionLogger::al_log_user_action( 'nuke_all', 'Rankings Importer', sprintf( esc_html__( '%s nuked all rankings.', 'action-logger' ), $user ) );
 		        }
 	        }
 
 	        public function al_ri_user_rankings_delete( $user_id, $value_array ) {
 		        if ( false != get_option( 'al_ri_rankings_deleted' ) ) {
 			        $user = get_userdata( get_current_user_id() )->display_name;
-			        al_log_user_action( 'individual_ranking_deleted', 'Rankings Importer', ' deleted ' . count( $value_array ) . ' ranking lines for ' . get_userdata( $user_id )->display_name );
+			        ActionLogger::al_log_user_action( 'individual_ranking_deleted', 'Rankings Importer', ' deleted ' . count( $value_array ) . ' ranking lines for ' . get_userdata( $user_id )->display_name );
 		        }
 	        }
 
 	        public function al_ri_import_raw_data( $count ) {
 		        if ( false != get_option( 'al_ri_import_raw' ) ) {
 			        $user = get_userdata( get_current_user_id() )->display_name;
-			        al_log_user_action( 'import_raw', 'Rankings Importer', ' uploaded ' . $count . ' lines through raw import' );
+			        ActionLogger::al_log_user_action( 'import_raw', 'Rankings Importer', ' uploaded ' . $count . ' lines through raw import' );
 		        }
 	        }
 
 	        public function al_ri_verify_csv() {
 		        if ( false != get_option( 'al_ri_data_verified' ) ) {
 			        $user = get_userdata( get_current_user_id() )->display_name;
-			        al_log_user_action( 'upload_rankings_csv', 'Rankings Importer', sprintf( esc_html( __( '%s successfully verified %s.', 'action-logger' ) ), $user, $_POST[ 'file_name' ][0] ) );
+			        ActionLogger::al_log_user_action( 'upload_rankings_csv', 'Rankings Importer', sprintf( esc_html( __( '%s successfully verified %s.', 'action-logger' ) ), $user, $_POST[ 'file_name' ][0] ) );
 		        }
 	        }
 
 	        public function al_ri_rankings_imported( $line_number = false ) {
 		        if ( false != get_option( 'al_ri_rankings_imported' ) ) {
 			        $user = get_userdata( get_current_user_id() )->display_name;
-			        al_log_user_action( 'rankings_imported', 'Rankings Importer', sprintf( esc_html( __( '%s successfully imported %d lines from file.', 'action-logger' ) ), $user, $line_number ) );
+			        ActionLogger::al_log_user_action( 'rankings_imported', 'Rankings Importer', sprintf( esc_html( __( '%s successfully imported %d lines from file.', 'action-logger' ) ), $user, $line_number ) );
 		        }
 	        }
 
 	        public function al_ri_csv_uploaded() {
 		        if ( false != get_option( 'al_ri_file_uploaded' ) ) {
 			        $user = get_userdata( get_current_user_id() )->display_name;
-			        al_log_user_action( 'upload_rankings_csv', 'Rankings Importer', sprintf( esc_html( __( '%s successfully uploaded the file: "%s".', 'action-logger' ) ), $user, $_FILES[ 'csv_upload' ][ 'name' ] ) );
+			        ActionLogger::al_log_user_action( 'upload_rankings_csv', 'Rankings Importer', sprintf( esc_html( __( '%s successfully uploaded the file: "%s".', 'action-logger' ) ), $user, $_FILES[ 'csv_upload' ][ 'name' ] ) );
 		        }
 	        }
 
