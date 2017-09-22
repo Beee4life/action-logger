@@ -36,18 +36,19 @@
 
 	            if ( ! isset( $_GET['paged'] ) || $_GET['paged'] == 1 ) {
 		            $page_number = 1;
-		            $offset      = 0;
+		            $offset      = false;
 	            } else {
 		            $page_number = $_GET['paged'];
-		            $offset      = ( $page_number - 1 ) * $ppp;
+		            $offset      = 'OFFSET ' . ( $page_number - 1 ) * $ppp;
                 }
 
-                $items = $wpdb->get_results( "
+	            $items = $wpdb->get_results( "
                     SELECT * 
                     FROM " . $wpdb->prefix . "action_logs
                     ORDER BY id DESC
-                    LIMIT " . $ppp . " OFFSET " . $offset . "
+                    LIMIT " . $ppp . $offset . "
                 ");
+
             ?>
 
             <?php if ( count( $items ) == 0 ) { ?>
