@@ -521,6 +521,11 @@
 		        }
 
 	        }
+
+	        /**
+	         * @param $attributes
+             * return void
+	         */
             public function al_register_shortcode_logger( $attributes ) {
 
                 $post_title   = get_the_title();
@@ -547,7 +552,9 @@
                 }
 
                 if ( ! is_admin() && true == $log_it ) {
-                    $this->al_log_user_action( $post_type . '_visit', 'Shortcode', $user . ' ' . $attributes[ 'message' ] );
+	                $this->al_log_user_action( $post_type . '_visit', 'Shortcode', $user . ' ' . $attributes[ 'message' ] );
+	                // $this->al_log_user_action( $post_type . '_visit', 'Shortcode', $user . ' did something' );
+	                return;
                 }
 
                 return;
