@@ -547,8 +547,7 @@
                 }
 
                 if ( ! is_admin() && true == $log_it ) {
-                    ActionLogger::al_log_user_action( $post_type . '_visit', 'Shortcode', $user . ' ' . $attributes[ 'message' ] );
-                    // al_log_user_action( $post_type . '_visit', 'Shortcode', 'message' );
+                    $this->al_log_user_action( $post_type . '_visit', 'Shortcode', $user . ' ' . $attributes[ 'message' ] );
                 }
 
                 return;
@@ -573,17 +572,17 @@
 		        if ( $old_status == 'draft' && $new_status == 'publish' ) {
 
                     // draft > publish
-			        ActionLogger::al_log_user_action( $post_type . '_published', 'Action Logger', sprintf( esc_html( __( '%s published %s.', 'action-logger' ) ), $user_name, $post_link ) );
+			        $this->al_log_user_action( $post_type . '_published', 'Action Logger', sprintf( esc_html( __( '%s published %s.', 'action-logger' ) ), $user_name, $post_link ) );
 
 		        } elseif ( $old_status == 'pending' && $new_status == 'publish' ) {
 
 		            // pending > publish
-			        ActionLogger::al_log_user_action( $post_type . '_republished', 'Action Logger', sprintf( esc_html( __( '%s re-published %s.', 'action-logger' ) ), $user_name, $post_link ) );
+			        $this->al_log_user_action( $post_type . '_republished', 'Action Logger', sprintf( esc_html( __( '%s re-published %s.', 'action-logger' ) ), $user_name, $post_link ) );
 
 		        } elseif ( $old_status == 'publish' && $new_status == 'publish' ) {
 
 		            // publish > publish
-			        ActionLogger::al_log_user_action( $post_type . '_edited', 'Action Logger', sprintf( esc_html__( '%s edited published post %s.', 'action-logger' ), $user_name, $post_link ) );
+			        $this->al_log_user_action( $post_type . '_changed', 'Action Logger', sprintf( esc_html__( '%s edited published post %s.', 'action-logger' ), $user_name, $post_link ) );
 
 		        } elseif ( $old_status == 'publish' && $new_status != 'publish' ) {
 
@@ -591,12 +590,12 @@
 			        if ( $old_status == 'publish' && $new_status == 'trash' ) {
 
                         // publish > trash
-				        ActionLogger::al_log_user_action( $post_type . '_deleted', 'Action Logger', sprintf( esc_html( __( '%s deleted %s.', 'action-logger' ) ), $user_name, get_the_title() ) );
+				        $this->al_log_user_action( $post_type . '_deleted', 'Action Logger', sprintf( esc_html( __( '%s deleted %s.', 'action-logger' ) ), $user_name, get_the_title() ) );
 
 			        } elseif ( $old_status == 'publish' && $new_status == 'pending' ) {
 
                         // publish > pending
-				        ActionLogger::al_log_user_action( $post_type . '_pending', 'Action Logger', sprintf( esc_html( __( '%s marked %s as \'pending review\'.', 'action-logger' ) ), $user_name, $post_link ) );
+				        $this->al_log_user_action( $post_type . '_pending', 'Action Logger', sprintf( esc_html( __( '%s marked %s as \'pending review\'.', 'action-logger' ) ), $user_name, $post_link ) );
 			        }
 		        }
 	        }
@@ -608,7 +607,7 @@
              */
             public function al_log_user_create( $user_id ) {
                 if ( false != get_option( 'al_wp_user_create' ) ) {
-	                ActionLogger::al_log_user_action( 'user_registered', 'Action Logger', sprintf( esc_html( __( 'New user registered: %s.', 'sexdates' ) ), get_userdata( $user_id )->display_name ) );
+	                $this->al_log_user_action( 'user_registered', 'Action Logger', sprintf( esc_html( __( 'New user registered: %s.', 'sexdates' ) ), get_userdata( $user_id )->display_name ) );
                 }
             }
 
@@ -622,7 +621,7 @@
                 // don't log when a a user edits his own profile
                 if ( $user_id != get_current_user_id() ) {
                     if ( false != get_option( 'al_wp_user_change' ) ) {
-                        ActionLogger::al_log_user_action( 'user_changed', 'Action Logger', sprintf( esc_html( __( '%s changed the user of %s.', 'action-logger' ) ), get_userdata( get_current_user_id() )->display_name, get_userdata( $user_id )->display_name ) );
+                        $this->al_log_user_action( 'user_changed', 'Action Logger', sprintf( esc_html( __( '%s changed the user of %s.', 'action-logger' ) ), get_userdata( get_current_user_id() )->display_name, get_userdata( $user_id )->display_name ) );
                     }
                 }
             }
@@ -634,7 +633,7 @@
 	         */
 	        public function al_log_user_delete( $user_id ) {
 		        if ( false != get_option( 'al_wp_user_delete' ) ) {
-			        ActionLogger::al_log_user_action( 'user_deleted', 'Action Logger', sprintf( esc_html( __( '%s deleted the user of %s.', 'action-logger' ) ), get_userdata( get_current_user_id() )->display_name, get_userdata( $user_id )->display_name ) );
+			        $this->al_log_user_action( 'user_deleted', 'Action Logger', sprintf( esc_html( __( '%s deleted the user of %s.', 'action-logger' ) ), get_userdata( get_current_user_id() )->display_name, get_userdata( $user_id )->display_name ) );
 		        }
 	        }
 
@@ -678,7 +677,7 @@
                 }
 
                 if ( $log == true ) {
-                    ActionLogger::al_log_user_action( $action, 'Action Logger', get_userdata( get_current_user_id() )->display_name . ' ' . $status . ' ' . esc_html( __( 'the booking with booking ID:', 'action-logger' ) )  . ' ' . $booking_id . '.' );
+                    $this->al_log_user_action( $action, 'Action Logger', get_userdata( get_current_user_id() )->display_name . ' ' . $status . ' ' . esc_html( __( 'the booking with booking ID:', 'action-logger' ) )  . ' ' . $booking_id . '.' );
                 }
 
             }
@@ -691,7 +690,7 @@
              */
             public function al_log_registration_delete( $result, $booking_ids ) {
                 if ( false != get_option( 'al_em_booking_deleted' ) ) {
-                    ActionLogger::al_log_user_action( 'registration_deleted', 'Action Logger', sprintf( esc_html( __( '%s deleted bookings for an event.', 'action-logger' ) ), get_userdata( get_current_user_id() )->display_name ) );
+                    $this->al_log_user_action( 'registration_deleted', 'Action Logger', sprintf( esc_html( __( '%s deleted bookings for an event.', 'action-logger' ) ), get_userdata( get_current_user_id() )->display_name ) );
                 }
             }
 
@@ -704,7 +703,7 @@
 	        public function al_csvi_file_upload() {
 		        $user_name = get_userdata( get_current_user_id() )->display_name;
 		        if ( class_exists( 'CSV_WP' ) && false != get_option( 'al_csvi_file_uploaded' ) ) {
-			        ActionLogger::al_log_user_action( 'csv_upload', 'Action Logger', sprintf( esc_html( __( '%s successfully uploaded the file: "%s".', 'action-logger' ) ), $user_name, $_FILES[ 'csv_upload' ][ 'name' ] ) );
+			        $this->al_log_user_action( 'csv_upload', 'Action Logger', sprintf( esc_html( __( '%s successfully uploaded the file: "%s".', 'action-logger' ) ), $user_name, $_FILES[ 'csv_upload' ][ 'name' ] ) );
 		        }
 	        }
 
@@ -715,7 +714,7 @@
 	        public function al_csvi_file_validate( $file_name ) {
 		        $user_name = get_userdata( get_current_user_id() )->display_name;
 		        if ( class_exists( 'CSV_WP' ) && false != get_option( 'al_csvi_file_validated' ) ) {
-		            ActionLogger::al_log_user_action( 'csv_validate', 'Action Logger', sprintf( esc_html( __( '%s successfully validated the file: "%s".', 'action-logger' ) ), $user_name, $file_name ) );
+		            $this->al_log_user_action( 'csv_validate', 'Action Logger', sprintf( esc_html( __( '%s successfully validated the file: "%s".', 'action-logger' ) ), $user_name, $file_name ) );
 		        }
 	        }
 
@@ -726,49 +725,49 @@
 	        public function al_csvi_file_import( $line_number ) {
 		        $user_name = get_userdata( get_current_user_id() )->display_name;
 		        if ( class_exists( 'CSV_WP' ) && false != get_option( 'al_csvi_file_imported' ) ) {
-			        ActionLogger::al_log_user_action( 'csv_imported', 'Action Logger', sprintf( esc_html( __( '%s successfully imported %d lines from file.', 'action-logger' ) ), $user_name, $line_number ) );
+			        $this->al_log_user_action( 'csv_imported', 'Action Logger', sprintf( esc_html( __( '%s successfully imported %d lines from file.', 'action-logger' ) ), $user_name, $line_number ) );
 		        }
 	        }
 
 	        public function al_ri_all_nuked() {
 		        if ( false != get_option( 'al_ri_data_nuked' ) ) {
 			        $user = get_userdata( get_current_user_id() )->display_name;
-			        ActionLogger::al_log_user_action( 'nuke_all', 'Rankings Importer', sprintf( esc_html__( '%s nuked all rankings.', 'action-logger' ), $user ) );
+			        $this->al_log_user_action( 'nuke_all', 'Rankings Importer', sprintf( esc_html__( '%s nuked all rankings.', 'action-logger' ), $user ) );
 		        }
 	        }
 
 	        public function al_ri_user_rankings_delete( $user_id, $value_array ) {
 		        if ( false != get_option( 'al_ri_rankings_deleted' ) ) {
 			        $user = get_userdata( get_current_user_id() )->display_name;
-			        ActionLogger::al_log_user_action( 'individual_ranking_deleted', 'Rankings Importer', ' deleted ' . count( $value_array ) . ' ranking lines for ' . get_userdata( $user_id )->display_name );
+			        $this->al_log_user_action( 'individual_ranking_deleted', 'Rankings Importer', ' deleted ' . count( $value_array ) . ' ranking lines for ' . get_userdata( $user_id )->display_name );
 		        }
 	        }
 
 	        public function al_ri_import_raw_data( $count ) {
 		        if ( false != get_option( 'al_ri_import_raw' ) ) {
 			        $user = get_userdata( get_current_user_id() )->display_name;
-			        ActionLogger::al_log_user_action( 'import_raw', 'Rankings Importer', ' uploaded ' . $count . ' lines through raw import' );
+			        $this->al_log_user_action( 'import_raw', 'Rankings Importer', ' uploaded ' . $count . ' lines through raw import' );
 		        }
 	        }
 
 	        public function al_ri_verify_csv() {
 		        if ( false != get_option( 'al_ri_data_verified' ) ) {
 			        $user = get_userdata( get_current_user_id() )->display_name;
-			        ActionLogger::al_log_user_action( 'upload_rankings_csv', 'Rankings Importer', sprintf( esc_html( __( '%s successfully verified %s.', 'action-logger' ) ), $user, $_POST[ 'file_name' ][0] ) );
+			        $this->al_log_user_action( 'upload_rankings_csv', 'Rankings Importer', sprintf( esc_html( __( '%s successfully verified %s.', 'action-logger' ) ), $user, $_POST[ 'file_name' ][0] ) );
 		        }
 	        }
 
 	        public function al_ri_rankings_imported( $line_number = false ) {
 		        if ( false != get_option( 'al_ri_rankings_imported' ) ) {
 			        $user = get_userdata( get_current_user_id() )->display_name;
-			        ActionLogger::al_log_user_action( 'rankings_imported', 'Rankings Importer', sprintf( esc_html( __( '%s successfully imported %d lines from file.', 'action-logger' ) ), $user, $line_number ) );
+			        $this->al_log_user_action( 'rankings_imported', 'Rankings Importer', sprintf( esc_html( __( '%s successfully imported %d lines from file.', 'action-logger' ) ), $user, $line_number ) );
 		        }
 	        }
 
 	        public function al_ri_csv_uploaded() {
 		        if ( false != get_option( 'al_ri_file_uploaded' ) ) {
 			        $user = get_userdata( get_current_user_id() )->display_name;
-			        ActionLogger::al_log_user_action( 'upload_rankings_csv', 'Rankings Importer', sprintf( esc_html( __( '%s successfully uploaded the file: "%s".', 'action-logger' ) ), $user, $_FILES[ 'csv_upload' ][ 'name' ] ) );
+			        $this->al_log_user_action( 'upload_rankings_csv', 'Rankings Importer', sprintf( esc_html( __( '%s successfully uploaded the file: "%s".', 'action-logger' ) ), $user, $_FILES[ 'csv_upload' ][ 'name' ] ) );
 		        }
 	        }
 
