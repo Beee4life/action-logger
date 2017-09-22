@@ -14,13 +14,13 @@
             <div id="icon-options-general" class="icon32"><br /></div>
 
             <h1>Action Logger misc page</h1>
-    
-            <?php ActionLogger::al_show_admin_notices(); ?>
+
+            <?php al_show_admin_notices(); ?>
 
             <div id="action-logger" class="">
 
                 <?php echo al_admin_menu(); ?>
-    
+
                 <h2><?php esc_html_e( 'Export data to CSV', 'action-logger' ); ?></h2>
                 <p><?php esc_html_e( 'By clicking this button you will trigger a download for a CSV (comma separated value) file.', 'action-logger' ); ?></p>
                 <form name="export-form" action="" method="post">

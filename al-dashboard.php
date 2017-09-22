@@ -14,7 +14,7 @@
 
         <h1>Action Logger overview</h1>
 
-        <?php ActionLogger::al_show_admin_notices(); ?>
+        <?php al_show_admin_notices(); ?>
 
         <div id="action-logger" class="">
 
