@@ -72,7 +72,7 @@
 
 	            // EM actions
 	            add_action( 'em_bookings_deleted',          array( $this, 'al_log_registration_delete' ), 10, 2 );
-                add_action( 'em_booking_save',              array( $this, 'al_log_registration_change' ), 10, 2 );
+	            // add_action( 'em_booking_save',              array( $this, 'al_log_registration_change' ), 10, 2 );
 
                 // CSV Importer actions
 	            add_action( 'csv2wp_successful_csv_upload',   array( $this, 'al_csvi_file_upload' ) );
@@ -553,7 +553,7 @@
 
                 if ( ! is_admin() && true == $log_it ) {
 	                $this->al_log_user_action( $post_type . '_visit', 'Shortcode', $user . ' ' . $attributes[ 'message' ] );
-	                // $this->al_log_user_action( $post_type . '_visit', 'Shortcode', $user . ' did something' );
+	                // $this->al_log_user_action( $post_type . '_visit', 'Shortcode', $user . ' did something on' );
 	                return;
                 }
 
@@ -649,23 +649,20 @@
              */
 
             /**
-             * Should log an action when an booking is changed
+             * Should log an action when an booking is changed (doesn't do jack right now)
              *
              * @param $EM_Event
              * @param $EM_Booking
              */
             public function al_log_registration_change( $EM_Event, $EM_Booking ) {
 
+	            // echo '<pre>'; var_dump($EM_Event); echo '</pre>';
+	            // echo '<pre>'; var_dump($EM_Booking); echo '</pre>'; exit;
+
                 $log            = false;
                 $booking_id     = $EM_Booking->booking_id;
 
-                if ( 1 == $EM_Booking->booking_status ) {
-                    $action = 'registration_approved';
-                    $status = 'approved';
-                    if ( 1 == get_option( 'al_em_booking_approved' ) ) {
-                        $log = true;
-                    }
-                } elseif ( 2 == $EM_Booking->booking_status ) {
+                if ( 2 == $EM_Booking->booking_status ) {
                     $action = 'registration_reject';
                     $status = 'rejected';
                     if ( 1 == get_option( 'al_em_booking_rejected' ) ) {
