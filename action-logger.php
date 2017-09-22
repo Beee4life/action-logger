@@ -586,7 +586,7 @@
 
 		        } elseif ( $old_status == 'publish' && $new_status != 'publish' ) {
 
-		            // X > !publish
+		            // publish > !publish
 			        if ( $old_status == 'publish' && $new_status == 'trash' ) {
 
                         // publish > trash
