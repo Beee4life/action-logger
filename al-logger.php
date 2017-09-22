@@ -8,7 +8,7 @@
 	 * @param string $action_description
 	 */
 	function al_log_user_action( $action = false, $action_generator = false, $action_description = false ) {
-        
+
         if ( false != $action_description ) {
             global $wpdb;
             $sql_data = array(
@@ -20,6 +20,6 @@
             );
             $db_status = $wpdb->insert( $wpdb->prefix . 'action_logs', $sql_data );
         }
-    
+
     }
 
