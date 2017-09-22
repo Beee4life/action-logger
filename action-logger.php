@@ -70,14 +70,14 @@
 	            add_action( 'delete_user',                  array( $this, 'al_log_user_delete' ), 10, 1 );
                 add_action( 'transition_post_status',       array( $this, 'al_post_status_transitions'), 10, 3 );
 
+	            // EM actions
+	            add_action( 'em_bookings_deleted',          array( $this, 'al_log_registration_delete' ), 10, 2 );
+                add_action( 'em_booking_save',              array( $this, 'al_log_registration_change' ), 10, 2 );
+
                 // CSV Importer actions
 	            add_action( 'csv2wp_successful_csv_upload',   array( $this, 'al_csvi_file_upload' ) );
 	            add_action( 'csv2wp_successful_csv_validate', array( $this, 'al_csvi_file_validate' ) );
 	            add_action( 'csv2wp_successful_csv_import',   array( $this, 'al_csvi_file_import' ) );
-
-	            // EM actions
-	            add_action( 'em_bookings_deleted',          array( $this, 'al_log_registration_delete' ), 10, 2 );
-                add_action( 'em_booking_save',              array( $this, 'al_log_registration_change' ), 10, 2 );
 
                 // Rankings Importer actions
                 add_action( 'ri_all_data_nuked',            array( $this, 'al_ri_all_nuked' ) );
