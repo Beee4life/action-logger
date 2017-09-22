@@ -283,41 +283,6 @@
 		        include( 'al-misc.php' ); // content for the settings page
 	        }
 
-	        /**
-	         * Adds a page to admin sidebar menu
-	         */
-	        public function al_add_action_logger_dashboard() {
-		        global $my_plugin_hook;
-		        $my_plugin_hook = add_menu_page( 'Action Logger', 'Action Logger', 'manage_options', 'action-logger', 'action_logger_dashboard', 'dashicons-editor-alignleft' );
-		        add_action( "load-$my_plugin_hook", array( $this, 'al_add_screen_options' ) );
-		        include( 'al-dashboard.php' ); // content for the settings page
-	        }
-
-	        /**
-             * Adds a (hidden) settings page, only through the menu on top of the pages.
-             */
-            public function al_add_action_logger_actions_page() {
-                add_submenu_page( NULL, 'Log actions', 'Log actions', 'manage_options', 'al-log-actions', 'action_logger_actions_page' );
-                include( 'al-log-actions.php' ); // content for the settings page
-            }
-
-            /**
-             * Adds a (hidden) settings page, only through the menu on top of the pages.
-             */
-            public function al_add_action_logger_settings_page() {
-                add_submenu_page( NULL, 'Log actions', 'Log actions', 'manage_options', 'al-settings', 'action_logger_settings_page' );
-                include( 'al-settings.php' ); // content for the settings page
-            }
-
-            /**
-             * Adds a (hidden) support page, only through the menu on top of the pages.
-             */
-            public function al_add_action_logger_misc_page() {
-                add_submenu_page( NULL, 'Misc', 'Misc', 'manage_options', 'al-misc', 'action_logger_misc_page' );
-                include( 'al-misc.php' ); // content for the settings page
-
-            }
-
             /**
              * All form action for the settings page, except the nuke database action
              */
