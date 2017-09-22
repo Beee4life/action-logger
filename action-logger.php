@@ -100,46 +100,6 @@
             }
 
 	        /**
-	         * @return bool
-	         */
-	        public function al_add_screen_options() {
-
-		        $screen = get_current_screen();
-		        // echo '<pre>'; var_dump($screen); echo '</pre>'; exit;
-
-		        if ( 'toplevel_page_action-logger' != $screen->id ) {
-			        return false;
-		        }
-
-		        $option   = $screen->get_option( 'al_ppp', 'option' );
-		        $per_page = get_user_meta( get_current_user_id(), $option, true );
-		        if ( empty ( $per_page ) || $per_page < 1 ) {
-			        $per_page = $screen->get_option( 'per_page', 'default' );
-		        }
-
-		        add_screen_option(
-			        'per_page',
-			        array(
-				        'label'   => sprintf( __( 'Log entries (%d max)', 'action-logger' ), 200 ),
-				        'default' => get_option( 'al_posts_per_page' ),
-				        'option'  => 'al_ppp'
-			        )
-		        );
-
-	        }
-
-	        public function al_set_screen_option( $status, $option, $value ) {
-
-		        if ( 'al_ppp' == $option ) {
-		            update_user_meta( get_current_user_id(), $option, $value );
-			        return $value;
-		        }
-
-		        return $status;
-
-	        }
-
-	        /**
              * Function which runs upon plugin activation
              */
             public function al_plugin_activation() {
@@ -162,15 +122,6 @@
                         delete_option( 'al_' . $option[ 'action_name' ] );
                     }
                 }
-                delete_option( 'al_available_log_actions' );
-                delete_option( 'al_log_user_role' );
-                delete_option( 'al_posts_per_page' );
-
-                if ( false == get_option( 'al_preserve_settings' ) ) {
-	                $this->al_truncate_log_table( true );
-		            delete_option( 'al_preserve_settings' );
-	            }
-
             }
 
             /**
@@ -579,13 +530,57 @@
                 wp_enqueue_style( 'action-logger' );
             }
 
+
             public function al_admin_menu() {
                 if ( current_user_can( get_option( 'al_log_user_role' ) ) ) {
                     return '<p><a href="' . site_url() . '/wp-admin/admin.php?page=action-logger">' . esc_html( __( 'Logs', 'action-logger' ) ) . '</a> | <a href="' . site_url() . '/wp-admin/admin.php?page=al-settings">' . esc_html( __( 'Settings', 'action-logger' ) ) . '</a> | <a href="' . site_url() . '/wp-admin/admin.php?page=al-misc">' . esc_html( __( 'Misc', 'action-logger' ) ) . '</a></p>';
                 }
             }
 
-            /**
+
+	        /**
+	         * @return bool
+	         */
+	        public function al_add_screen_options() {
+
+		        $screen = get_current_screen();
+		        // echo '<pre>'; var_dump($screen); echo '</pre>'; exit;
+
+		        if ( 'toplevel_page_action-logger' != $screen->id ) {
+			        return false;
+		        }
+
+		        $option   = $screen->get_option( 'al_ppp', 'option' );
+		        $per_page = get_user_meta( get_current_user_id(), $option, true );
+		        if ( empty ( $per_page ) || $per_page < 1 ) {
+			        $per_page = $screen->get_option( 'per_page', 'default' );
+		        }
+
+		        add_screen_option(
+			        'per_page',
+			        array(
+				        'label'   => sprintf( __( 'Log entries (%d max)', 'action-logger' ), 200 ),
+				        'default' => get_option( 'al_posts_per_page' ),
+				        'option'  => 'al_ppp'
+			        )
+		        );
+
+	        }
+
+
+	        public function al_set_screen_option( $status, $option, $value ) {
+
+		        if ( 'al_ppp' == $option ) {
+			        update_user_meta( get_current_user_id(), $option, $value );
+			        return $value;
+		        }
+
+		        return $status;
+
+	        }
+
+
+	        /**
              * This is the actual logger function, which is called at the place where you want to log something.
              *
              * @param string $action
