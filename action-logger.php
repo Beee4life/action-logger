@@ -603,13 +603,8 @@
 
 			        } elseif ( $old_status == 'publish' && $new_status == 'pending' ) {
 
-				        echo '<pre>'; var_dump($old_status); echo '</pre>';
-				        echo '<pre>'; var_dump($new_status); echo '</pre>'; exit;
-
-                        // echo '<pre>'; var_dump($post_link); echo '</pre>'; exit;
-
                         // publish > pending
-				        $this->al_log_user_action( $post_type . '_pending', 'Action Logger', sprintf( esc_html( __( '%s marked %s as pending review.', 'action-logger' ) ), $user_name, $post_link ) );
+				        $this->al_log_user_action( $post_type . '_pending', 'Action Logger', sprintf( esc_html( __( '%s marked %s as pending review.', 'action-logger' ) ), $user_name, get_the_title() ) );
 			        }
 		        }
 	        }
