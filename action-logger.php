@@ -773,14 +773,14 @@
 	        public function al_ri_user_rankings_delete( $user_id, $value_array ) {
 		        if ( false != get_option( 'al_ri_rankings_deleted' ) ) {
 			        $user = get_userdata( get_current_user_id() )->display_name;
-			        $this->al_log_user_action( 'individual_ranking_deleted', 'Rankings Importer', ' deleted ' . count( $value_array ) . ' ranking lines for ' . get_userdata( $user_id )->display_name );
+			        $this->al_log_user_action( 'individual_ranking_deleted', 'Rankings Importer', $user . ' deleted ' . count( $value_array ) . ' ranking lines for ' . get_userdata( $user_id )->display_name );
 		        }
 	        }
 
 	        public function al_ri_import_raw_data( $count ) {
 		        if ( false != get_option( 'al_ri_import_raw' ) ) {
 			        $user = get_userdata( get_current_user_id() )->display_name;
-			        $this->al_log_user_action( 'import_raw', 'Rankings Importer', ' uploaded ' . $count . ' lines through raw import' );
+			        $this->al_log_user_action( 'import_raw', 'Rankings Importer', $user . ' uploaded ' . $count . ' lines through raw import' );
 		        }
 	        }
 
