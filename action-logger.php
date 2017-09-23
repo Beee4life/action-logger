@@ -91,6 +91,8 @@
 	            $this->al_load_includes();
 	            $this->al_log_user_action();
 
+	            // $this->al_set_default_values();
+
             }
 
 	        /**
@@ -661,8 +663,6 @@
              */
             public function al_log_registration_change( $EM_Event, $EM_Booking ) {
 
-	            // echo '<pre>'; var_dump($EM_Event); echo '</pre>';
-	            // echo '<pre>'; var_dump($EM_Booking); echo '</pre>'; exit;
 
 	            $log        = false;
 	            $booking_id = $EM_Booking->booking_id;
