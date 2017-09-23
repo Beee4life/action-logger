@@ -68,10 +68,24 @@
 		// add option for events manager
 		$em_options        = array(
 			array(
+				'action_name'        => 'em_booking_pending',
+				'action_generator'   => 'Events Manager',
+				'action_title'       => esc_html( __( 'Booking pending', 'action-logger' ) ),
+				'action_description' => esc_html( __( 'Logs when a booking is pending.', 'action-logger' ) ),
+				'default_value'      => 0,
+			),
+			array(
 				'action_name'        => 'em_booking_approved',
 				'action_generator'   => 'Events Manager',
 				'action_title'       => esc_html( __( 'Booking approved', 'action-logger' ) ),
 				'action_description' => esc_html( __( 'Logs when a booking is approved.', 'action-logger' ) ),
+				'default_value'      => 0,
+			),
+			array(
+				'action_name'        => 'em_booking_rejected',
+				'action_generator'   => 'Events Manager',
+				'action_title'       => esc_html( __( 'Booking rejected', 'action-logger' ) ),
+				'action_description' => esc_html( __( 'Logs when a booking is rejected.', 'action-logger' ) ),
 				'default_value'      => 0,
 			),
 			array(
@@ -82,10 +96,17 @@
 				'default_value'      => 0,
 			),
 			array(
-				'action_name'        => 'em_booking_rejected',
+				'action_name'        => 'em_booking_aw_onl_payment',
 				'action_generator'   => 'Events Manager',
-				'action_title'       => esc_html( __( 'Booking rejected', 'action-logger' ) ),
-				'action_description' => esc_html( __( 'Logs when a booking is rejected.', 'action-logger' ) ),
+				'action_title'       => esc_html( __( 'Booking awaiting online payment', 'action-logger' ) ),
+				'action_description' => esc_html( __( 'Logs when a booking is awaiting online payment.', 'action-logger' ) ),
+				'default_value'      => 0,
+			),
+			array(
+				'action_name'        => 'em_booking_aw_ofl_payment',
+				'action_generator'   => 'Events Manager',
+				'action_title'       => esc_html( __( 'Booking awaiting offline payment', 'action-logger' ) ),
+				'action_description' => esc_html( __( 'Logs when a booking is awaiting offline payment.', 'action-logger' ) ),
 				'default_value'      => 0,
 			),
 			array(
