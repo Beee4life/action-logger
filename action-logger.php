@@ -65,7 +65,7 @@
 	            add_shortcode( 'actionlogger',         array( $this, 'al_register_shortcode_logger' ) );
 
 	            // WP Core actions
-                add_action( 'user_register ',               array( $this, 'al_log_user_create' ), 20, 1 );
+                add_action( 'user_register ',               array( $this, 'al_log_user_create' ), 10, 1 );
                 add_action( 'profile_update',               array( $this, 'al_log_user_change' ), 10, 2 );
 	            add_action( 'delete_user',                  array( $this, 'al_log_user_delete' ), 10, 1 );
                 add_action( 'transition_post_status',       array( $this, 'al_post_status_transitions'), 10, 3 );
