@@ -72,7 +72,7 @@
 
 	            // EM actions
 	            add_action( 'em_bookings_deleted',          array( $this, 'al_log_registration_delete' ), 10, 2 );
-	            // add_action( 'em_booking_save',              array( $this, 'al_log_registration_change' ), 10, 2 );
+	            add_action( 'em_booking_save',              array( $this, 'al_log_registration_change' ), 10, 2 );
 
                 // CSV Importer actions
 	            add_action( 'csv2wp_successful_csv_upload',   array( $this, 'al_csvi_file_upload' ) );
@@ -601,8 +601,13 @@
 
 			        } elseif ( $old_status == 'publish' && $new_status == 'pending' ) {
 
+				        echo '<pre>'; var_dump($old_status); echo '</pre>';
+				        echo '<pre>'; var_dump($new_status); echo '</pre>'; exit;
+
+                        // echo '<pre>'; var_dump($post_link); echo '</pre>'; exit;
+
                         // publish > pending
-				        $this->al_log_user_action( $post_type . '_pending', 'Action Logger', sprintf( esc_html( __( '%s marked %s as \'pending review\'.', 'action-logger' ) ), $user_name, $post_link ) );
+				        $this->al_log_user_action( $post_type . '_pending', 'Action Logger', sprintf( esc_html( __( '%s marked %s as pending review.', 'action-logger' ) ), $user_name, $post_link ) );
 			        }
 		        }
 	        }
@@ -659,21 +664,46 @@
 	            // echo '<pre>'; var_dump($EM_Event); echo '</pre>';
 	            // echo '<pre>'; var_dump($EM_Booking); echo '</pre>'; exit;
 
-                $log            = false;
-                $booking_id     = $EM_Booking->booking_id;
+	            $log        = false;
+	            $booking_id = $EM_Booking->booking_id;
+	            $user       = is_user_logged_in() ? get_userdata( get_current_user_id() )->display_name : 'A visitor';
 
-                if ( 2 == $EM_Booking->booking_status ) {
-                    $action = 'registration_reject';
-                    $status = 'rejected';
-                    if ( 1 == get_option( 'al_em_booking_rejected' ) ) {
-                        $log = true;
-                    }
+                if ( 0 == $EM_Booking->booking_status ) {
+	                $action = 'registration_pending';
+	                $status = 'pending';
+	                if ( 1 == get_option( 'al_em_booking_pending' ) ) {
+		                $log = true;
+	                }
+                } elseif ( 1 == $EM_Booking->booking_status ) {
+	                $action = 'registration_approved';
+	                $status = 'approved';
+	                if ( 1 == get_option( 'al_em_booking_approved' ) ) {
+		                $log = true;
+	                }
+                } elseif ( 2 == $EM_Booking->booking_status ) {
+	                $action = 'registration_reject';
+	                $status = 'rejected';
+	                if ( 1 == get_option( 'al_em_booking_rejected' ) ) {
+		                $log = true;
+	                }
                 } elseif ( 3 == $EM_Booking->booking_status ) {
-                    $action = 'registration_cancel';
-                    $status = 'canceled';
-                    if ( 1 == get_option( 'al_em_booking_canceled' ) ) {
-                        $log = true;
-                    }
+	                $action = 'registration_cancel';
+	                $status = 'canceled';
+	                if ( 1 == get_option( 'al_em_booking_canceled' ) ) {
+		                $log = true;
+	                }
+                } elseif ( 4 == $EM_Booking->booking_status ) {
+	                $action = 'registration_aw_onl_payment';
+	                $status = 'registered';
+	                if ( 1 == get_option( 'al_em_booking_aw_onl_payment' ) ) {
+		                $log = true;
+	                }
+                } elseif ( 5 == $EM_Booking->booking_status ) {
+	                $action = 'registration_aw_ofl_payment';
+	                $status = 'registered';
+	                if ( 1 == get_option( 'al_em_booking_aw_ofl_payment' ) ) {
+		                $log = true;
+	                }
                 } else {
                     $action = 'registration_unknown';
                     $status = 'unknown';
@@ -681,7 +711,7 @@
                 }
 
                 if ( $log == true ) {
-                    $this->al_log_user_action( $action, 'Action Logger', get_userdata( get_current_user_id() )->display_name . ' ' . $status . ' ' . esc_html( __( 'the booking with booking ID:', 'action-logger' ) )  . ' ' . $booking_id . '.' );
+                    $this->al_log_user_action( $action, 'Action Logger', $user . ' ' . $status . ' ' . esc_html( __( 'the booking with booking ID:', 'action-logger' ) )  . ' ' . $booking_id . '.' );
                 }
 
             }
