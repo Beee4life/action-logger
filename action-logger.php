@@ -770,10 +770,10 @@
 		        }
 	        }
 
-	        public function al_ri_user_rankings_delete( $user_id, $value_array ) {
+	        public function al_ri_user_rankings_delete( $user_id, $count ) {
 		        if ( false != get_option( 'al_ri_rankings_deleted' ) ) {
 			        $user = get_userdata( get_current_user_id() )->display_name;
-			        $this->al_log_user_action( 'individual_ranking_deleted', 'Rankings Importer', $user . ' deleted ' . count( $value_array ) . ' ranking lines for ' . get_userdata( $user_id )->display_name );
+			        $this->al_log_user_action( 'individual_ranking_deleted', 'Rankings Importer', sprintf( esc_html__( '%s deleted %d individual rankings for %s.', 'action-logger' ), $user, $count, $user_id ) );
 		        }
 	        }
 
