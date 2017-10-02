@@ -11,15 +11,13 @@
     Domain Path: /languages
     License: GPL v2
 
-            http://www.berryplasman.com
-               ___  ____ ____ ____
-              / _ )/ __/  __/  __/
-             / _  / _/   _/   _/
-            /____/___/____/____/
+    http://www.berryplasman.com
+       ___  ____ ____ ____
+      / _ )/ __/  __/  __/
+     / _  / _/   _/   _/
+    /____/___/____/____/
 
     */
-
-    // @TODO: add log rotation
 
     if ( ! defined( 'ABSPATH' ) ) {
         exit; // Exit if accessed directly
@@ -304,7 +302,6 @@
 
                             $filename  = "export.csv";
                             $delimiter = ",";
-                            $test      = 1;
 
                             $csv_header = array(
                                 'id'                 => 'ID',
@@ -366,7 +363,6 @@
                         return;
                     } else {
 
-                        $delete_items = ! empty( $_POST[ 'delete_selected' ] ) ? $_POST[ 'delete_selected' ] : false;
 	                    if ( isset( $_POST['delete_all'] ) ) {
 		                    $this->al_truncate_log_table( true );
 		                    al_errors()->add( 'success_logs_deleted', esc_html( __( 'All logs deleted.', 'action-logger' ) ) );
