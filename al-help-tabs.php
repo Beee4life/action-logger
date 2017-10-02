@@ -44,7 +44,7 @@
                 'title'   => esc_html__( 'Log settings', 'action-logger' ),
                 'content' => '<h4>Log sttings</h4><p>' . esc_html__( 'On this page you can:', 'action-logger' ) . '</p>' .
                 '<ul>
-                    <li>' . esc_html__( 'select who see the logs', 'action-logger' ) . '</li>
+                    <li>' . esc_html__( 'select who can see the logs', 'action-logger' ) . '</li>
                     <li>' . esc_html__( 'select to preserve the data when uninstalling', 'action-logger' ) . '</li>
                     <li>' . esc_html__( 'delete all logs', 'action-logger' ) . '</li>
                 </ul>',
