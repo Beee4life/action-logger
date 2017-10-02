@@ -196,7 +196,8 @@
 	         */
 	        public function al_add_admin_pages() {
 		        global $my_plugin_hook;
-		        $my_plugin_hook = add_menu_page( 'Action Logger', 'Action Logger', 'manage_options', 'action-logger', 'action_logger_dashboard', 'dashicons-editor-alignleft' );
+		        $capability = get_option( 'al_log_user_role' );
+		        $my_plugin_hook = add_menu_page( 'Action Logger', 'Action Logger', $capability, 'action-logger', 'action_logger_dashboard', 'dashicons-editor-alignleft' );
 		        add_action( "load-$my_plugin_hook", array( $this, 'al_add_screen_options' ) );
 		        include( 'al-dashboard.php' ); // content for the settings page
 
@@ -225,9 +226,6 @@
              */
             public function al_log_actions_functions() {
 
-                /**
-                 * Update who can manage
-                 */
                 if ( isset( $_POST[ 'active_logs_nonce' ] ) ) {
                     if ( ! wp_verify_nonce( $_POST[ 'active_logs_nonce' ], 'active-logs-nonce' ) ) {
                         al_errors()->add( 'error_nonce_no_match', esc_html( __( 'Something went wrong. Please try again.', 'action-logger' ) ) );
@@ -352,7 +350,7 @@
             }
 
             /**
-             * Function for the overview page. Right now only delete rows is available (for admins only)
+             * Function for the overview page.
              */
             public function al_delete_selected_items() {
 
@@ -363,14 +361,16 @@
                         return;
                     } else {
 
-	                    if ( isset( $_POST['delete_all'] ) ) {
+	                    // delete all
+                        if ( isset( $_POST['delete_all'] ) ) {
 		                    $this->al_truncate_log_table( true );
 		                    al_errors()->add( 'success_logs_deleted', esc_html( __( 'All logs deleted.', 'action-logger' ) ) );
 
 		                    return;
 	                    } elseif ( isset( $_POST['rows'] ) ) {
 
-		                    if ( $_POST['rows'] ) {
+		                    // delete rows
+                            if ( $_POST['rows'] ) {
 			                    $where = array();
 			                    global $wpdb;
 			                    foreach ( $_POST['rows'] as $row_id ) {
@@ -402,7 +402,6 @@
                         return;
                     } else {
 
-	                    // $delete_all = ! empty( $_POST[ 'delete_all' ] ) ? $_POST[ 'delete_all' ] : false;
                         if ( isset( $_POST[ 'delete_all' ] ) ) {
                             // truncate table
                             $this->al_truncate_log_table( true );
@@ -443,8 +442,8 @@
 	         * @return string
 	         */
             public function al_admin_menu() {
-                    return '<p><a href="' . site_url() . '/wp-admin/admin.php?page=action-logger">' . esc_html( __( 'Logs', 'action-logger' ) ) . '</a> | <a href="' . site_url() . '/wp-admin/admin.php?page=al-settings">' . esc_html( __( 'Settings', 'action-logger' ) ) . '</a> | <a href="' . site_url() . '/wp-admin/admin.php?page=al-misc">' . esc_html( __( 'Misc', 'action-logger' ) ) . '</a></p>';
                 if ( current_user_can( 'manage_options' ) ) {
+                    return '<p><a href="' . site_url() . '/wp-admin/admin.php?page=action-logger">' . esc_html( __( 'Logs', 'action-logger' ) ) . '</a> | <a href="' . site_url() . '/wp-admin/admin.php?page=al-settings">' . esc_html( __( 'Settings', 'action-logger' ) ) . '</a> | <a href="' . site_url() . '/wp-admin/admin.php?page=al-misc">' . esc_html( __( 'Misc', 'action-logger' ) ) . '</a></p>';
                 }
             }
 
