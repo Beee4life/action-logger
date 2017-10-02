@@ -418,6 +418,11 @@
                 }
             }
 
+	        /**
+	         * Empty log table
+             *
+             * @param bool $truncate
+	         */
             public function al_truncate_log_table( $truncate = false ) {
 
                 if ( false != $truncate ) {
@@ -436,6 +441,11 @@
             }
 
 
+	        /**
+             * Create admin menu
+             *
+	         * @return string
+	         */
             public function al_admin_menu() {
                     return '<p><a href="' . site_url() . '/wp-admin/admin.php?page=action-logger">' . esc_html( __( 'Logs', 'action-logger' ) ) . '</a> | <a href="' . site_url() . '/wp-admin/admin.php?page=al-settings">' . esc_html( __( 'Settings', 'action-logger' ) ) . '</a> | <a href="' . site_url() . '/wp-admin/admin.php?page=al-misc">' . esc_html( __( 'Misc', 'action-logger' ) ) . '</a></p>';
                 if ( current_user_can( 'manage_options' ) ) {
@@ -444,7 +454,9 @@
 
 
 	        /**
-	         * @return bool
+	         * Add screen options
+             *
+             * @return bool
 	         */
 	        public function al_add_screen_options() {
 
@@ -473,6 +485,15 @@
 	        }
 
 
+	        /**
+             * Set sceen options
+             *
+	         * @param $status
+	         * @param $option
+	         * @param $value
+	         *
+	         * @return mixed
+	         */
 	        public function al_set_screen_option( $status, $option, $value ) {
 
 		        if ( 'al_ppp' == $option ) {
