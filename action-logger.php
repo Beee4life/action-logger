@@ -56,7 +56,6 @@
                 add_action( 'admin_init',                   array( $this, 'al_delete_all_logs' ) );
                 add_action( 'admin_init',                   array( $this, 'al_log_actions_functions' ) );
                 add_action( 'admin_init',                   array( $this, 'al_settings_page_functions' ) );
-                add_action( 'admin_init',                   array( $this, 'al_check_log_table' ) );
                 add_action( 'plugins_loaded',               array( $this, 'al_load_plugin_textdomain' ) );
                 add_action( 'admin_enqueue_scripts',        array( $this, 'al_enqueue_action_logger_css' ) );
 	            add_filter( 'set-screen-option',            array( $this, 'al_set_screen_option' ), 10, 3 );
@@ -90,6 +89,7 @@
 	            // load on each page load
 	            $this->al_load_includes();
 	            $this->al_log_user_action();
+	            $this->al_check_log_table();
 
 	            // $this->al_set_default_values();
 
@@ -138,23 +138,7 @@
              */
             public function al_prepare_log_table() {
 
-                require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
-                ob_start();
-                global $wpdb;
-                ?>
-                DROP TABLE IF EXISTS <?php echo $wpdb->prefix; ?>action_logs;
-                CREATE TABLE <?php echo $wpdb->prefix; ?>action_logs (
-                id int(5) unsigned NOT NULL auto_increment,
-                action_time int(14) unsigned NOT NULL,
-                action_user int(5) unsigned NOT NULL,
-                action varchar(50) NULL,
-                action_generator varchar(50) NULL,
-                action_description varchar(100) NOT NULL,
-                PRIMARY KEY (id)
-                );
-                <?php
-                $sql = ob_get_clean();
-                dbDelta( $sql );
+                $this->al_check_log_table();
 
             }
 
@@ -169,13 +153,13 @@
                 global $wpdb;
                 ?>
                 CREATE TABLE IF NOT EXISTS <?php echo $wpdb->prefix; ?>action_logs (
-                id int(5) unsigned NOT NULL auto_increment,
-                action_time int(14) unsigned NOT NULL,
-                action_user int(5) unsigned NOT NULL,
-                action varchar(50) NULL,
-                action_generator varchar(50) NULL,
-                action_description varchar(100) NOT NULL,
-                PRIMARY KEY (id)
+                    id int(6) unsigned NOT NULL auto_increment,
+                    action_time int(14) unsigned NOT NULL,
+                    action_user int(6) unsigned NOT NULL,
+                    action varchar(50) NULL,
+                    action_generator varchar(50) NULL,
+                    action_description varchar(100) NOT NULL,
+                    PRIMARY KEY (id)
                 );
                 <?php
                 $sql = ob_get_clean();
