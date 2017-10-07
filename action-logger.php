@@ -62,7 +62,7 @@
 	            add_shortcode( 'actionlogger',         array( $this, 'al_register_shortcode_logger' ) );
 
 	            // WP Core actions
-                add_action( 'user_register ',               array( $this, 'al_log_user_create' ), 10, 1 );
+                add_action( 'user_register',                array( $this, 'al_log_user_create' ), 10, 1 );
                 add_action( 'profile_update',               array( $this, 'al_log_user_change' ), 10, 2 );
 	            add_action( 'delete_user',                  array( $this, 'al_log_user_delete' ), 10, 1 );
                 add_action( 'transition_post_status',       array( $this, 'al_post_status_transitions'), 10, 3 );
@@ -614,8 +614,9 @@
              * @param $user_id
              */
             public function al_log_user_create( $user_id ) {
-                if ( false != get_option( 'al_wp_user_create' ) ) {
+                echo '<pre>'; var_dump( $user_id ); echo '</pre>'; exit;
 	                $this->al_log_user_action( 'user_registered', 'Action Logger', sprintf( esc_html( __( 'New user registered: %s.', 'sexdates' ) ), get_userdata( $user_id )->display_name ) );
+                if ( false != get_option( 'al_wp_user_create' ) ) {
                 }
             }
 
