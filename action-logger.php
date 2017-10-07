@@ -45,8 +45,9 @@
                 register_activation_hook( __FILE__,    array( $this, 'al_plugin_activation' ) );
                 register_deactivation_hook( __FILE__,  array( $this, 'al_plugin_deactivation' ) );
 
-                // add settings link to plugin
-                add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), array( $this, 'al_plugin_link' ) );
+	            // filters
+	            add_filter( 'set-screen-option',            array( $this, 'al_set_screen_option' ), 10, 3 );
+	            add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), array( $this, 'al_plugin_link' ) );
 
                 // actions
 	            add_action( 'admin_menu',                   array( $this, 'al_add_admin_pages' ) );
@@ -56,7 +57,6 @@
                 add_action( 'admin_init',                   array( $this, 'al_settings_page_functions' ) );
                 add_action( 'plugins_loaded',               array( $this, 'al_load_plugin_textdomain' ) );
                 add_action( 'admin_enqueue_scripts',        array( $this, 'al_enqueue_action_logger_css' ) );
-	            add_filter( 'set-screen-option',            array( $this, 'al_set_screen_option' ), 10, 3 );
 
 	            // Shortcode
 	            add_shortcode( 'actionlogger',         array( $this, 'al_register_shortcode_logger' ) );
