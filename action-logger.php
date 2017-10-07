@@ -616,7 +616,7 @@
             public function al_log_user_create( $user_id ) {
                 echo '<pre>'; var_dump( $user_id ); echo '</pre>'; exit;
                 if ( false != get_option( 'al_wp_user_create' ) ) {
-	                $this->al_log_user_action( 'user_registered', 'Action Logger', sprintf( esc_html( __( 'New user registered: %s.', 'sexdates' ) ), get_userdata( $user_id )->display_name ) );
+	                $this->al_log_user_action( 'user_registered', 'Action Logger', sprintf( esc_html( __( 'New user registered: %s.', 'action-logger' ) ), get_userdata( $user_id )->display_name ) );
                 }
             }
 
