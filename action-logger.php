@@ -608,6 +608,7 @@
 		        }
 	        }
 
+
             /**
              * Log user creation
              *
@@ -619,6 +620,7 @@
 	                $this->al_log_user_action( 'user_registered', 'Action Logger', sprintf( esc_html( __( 'New user registered: %s.', 'action-logger' ) ), get_userdata( $user_id )->display_name ) );
                 }
             }
+
 
             /**
              * Log user change
@@ -635,6 +637,7 @@
                 }
             }
 
+
 	        /**
 	         * Log user delete
 	         *
@@ -645,6 +648,7 @@
 			        $this->al_log_user_action( 'user_deleted', 'Action Logger', sprintf( esc_html( __( '%s deleted the user of %s.', 'action-logger' ) ), get_userdata( get_current_user_id() )->display_name, get_userdata( $user_id )->display_name ) );
 		        }
 	        }
+
 
 	        /**
              * Events manager actions
