@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Action Logger 1.0\n"
-"POT-Creation-Date: 2017-09-23 04:04+0200\n"
-"PO-Revision-Date: 2017-09-23 04:07+0200\n"
+"POT-Creation-Date: 2017-10-07 20:39+0200\n"
+"PO-Revision-Date: 2017-10-07 20:39+0200\n"
 "Last-Translator: Beee\n"
 "Language-Team: \n"
 "Language: nl_NL\n"
@@ -16,106 +16,108 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: languages\n"
 
-#: action-logger.php:251 action-logger.php:284 action-logger.php:302
-#: action-logger.php:356 action-logger.php:380 action-logger.php:420
+#: action-logger.php:265 action-logger.php:298 action-logger.php:316
+#: action-logger.php:334 action-logger.php:387 action-logger.php:411
+#: action-logger.php:452
 msgid "Something went wrong. Please try again."
 msgstr "Er is iets verkeerd gegaan. Probeer opnieuw."
 
-#: action-logger.php:268 action-logger.php:292 action-logger.php:367
+#: action-logger.php:282 action-logger.php:306 action-logger.php:324
+#: action-logger.php:398
 msgid "Settings saved."
 msgstr "Instellingen opgeslagen."
 
-#: action-logger.php:388 action-logger.php:429
+#: action-logger.php:419 action-logger.php:460
 msgid "All logs deleted."
 msgstr "Alle logs verwijderd."
 
-#: action-logger.php:400
+#: action-logger.php:432
 msgid "All selected items are successfully deleted from the database."
 msgstr "Alle geselecteerde items zijn succesvol verwijderd uit de database."
 
-#: action-logger.php:405
+#: action-logger.php:437
 msgid "You didn't select any lines. If you did, then something went wrong."
 msgstr ""
 "Je hebt geen items geselecteerd. Als je dat wel gedaan hebt is er iets "
 "verkeerd gegaan."
 
-#: action-logger.php:456 al-dashboard.php:63
+#: action-logger.php:498 al-dashboard.php:63
 msgid "Logs"
 msgstr "Logs"
 
-#: action-logger.php:456
+#: action-logger.php:498
 msgid "Settings"
 msgstr "Instellingen"
 
-#: action-logger.php:456
+#: action-logger.php:498
 msgid "Misc"
 msgstr "Misc"
 
-#: action-logger.php:483
+#: action-logger.php:526
 #, php-format
 msgid "Log entries (%d max)"
 msgstr "Log items (max %d)"
 
-#: action-logger.php:584
+#: action-logger.php:636
 #, php-format
 msgid "%s published %s."
 msgstr "%s heeft %s gepubliceerd."
 
-#: action-logger.php:589
+#: action-logger.php:641
 #, php-format
 msgid "%s re-published %s."
 msgstr "%s heeft %s opnieuw gepubliceerd."
 
-#: action-logger.php:602
+#: action-logger.php:654
 #, php-format
 msgid "%s deleted %s."
 msgstr "%s heeft %s verwijderd."
 
-#: action-logger.php:612
+#: action-logger.php:659
 #, php-format
 msgid "%s marked %s as pending review."
 msgstr "%s heeft %s gemarkeerd als Wachtend op goedkeuring."
 
-#: action-logger.php:624
+#: action-logger.php:673
 #, php-format
 msgid "New user registered: %s."
 msgstr "Nieuwe gebruiker geregistreerd: %s."
 
-#: action-logger.php:638
+#: action-logger.php:688
 #, php-format
 msgid "%s changed the user of %s."
 msgstr "%s heeft de user info gewijzigd van %s."
 
-#: action-logger.php:650
+#: action-logger.php:701
 #, php-format
 msgid "%s deleted the user of %s."
 msgstr "%s heeft de gebruiker verwijderd van %s."
 
-#: action-logger.php:714
+#: action-logger.php:766
 msgid "the booking with booking ID:"
 msgstr "de boeking met boeking ID:"
 
-#: action-logger.php:727
+#: action-logger.php:779
 #, php-format
 msgid "%s deleted bookings for an event."
 msgstr "%s heeft boekingen verwijderd van een event."
 
-#: action-logger.php:740 action-logger.php:804
+#: action-logger.php:792 action-logger.php:856
 #, php-format
 msgid "%s successfully uploaded the file: \"%s\"."
 msgstr "%s heeft succesvol het bestand “%s” ge-upload."
 
-#: action-logger.php:751
+#: action-logger.php:803
 #, php-format
 msgid "%s successfully validated the file: \"%s\"."
 msgstr "%s heeft succesvol het bestand “%s” gevalideerd."
 
-#: action-logger.php:762 action-logger.php:797
+#: action-logger.php:814 action-logger.php:849
 #, php-format
 msgid "%s successfully imported %d lines from file."
 msgstr "%s heeft succesvol %d regels geïmporteerd vanuit een bestand."
 
-#: action-logger.php:790
+#: action-logger.php:842
 #, php-format
 msgid "%s successfully verified %s."
 msgstr "%s heeft succesvol %s gevalideerd."
@@ -156,7 +158,7 @@ msgstr "Gegenereerd door"
 msgid "Description"
 msgstr "Beschrijving"
 
-#: al-dashboard.php:78 al-dashboard.php:95 al-settings.php:66
+#: al-dashboard.php:78 al-dashboard.php:95 al-settings.php:116
 msgid "Delete"
 msgstr "Verwijderen"
 
@@ -389,7 +391,8 @@ msgstr "Hier kun je selecteren welke acties je wilt loggen/negeren."
 msgid "Active"
 msgstr "Actief"
 
-#: al-log-actions.php:93 al-settings.php:46 al-settings.php:58
+#: al-log-actions.php:93 al-settings.php:73 al-settings.php:96
+#: al-settings.php:108
 msgid "Save settings"
 msgstr "Instellingen opslaan"
 
@@ -448,10 +451,20 @@ msgstr ""
 "ontwikkelen."
 
 #: al-settings.php:28
+msgid "Purge logs"
+msgstr "Verwijder logs"
+
+#: al-settings.php:30
+msgid ""
+"Select how long you want to keep the logs. Default is 1 month (30 days)."
+msgstr ""
+"Selecteer hoe lang je de logs wilt bewaren. Standaard is 1 maand (30 dagen)."
+
+#: al-settings.php:78
 msgid "Who can do what"
 msgstr "Wie kan wat doen"
 
-#: al-settings.php:30
+#: al-settings.php:80
 msgid ""
 "Here you can select what capability a user needs to see the logs. The "
 "default setting is \"manage_options\" which belongs to administrator."
@@ -460,7 +473,7 @@ msgstr ""
 "logs te kunnen zien. De standaard instelling is “manage_options” welke bij "
 "administrators hoort."
 
-#: al-settings.php:31
+#: al-settings.php:81
 msgid ""
 "The reason why it's set per capability instead of per user is because two "
 "users with the same role can have different capabilities."
@@ -468,23 +481,24 @@ msgstr ""
 "De reden waarom het per ‘recht’ is ingesteld ipv per gebruiker is omdat twee "
 "gebruikers met dezelfde rol, verschillende rechten kunnen hebben."
 
-#: al-settings.php:49
+#: al-settings.php:99
 msgid "Preserve data when uninstalling"
 msgstr "Bewaar data bij plugin verwijdering"
 
-#: al-settings.php:56
+#: al-settings.php:106
 msgid ""
-"If you uninstall the plugin, all data is removed as well. If you check this "
-"box, your logs won't be deleted upon uninstall."
+"If you uninstall the plugin, all data and settings are removed as well. If "
+"you check this box, your logs and settings won't be deleted upon uninstall."
 msgstr ""
-"Als je de plugin verwijderd wordt alle data ook verwijderd. Als je deze "
-"optie aanvinkt, wordt je data bewaard als de plugin verwijderd wordt."
+"Als je de plugin verwijderd wordt alle data en al je instellingen ook "
+"verwijderd. Als je deze optie aanvinkt, worden je data en instellingen "
+"bewaard als de plugin verwijderd wordt."
 
-#: al-settings.php:62
+#: al-settings.php:112
 msgid "Nuke 'em all"
 msgstr "Alles verwijderen"
 
-#: al-settings.php:67
+#: al-settings.php:117
 msgid "Delete all logs"
 msgstr "Alle logs verwijderen"
 

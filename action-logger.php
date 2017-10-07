@@ -56,7 +56,8 @@
                 add_action( 'admin_init',                   array( $this, 'al_log_actions_functions' ) );
                 add_action( 'admin_init',                   array( $this, 'al_settings_page_functions' ) );
                 add_action( 'plugins_loaded',               array( $this, 'al_load_plugin_textdomain' ) );
-                add_action( 'admin_enqueue_scripts',        array( $this, 'al_enqueue_action_logger_css' ) );
+	            add_action( 'admin_enqueue_scripts',        array( $this, 'al_enqueue_action_logger_css' ) );
+	            add_action( 'al_cron_purge_logs',           array( $this, 'al_cron_jobs' ) );
 
 	            // Shortcode
 	            add_shortcode( 'actionlogger',         array( $this, 'al_register_shortcode_logger' ) );
@@ -89,12 +90,32 @@
 	            $this->al_log_user_action();
 	            $this->al_check_log_table();
 
-	            // $this->al_set_default_values();
-	            $this->check_this();
+	            $this->al_set_default_values(); // check if there are default settings
+	            $this->check_this();            // for testing stuff
 
             }
 
+	        public function al_cron_jobs() {
+		        $purge_logs_after = ( false != get_option( 'al_purge_logs' ) ) ? intval( get_option( 'al_purge_logs' ) ) : 29;
+		        $now_ts           = strtotime( date( 'Y-m-d  H:i:s', strtotime( '+' . get_option( 'gmt_offset' ) . ' hours' ) ) );
+		        $purge_range      = $purge_logs_after * 24 * 60 * 60;
+		        $purge_date       = $now_ts - $purge_range;
+
+                global $wpdb;
+		        $wpdb->query(
+			        $wpdb->prepare(
+                        "
+                        DELETE FROM {$wpdb->prefix}action_logs
+                        WHERE action_time < %d
+                        ",
+                        $now_ts
+                    )
+                );
+	        }
+
 	        public function check_this() {
+                // echo '<pre>'; var_dump(strtotime( date( 'Y-m-d  H:i:s', strtotime( '+' . get_option( 'gmt_offset' ) . ' hours' ) ) )); echo '</pre>'; exit;
+                // echo '<pre>'; print_r( _get_cron_array() ); echo '</pre>'; exit;
 	        }
 
 	        /**
@@ -103,6 +124,10 @@
 	        public function al_plugin_activation() {
 		        $this->al_prepare_log_table();
 		        $this->al_set_default_values();
+
+		        if ( ! wp_next_scheduled( 'al_cron_purge_logs' ) ) {
+			        wp_schedule_event( time(), 'daily', 'al_cron_purge_logs' );
+		        }
 	        }
 
 	        /**
@@ -113,6 +138,8 @@
              * These values will be re-initiated upon plugin activation.
              */
             public function al_plugin_deactivation() {
+	            $timestamp = wp_next_scheduled( 'al_cron_purge_logs' );
+	            wp_unschedule_event( $timestamp, 'al_cron_purge_logs' );
             }
 
             /**
@@ -187,6 +214,7 @@
                     update_option( 'al_available_log_actions', $all_options );
 	                update_option( 'al_log_user_role', 'manage_options' );
 	                update_option( 'al_posts_per_page', 100 );
+	                update_option( 'al_purge_logs', 30 );
                 }
             }
 
@@ -258,22 +286,40 @@
 	            /**
 	             * Update who can manage
 	             */
-                if ( isset( $_POST[ 'settings_page_nonce' ] ) ) {
-                    if ( ! wp_verify_nonce( $_POST[ 'settings_page_nonce' ], 'settings-page-nonce' ) ) {
-                        al_errors()->add( 'error_nonce_no_match', esc_html( __( 'Something went wrong. Please try again.', 'action-logger' ) ) );
+	            if ( isset( $_POST[ 'purge_logs_nonce' ] ) ) {
+		            if ( ! wp_verify_nonce( $_POST[ 'purge_logs_nonce' ], 'purge-logs-nonce' ) ) {
+			            al_errors()->add( 'error_nonce_no_match', esc_html( __( 'Something went wrong. Please try again.', 'action-logger' ) ) );
 
-                        return;
-                    } else {
+			            return;
+		            } else {
 
-                        if ( isset( $_POST[ 'select_cap' ] ) ) {
-                            update_option( 'al_log_user_role', $_POST[ 'select_cap' ] );
-                        }
-                        al_errors()->add( 'success_settings_saved', esc_html( __( 'Settings saved.', 'action-logger' ) ) );
+			            if ( isset( $_POST[ 'purge_logs' ] ) ) {
+				            update_option( 'al_purge_logs', $_POST[ 'purge_logs' ] );
+			            }
+			            al_errors()->add( 'success_settings_saved', esc_html( __( 'Settings saved.', 'action-logger' ) ) );
 
-                    }
-                }
+		            }
+	            }
 
-                /**
+	            /**
+	             * Update who can manage
+	             */
+	            if ( isset( $_POST[ 'settings_page_nonce' ] ) ) {
+		            if ( ! wp_verify_nonce( $_POST[ 'settings_page_nonce' ], 'settings-page-nonce' ) ) {
+			            al_errors()->add( 'error_nonce_no_match', esc_html( __( 'Something went wrong. Please try again.', 'action-logger' ) ) );
+
+			            return;
+		            } else {
+
+			            if ( isset( $_POST[ 'select_cap' ] ) ) {
+				            update_option( 'al_log_user_role', $_POST[ 'select_cap' ] );
+			            }
+			            al_errors()->add( 'success_settings_saved', esc_html( __( 'Settings saved.', 'action-logger' ) ) );
+
+		            }
+	            }
+
+	            /**
                  * Export data to CSV
                  */
                 if ( isset( $_POST[ 'export_csv_nonce' ] ) ) {
