@@ -199,21 +199,24 @@
 	         * Function which runs when cron job is triggered
 	         */
 	        public function al_cron_jobs() {
-		        $purge_logs_after = ( false != get_option( 'al_purge_logs' ) ) ? intval( get_option( 'al_purge_logs' ) ) : 29;
-		        $now_ts           = strtotime( date( 'Y-m-d  H:i:s', strtotime( '+' . get_option( 'gmt_offset' ) . ' hours' ) ) );
-		        $purge_range      = $purge_logs_after * 24 * 60 * 60;
-		        $purge_date       = $now_ts - $purge_range;
+		        $purge_logs_after = ( false != get_option( 'al_purge_logs' ) ) ? intval( get_option( 'al_purge_logs' ) ) : 30;
+		        // only purge when it's not set to forever/0
+		        if ( 0 !== $purge_logs_after ) {
+			        $now_ts           = strtotime( date( 'Y-m-d  H:i:s', strtotime( '+' . get_option( 'gmt_offset' ) . ' hours' ) ) );
+			        $purge_range      = $purge_logs_after * 24 * 60 * 60;
+			        $purge_date       = $now_ts - $purge_range;
 
-		        global $wpdb;
-		        $wpdb->query(
-			        $wpdb->prepare(
-				        "
+			        global $wpdb;
+			        $wpdb->query(
+				        $wpdb->prepare(
+					        "
                         DELETE FROM {$wpdb->prefix}action_logs
                         WHERE action_time < %d
                         ",
-				        $now_ts
-			        )
-		        );
+					        $now_ts
+				        )
+			        );
+                }
 	        }
 
 
