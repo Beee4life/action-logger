@@ -95,27 +95,7 @@
 
             }
 
-	        public function al_cron_jobs() {
-		        $purge_logs_after = ( false != get_option( 'al_purge_logs' ) ) ? intval( get_option( 'al_purge_logs' ) ) : 29;
-		        $now_ts           = strtotime( date( 'Y-m-d  H:i:s', strtotime( '+' . get_option( 'gmt_offset' ) . ' hours' ) ) );
-		        $purge_range      = $purge_logs_after * 24 * 60 * 60;
-		        $purge_date       = $now_ts - $purge_range;
-
-                global $wpdb;
-		        $wpdb->query(
-			        $wpdb->prepare(
-                        "
-                        DELETE FROM {$wpdb->prefix}action_logs
-                        WHERE action_time < %d
-                        ",
-                        $now_ts
-                    )
-                );
-	        }
-
 	        public function check_this() {
-                // echo '<pre>'; var_dump(strtotime( date( 'Y-m-d  H:i:s', strtotime( '+' . get_option( 'gmt_offset' ) . ' hours' ) ) )); echo '</pre>'; exit;
-                // echo '<pre>'; print_r( _get_cron_array() ); echo '</pre>'; exit;
 	        }
 
 	        /**
@@ -131,13 +111,9 @@
 	        }
 
 	        /**
-             * Function which runs upon plugin deactivation
-             *
-             * Stored options and option statuses are deleted on plugin deactivate to keep the database clean,
-             * because several people delete plugins by ftp instead of uninstalling them.
-             * These values will be re-initiated upon plugin activation.
-             */
-            public function al_plugin_deactivation() {
+	         * Function which runs upon plugin deactivation
+	         */
+	        public function al_plugin_deactivation() {
 	            $timestamp = wp_next_scheduled( 'al_cron_purge_logs' );
 	            wp_unschedule_event( $timestamp, 'al_cron_purge_logs' );
             }
@@ -217,6 +193,29 @@
 	                update_option( 'al_purge_logs', 30 );
                 }
             }
+
+
+	        /**
+	         * Function which runs when cron job is triggered
+	         */
+	        public function al_cron_jobs() {
+		        $purge_logs_after = ( false != get_option( 'al_purge_logs' ) ) ? intval( get_option( 'al_purge_logs' ) ) : 29;
+		        $now_ts           = strtotime( date( 'Y-m-d  H:i:s', strtotime( '+' . get_option( 'gmt_offset' ) . ' hours' ) ) );
+		        $purge_range      = $purge_logs_after * 24 * 60 * 60;
+		        $purge_date       = $now_ts - $purge_range;
+
+		        global $wpdb;
+		        $wpdb->query(
+			        $wpdb->prepare(
+				        "
+                        DELETE FROM {$wpdb->prefix}action_logs
+                        WHERE action_time < %d
+                        ",
+				        $now_ts
+			        )
+		        );
+	        }
+
 
 	        /**
 	         * Adds a page to admin sidebar menu
