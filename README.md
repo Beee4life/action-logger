@@ -31,7 +31,7 @@ Next to that I included a few logging options for one of our favourite plugins: 
 The overall impact is minimal.
 
 * Upon activation a new database table named `{your table prefix}_action_logs` is created.
-* Upon activation a handful of default settings are stored in the database which was just created.
+* Upon activation a handful of default settings (true/false) are stored in the database which was just created.
 * Every action is logged real-time, which is 1 row being stored in the database.
 * Upon plugin deactivation all settings are dropped to keep the database clean (except the preserve data option).
 * Upon plugin deletion (through WP admin) the database table `{your table prefix}_action_logs` is dropped (unless preserve data is selected in the options panel).
