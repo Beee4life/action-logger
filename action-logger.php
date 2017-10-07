@@ -150,7 +150,7 @@
                 ob_start();
                 global $wpdb;
                 ?>
-                CREATE TABLE IF NOT EXISTS <?php echo $wpdb->prefix; ?>action_logs (
+                CREATE TABLE <?php echo $wpdb->prefix; ?>action_logs (
                     id int(6) unsigned NOT NULL auto_increment,
                     action_time int(14) unsigned NOT NULL,
                     action_user int(6) unsigned NOT NULL,
