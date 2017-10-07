@@ -90,18 +90,22 @@
 	            $this->al_check_log_table();
 
 	            // $this->al_set_default_values();
+	            $this->check_this();
 
             }
+
+	        public function check_this() {
+	        }
 
 	        /**
-             * Function which runs upon plugin activation
-             */
-            public function al_plugin_activation() {
-                $this->al_prepare_log_table();
-                $this->al_set_default_values();
-            }
+	         * Function which runs upon plugin activation
+	         */
+	        public function al_plugin_activation() {
+		        $this->al_prepare_log_table();
+		        $this->al_set_default_values();
+	        }
 
-            /**
+	        /**
              * Function which runs upon plugin deactivation
              *
              * Stored options and option statuses are deleted on plugin deactivate to keep the database clean,
@@ -109,13 +113,6 @@
              * These values will be re-initiated upon plugin activation.
              */
             public function al_plugin_deactivation() {
-
-                $available_options = get_option( 'al_available_log_actions' );
-                if ( false != $available_options ) {
-                    foreach( $available_options as $option ) {
-                        delete_option( 'al_' . $option[ 'action_name' ] );
-                    }
-                }
             }
 
             /**
