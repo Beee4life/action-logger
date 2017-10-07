@@ -136,7 +136,9 @@
              */
             public function al_prepare_log_table() {
 
-                $this->al_check_log_table();
+	            if ( false == get_option( 'al_preserve_settings' ) ) {
+		            $this->al_check_log_table();
+	            }
 
             }
 
@@ -431,7 +433,7 @@
              * Enqueue CSS
              */
             public function al_enqueue_action_logger_css() {
-                wp_register_style( 'action-logger', plugins_url( 'style.css', __FILE__ ), false, '1.0' );
+                wp_register_style( 'action-logger', plugins_url( 'assets/css/style.css', __FILE__ ), false, '1.0' );
                 wp_enqueue_style( 'action-logger' );
             }
 
