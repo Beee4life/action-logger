@@ -13,7 +13,7 @@
         <div class="wrap">
             <div id="icon-options-general" class="icon32"><br /></div>
 
-            <h1>Action Logger settings page</h1>
+            <h1>Action Logger settings</h1>
 
             <?php al_show_admin_notices(); ?>
 
@@ -53,7 +53,7 @@
                         <input name="preserve_settings_nonce" type="hidden" value="<?php echo wp_create_nonce( 'preserve-settings-nonce' ); ?>"/>
                         <label for="preserve-settings" class="screen-reader-text">Preserve settings</label>
                         <p>
-                            <input name="preserve_settings" id="preserve-settings" type="checkbox" value="1" <?php if ( false != $checked ) { echo 'checked '; } ?>/> <span class="checkbox"><?php esc_html_e( 'If you uninstall the plugin, all data is removed as well. If you check this box, your logs won\'t be deleted upon uninstall.', 'action-logger' ); ?></span>
+                            <input name="preserve_settings" id="preserve-settings" type="checkbox" value="1" <?php if ( false != $checked ) { echo 'checked '; } ?>/> <span class="checkbox"><?php esc_html_e( "If you uninstall the plugin, all data and settings are removed as well. If you check this box, your logs and settings won't be deleted upon uninstall.", 'action-logger' ); ?></span>
                         </p>
                         <input name="" type="submit" class="admin-button admin-button-small" value="<?php esc_html_e( 'Save settings', 'action-logger' ); ?>" />
                     </form>

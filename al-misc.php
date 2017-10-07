@@ -13,7 +13,7 @@
         <div class="wrap">
             <div id="icon-options-general" class="icon32"><br /></div>
 
-            <h1>Action Logger misc page</h1>
+            <h1>Action Logger misc</h1>
 
             <?php al_show_admin_notices(); ?>
 

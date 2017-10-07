@@ -12,7 +12,7 @@
 
         <div class="wrap">
 
-        <h1>Action Logger overview</h1>
+        <h1>Action Logger</h1>
 
         <?php al_show_admin_notices(); ?>
 
