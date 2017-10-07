@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Action Logger 1.0\n"
-"POT-Creation-Date: 2017-10-07 19:16+0200\n"
-"PO-Revision-Date: 2017-10-07 19:16+0200\n"
+"POT-Creation-Date: 2017-10-07 20:39+0200\n"
+"PO-Revision-Date: 2017-10-07 20:39+0200\n"
 "Last-Translator: Beee\n"
 "Language-Team: \n"
 "Language: nl_NL\n"
@@ -16,108 +16,108 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: languages\n"
 
-#: action-logger.php:231 action-logger.php:264 action-logger.php:282
-#: action-logger.php:300 action-logger.php:353 action-logger.php:377
-#: action-logger.php:418
+#: action-logger.php:265 action-logger.php:298 action-logger.php:316
+#: action-logger.php:334 action-logger.php:387 action-logger.php:411
+#: action-logger.php:452
 msgid "Something went wrong. Please try again."
 msgstr "Er is iets verkeerd gegaan. Probeer opnieuw."
 
-#: action-logger.php:248 action-logger.php:272 action-logger.php:290
-#: action-logger.php:364
+#: action-logger.php:282 action-logger.php:306 action-logger.php:324
+#: action-logger.php:398
 msgid "Settings saved."
 msgstr "Instellingen opgeslagen."
 
-#: action-logger.php:385 action-logger.php:426
+#: action-logger.php:419 action-logger.php:460
 msgid "All logs deleted."
 msgstr "Alle logs verwijderd."
 
-#: action-logger.php:398
+#: action-logger.php:432
 msgid "All selected items are successfully deleted from the database."
 msgstr "Alle geselecteerde items zijn succesvol verwijderd uit de database."
 
-#: action-logger.php:403
+#: action-logger.php:437
 msgid "You didn't select any lines. If you did, then something went wrong."
 msgstr ""
 "Je hebt geen items geselecteerd. Als je dat wel gedaan hebt is er iets "
 "verkeerd gegaan."
 
-#: action-logger.php:464 al-dashboard.php:63
+#: action-logger.php:498 al-dashboard.php:63
 msgid "Logs"
 msgstr "Logs"
 
-#: action-logger.php:464
+#: action-logger.php:498
 msgid "Settings"
 msgstr "Instellingen"
 
-#: action-logger.php:464
+#: action-logger.php:498
 msgid "Misc"
 msgstr "Misc"
 
-#: action-logger.php:492
+#: action-logger.php:526
 #, php-format
 msgid "Log entries (%d max)"
 msgstr "Log items (max %d)"
 
-#: action-logger.php:602
+#: action-logger.php:636
 #, php-format
 msgid "%s published %s."
 msgstr "%s heeft %s gepubliceerd."
 
-#: action-logger.php:607
+#: action-logger.php:641
 #, php-format
 msgid "%s re-published %s."
 msgstr "%s heeft %s opnieuw gepubliceerd."
 
-#: action-logger.php:620
+#: action-logger.php:654
 #, php-format
 msgid "%s deleted %s."
 msgstr "%s heeft %s verwijderd."
 
-#: action-logger.php:625
+#: action-logger.php:659
 #, php-format
 msgid "%s marked %s as pending review."
 msgstr "%s heeft %s gemarkeerd als Wachtend op goedkeuring."
 
-#: action-logger.php:639
+#: action-logger.php:673
 #, php-format
 msgid "New user registered: %s."
 msgstr "Nieuwe gebruiker geregistreerd: %s."
 
-#: action-logger.php:654
+#: action-logger.php:688
 #, php-format
 msgid "%s changed the user of %s."
 msgstr "%s heeft de user info gewijzigd van %s."
 
-#: action-logger.php:667
+#: action-logger.php:701
 #, php-format
 msgid "%s deleted the user of %s."
 msgstr "%s heeft de gebruiker verwijderd van %s."
 
-#: action-logger.php:732
+#: action-logger.php:766
 msgid "the booking with booking ID:"
 msgstr "de boeking met boeking ID:"
 
-#: action-logger.php:745
+#: action-logger.php:779
 #, php-format
 msgid "%s deleted bookings for an event."
 msgstr "%s heeft boekingen verwijderd van een event."
 
-#: action-logger.php:758 action-logger.php:822
+#: action-logger.php:792 action-logger.php:856
 #, php-format
 msgid "%s successfully uploaded the file: \"%s\"."
 msgstr "%s heeft succesvol het bestand “%s” ge-upload."
 
-#: action-logger.php:769
+#: action-logger.php:803
 #, php-format
 msgid "%s successfully validated the file: \"%s\"."
 msgstr "%s heeft succesvol het bestand “%s” gevalideerd."
 
-#: action-logger.php:780 action-logger.php:815
+#: action-logger.php:814 action-logger.php:849
 #, php-format
 msgid "%s successfully imported %d lines from file."
 msgstr "%s heeft succesvol %d regels geïmporteerd vanuit een bestand."
 
-#: action-logger.php:808
+#: action-logger.php:842
 #, php-format
 msgid "%s successfully verified %s."
 msgstr "%s heeft succesvol %s gevalideerd."
