@@ -23,24 +23,74 @@
 
                 <?php echo al_check_php_version(); ?>
 
+                <form name="purge-logs-form" action="" method="post">
+                    <input name="purge_logs_nonce" type="hidden" value="<?php echo wp_create_nonce( 'purge-logs-nonce' ); ?>"/>
+                    <h2><?php esc_html_e( 'Purge logs', 'action-logger' ); ?></h2>
+                    <p>
+			            <?php esc_html_e( 'Select how long you want to keep the logs. Default is 1 month (30 days).', 'action-logger' ); ?>
+                    </p>
+                    <p>
+			            <?php
+                            $log_rotation = array(
+	                            array(
+		                            'key'   => 1,
+		                            'label' => '1 day',
+	                            ),
+	                            array(
+		                            'key'   => 7,
+		                            'label' => '1 week',
+	                            ),
+	                            array(
+		                            'key'   => 14,
+		                            'label' => '2 weeks',
+	                            ),
+	                            array(
+		                            'key'   => 30,
+		                            'label' => '1 month',
+	                            ),
+	                            array(
+		                            'key'   => 60,
+		                            'label' => '2 months',
+	                            ),
+	                            array(
+		                            'key'   => 365,
+		                            'label' => '1 year',
+	                            ),
+	                            array(
+		                            'key'   => 0,
+		                            'label' => 'Forever',
+	                            ),
+                            );
+				            $purge_logs_after = ( false != get_option( 'al_purge_logs' ) ) ? get_option( 'al_purge_logs' ) : false;
+			            ?>
+                        <label for="purge_logs" class="screen-reader-text"></label>
+                        <select name="purge_logs" id="purge_logs">
+				            <?php foreach ( $log_rotation as $log ) { ?>
+                                <option value="<?php echo $log['key']; ?>"<?php echo ( $purge_logs_after == $log['key'] ? ' selected' : '' ); ?>><?php echo $log['label']; ?></option>';
+				            <?php } ?>
+                        </select>
+                    </p>
+                    <input type="submit" class="admin-button admin-button-small" value="<?php esc_html_e( 'Save settings', 'action-logger' ); ?>" />
+                </form>
+
                 <form name="settings-form" action="" method="post">
                     <input name="settings_page_nonce" type="hidden" value="<?php echo wp_create_nonce( 'settings-page-nonce' ); ?>"/>
                     <h2><?php esc_html_e( 'Who can do what', 'action-logger' ); ?></h2>
                     <p>
-                        <?php esc_html_e( 'Here you can select what capability a user needs to see the logs. The default setting is "manage_options" which belongs to administrator.', 'action-logger' ); ?>
-                        <?php esc_html_e( 'The reason why it\'s set per capability instead of per user is because two users with the same role can have different capabilities.', 'action-logger' ); ?>
+			            <?php esc_html_e( 'Here you can select what capability a user needs to see the logs. The default setting is "manage_options" which belongs to administrator.', 'action-logger' ); ?>
+			            <?php esc_html_e( 'The reason why it\'s set per capability instead of per user is because two users with the same role can have different capabilities.', 'action-logger' ); ?>
                     </p>
                     <p>
-                        <?php
-                            $all_capabilities = get_role( 'administrator' )->capabilities;
-                            $logs_user_role   = get_option( 'al_log_user_role' );
-                            ksort( $all_capabilities );
-                        ?>
+			            <?php
+				            $all_capabilities = get_role( 'administrator' )->capabilities;
+				            $logs_user_role   = get_option( 'al_log_user_role' );
+				            ksort( $all_capabilities );
+			            ?>
                         <label for="select_cap" class="screen-reader-text"></label>
                         <select name="select_cap" id="select_cap">
-                            <?php foreach ( $all_capabilities as $key => $value ) { ?>
+				            <?php foreach ( $all_capabilities as $key => $value ) { ?>
                                 <option value="<?php echo $key; ?>"<?php echo ( $logs_user_role == $key ? ' selected' : '' ); ?>><?php echo $key; ?></option>';
-                            <?php } ?>
+				            <?php } ?>
                         </select>
                     </p>
                     <input type="submit" class="admin-button admin-button-small" value="<?php esc_html_e( 'Save settings', 'action-logger' ); ?>" />

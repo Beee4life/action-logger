@@ -89,8 +89,8 @@
 	            $this->al_log_user_action();
 	            $this->al_check_log_table();
 
-	            // $this->al_set_default_values();
-	            $this->check_this();
+	            $this->al_set_default_values(); // check if there are default settings
+	            $this->check_this();            // for testing stuff
 
             }
 
@@ -187,6 +187,7 @@
                     update_option( 'al_available_log_actions', $all_options );
 	                update_option( 'al_log_user_role', 'manage_options' );
 	                update_option( 'al_posts_per_page', 100 );
+	                update_option( 'al_purge_logs', 30 );
                 }
             }
 
@@ -258,22 +259,40 @@
 	            /**
 	             * Update who can manage
 	             */
-                if ( isset( $_POST[ 'settings_page_nonce' ] ) ) {
-                    if ( ! wp_verify_nonce( $_POST[ 'settings_page_nonce' ], 'settings-page-nonce' ) ) {
-                        al_errors()->add( 'error_nonce_no_match', esc_html( __( 'Something went wrong. Please try again.', 'action-logger' ) ) );
+	            if ( isset( $_POST[ 'purge_logs_nonce' ] ) ) {
+		            if ( ! wp_verify_nonce( $_POST[ 'purge_logs_nonce' ], 'purge-logs-nonce' ) ) {
+			            al_errors()->add( 'error_nonce_no_match', esc_html( __( 'Something went wrong. Please try again.', 'action-logger' ) ) );
 
-                        return;
-                    } else {
+			            return;
+		            } else {
 
-                        if ( isset( $_POST[ 'select_cap' ] ) ) {
-                            update_option( 'al_log_user_role', $_POST[ 'select_cap' ] );
-                        }
-                        al_errors()->add( 'success_settings_saved', esc_html( __( 'Settings saved.', 'action-logger' ) ) );
+			            if ( isset( $_POST[ 'purge_logs' ] ) ) {
+				            update_option( 'al_purge_logs', $_POST[ 'purge_logs' ] );
+			            }
+			            al_errors()->add( 'success_settings_saved', esc_html( __( 'Settings saved.', 'action-logger' ) ) );
 
-                    }
-                }
+		            }
+	            }
 
-                /**
+	            /**
+	             * Update who can manage
+	             */
+	            if ( isset( $_POST[ 'settings_page_nonce' ] ) ) {
+		            if ( ! wp_verify_nonce( $_POST[ 'settings_page_nonce' ], 'settings-page-nonce' ) ) {
+			            al_errors()->add( 'error_nonce_no_match', esc_html( __( 'Something went wrong. Please try again.', 'action-logger' ) ) );
+
+			            return;
+		            } else {
+
+			            if ( isset( $_POST[ 'select_cap' ] ) ) {
+				            update_option( 'al_log_user_role', $_POST[ 'select_cap' ] );
+			            }
+			            al_errors()->add( 'success_settings_saved', esc_html( __( 'Settings saved.', 'action-logger' ) ) );
+
+		            }
+	            }
+
+	            /**
                  * Export data to CSV
                  */
                 if ( isset( $_POST[ 'export_csv_nonce' ] ) ) {
