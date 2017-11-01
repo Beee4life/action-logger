@@ -84,12 +84,13 @@
 			            <?php
 				            $all_capabilities = get_role( 'administrator' )->capabilities;
 				            $logs_user_role   = get_option( 'al_log_user_role' );
+				            unset( $all_capabilities[ 'manage_links' ] );
 				            ksort( $all_capabilities );
 			            ?>
                         <label for="select_cap" class="screen-reader-text"></label>
                         <select name="select_cap" id="select_cap">
 				            <?php foreach ( $all_capabilities as $key => $value ) { ?>
-                                <option value="<?php echo $key; ?>"<?php echo ( $logs_user_role == $key ? ' selected' : '' ); ?>><?php echo $key; ?></option>';
+                                <option value="<?php echo $key; ?>"<?php echo ( $logs_user_role == $key ? ' selected' : '' ); ?>><?php echo $key; ?></option>
 				            <?php } ?>
                         </select>
                     </p>

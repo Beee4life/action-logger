@@ -23,7 +23,7 @@
             <?php // echo al_check_php_version(); ?>
 
             <?php
-                // get results from db
+	            // get results from db
 	            global $wpdb;
 	            $ppp       = ! empty( get_user_meta( get_current_user_id(), 'al_ppp', true ) ) ? get_user_meta( get_current_user_id(), 'al_ppp', true ) : get_option( 'al_posts_per_page' );
 	            $all_items = array();
