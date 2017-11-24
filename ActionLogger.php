@@ -50,13 +50,13 @@
 	            add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), array( $this, 'al_plugin_link' ) );
 
                 // actions
+                add_action( 'plugins_loaded',               array( $this, 'al_load_plugin_textdomain' ) );
+	            add_action( 'admin_enqueue_scripts',        array( $this, 'al_enqueue_action_logger_css' ) );
 	            add_action( 'admin_menu',                   array( $this, 'al_add_admin_pages' ) );
                 add_action( 'admin_init',                   array( $this, 'al_delete_selected_items' ) );
                 add_action( 'admin_init',                   array( $this, 'al_delete_all_logs' ) );
                 add_action( 'admin_init',                   array( $this, 'al_log_actions_functions' ) );
                 add_action( 'admin_init',                   array( $this, 'al_settings_page_functions' ) );
-                add_action( 'plugins_loaded',               array( $this, 'al_load_plugin_textdomain' ) );
-	            add_action( 'admin_enqueue_scripts',        array( $this, 'al_enqueue_action_logger_css' ) );
 	            add_action( 'al_cron_purge_logs',           array( $this, 'al_cron_jobs' ) );
 
 	            // Shortcode
@@ -89,8 +89,8 @@
 	            $this->al_load_includes();
 	            $this->al_log_user_action();
 	            $this->al_check_log_table();
-
 	            $this->al_set_default_values(); // check if there are default settings
+
 	            $this->check_this();            // for testing stuff
 
             }
@@ -190,7 +190,7 @@
                     update_option( 'al_available_log_actions', $all_options );
 	                update_option( 'al_log_user_role', 'manage_options' );
 	                update_option( 'al_posts_per_page', 100 );
-	                update_option( 'al_purge_logs', 30 );
+	                update_option( 'al_purge_logs', 0 );
                 }
             }
 
@@ -225,7 +225,7 @@
 	         */
 	        public function al_add_admin_pages() {
 		        global $my_plugin_hook;
-		        $capability = get_option( 'al_log_user_role' );
+		        $capability     = get_option( 'al_log_user_role' );
 		        $my_plugin_hook = add_menu_page( 'Action Logger', 'Action Logger', $capability, 'action-logger', 'action_logger_dashboard', 'dashicons-editor-alignleft' );
 		        add_action( "load-$my_plugin_hook", array( $this, 'al_add_screen_options' ) );
 		        include( 'al-dashboard.php' ); // content for the settings page
@@ -480,18 +480,6 @@
             public function al_enqueue_action_logger_css() {
                 wp_register_style( 'action-logger', plugins_url( 'assets/css/style.css', __FILE__ ), false, '1.0' );
                 wp_enqueue_style( 'action-logger' );
-            }
-
-
-	        /**
-             * Create admin menu
-             *
-	         * @return string
-	         */
-            public function al_admin_menu() {
-                if ( current_user_can( 'manage_options' ) ) {
-                    return '<p><a href="' . site_url() . '/wp-admin/admin.php?page=action-logger">' . esc_html( __( 'Logs', 'action-logger' ) ) . '</a> | <a href="' . site_url() . '/wp-admin/admin.php?page=al-settings">' . esc_html( __( 'Settings', 'action-logger' ) ) . '</a> | <a href="' . site_url() . '/wp-admin/admin.php?page=al-misc">' . esc_html( __( 'Misc', 'action-logger' ) ) . '</a></p>';
-                }
             }
 
 
