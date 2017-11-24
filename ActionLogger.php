@@ -1,6 +1,6 @@
 <?php
     /*
-    Plugin Name: Action logger
+    Plugin Name: Action Logger
     Version: 0.1 beta
     Tags: log
     Plugin URI: https://github.com/Beee4life/action-logger
@@ -127,7 +127,7 @@
                 $add_this = array(
                     '<a href="' . admin_url( 'admin.php?page=al-settings' ) . '">' . esc_html__( 'Settings', 'action-logger' ) . '</a>',
                 );
-                return array_merge( $links, $add_this );
+                return array_merge( $add_this, $links );
             }
 
             /**
