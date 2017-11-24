@@ -57,7 +57,7 @@ You can use this plugin in 2 ways:
 1. by including a piece of code in your template/plugin (see FAQ below)
 1. by using the shortcode in your posts/pages
 
-The first option offers a lot more logging possibilities, but requires php knowledge.
+The first option is where the strength of this plugin lies. It offers a lot more logging possibilities, but requires php knowledge.
 Both options are explained in the F.A.Q.
 
 ## FAQ
@@ -156,8 +156,7 @@ Yes, check the Misc page.
 * [S2Member](http://www.s2member.com/)
 * [WooCommerce](https://woocommerce.com/)
 * [WP e-Commerce](https://wpecommerce.org/)
-* [BuddyPress](https://buddypress.org/)
-* [Mailchimp for Wordpress](https://mc4wp.com/)
+* [bbPress](https://bbpress.org/)
 
 
 ### Misc
@@ -165,17 +164,10 @@ Yes, check the Misc page.
 If you're a plugin author and you would like to see your hooks logged in this plugin, please contact me @ http://berryplasman.com.  
 
 ### To Do
-* [X] - Add shortcode to track thank you pages and other status pages
-* [X] - Add panel to select what to track
-* [X] - Add WP errors
-* [X] - Add option to select which user roles can see the logger
-* [X] - Add pagination in overview
 * [ ] - Add filters in overview to filter certain actions/generators
-* [ ] - Add option to 'keep logs for X days'
-* [ ] - Add auto-purge logs after x days
 
 ## Changelog
 
-**0.1 beta**
+**0.1**
 
 Initial release
