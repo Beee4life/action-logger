@@ -24,13 +24,15 @@
 
             <?php
                 // get results from db
-	            global $wpdb;
-	            $ppp       = ! empty( get_user_meta( get_current_user_id(), 'al_ppp', true ) ) ? get_user_meta( get_current_user_id(), 'al_ppp', true ) : get_option( 'al_posts_per_page' );
-	            $all_items = array();
-	            $items     = array();
+                global $wpdb;
+                $default_ppp = get_option( 'al_posts_per_page' );
+                $user_value  = get_user_meta( get_current_user_id(), 'al_ppp', true );
+                $ppp         = ( false != $user_value ) ? get_user_meta( get_current_user_id(), 'al_ppp', true ) : $default_ppp;
+                $all_items   = array();
+                $items       = array();
 
 	            $all_items = $wpdb->get_results( "
-                    SELECT * 
+                    SELECT *
                     FROM " . $wpdb->prefix . "action_logs
                 ");
 
@@ -43,7 +45,7 @@
                 }
 
 	            $items = $wpdb->get_results( "
-                    SELECT * 
+                    SELECT *
                     FROM " . $wpdb->prefix . "action_logs
                     ORDER BY id DESC
                     LIMIT " . $ppp . $offset . "
