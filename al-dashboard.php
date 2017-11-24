@@ -30,7 +30,7 @@
 	            $items     = array();
 
 	            $all_items = $wpdb->get_results( "
-                    SELECT * 
+                    SELECT *
                     FROM " . $wpdb->prefix . "action_logs
                 ");
 
@@ -43,7 +43,7 @@
                 }
 
 	            $items = $wpdb->get_results( "
-                    SELECT * 
+                    SELECT *
                     FROM " . $wpdb->prefix . "action_logs
                     ORDER BY id DESC
                     LIMIT " . $ppp . $offset . "
