@@ -27,7 +27,7 @@
                     <input name="purge_logs_nonce" type="hidden" value="<?php echo wp_create_nonce( 'purge-logs-nonce' ); ?>"/>
                     <h2><?php esc_html_e( 'Purge logs', 'action-logger' ); ?></h2>
                     <p>
-			            <?php esc_html_e( 'Select how long you want to keep the logs. Default is 1 month (30 days).', 'action-logger' ); ?>
+			            <?php esc_html_e( 'Select how long you want to keep the logs. Default is Forever.', 'action-logger' ); ?>
                     </p>
                     <p>
 			            <?php
