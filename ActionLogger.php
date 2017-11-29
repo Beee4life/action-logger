@@ -53,6 +53,7 @@
                 add_action( 'plugins_loaded',               array( $this, 'al_load_plugin_textdomain' ) );
 	            add_action( 'admin_enqueue_scripts',        array( $this, 'al_enqueue_action_logger_css' ) );
 	            add_action( 'admin_menu',                   array( $this, 'al_add_admin_pages' ) );
+                add_action( 'admin_init',                   array( $this, 'al_admin_menu' ) );
                 add_action( 'admin_init',                   array( $this, 'al_delete_selected_items' ) );
                 add_action( 'admin_init',                   array( $this, 'al_delete_all_logs' ) );
                 add_action( 'admin_init',                   array( $this, 'al_log_actions_functions' ) );
@@ -69,21 +70,21 @@
                 add_action( 'transition_post_status',       array( $this, 'al_post_status_transitions'), 10, 3 );
 
 	            // EM actions
-	            add_action( 'em_bookings_deleted',          array( $this, 'al_log_registration_delete' ), 10, 2 );
-	            add_action( 'em_booking_save',              array( $this, 'al_log_registration_change' ), 10, 2 );
+	            // add_action( 'em_bookings_deleted',          array( $this, 'al_log_registration_delete' ), 10, 2 );
+	            // add_action( 'em_booking_save',              array( $this, 'al_log_registration_change' ), 10, 2 );
 
                 // CSV Importer actions
-	            add_action( 'csv2wp_successful_csv_upload',   array( $this, 'al_csvi_file_upload' ) );
-	            add_action( 'csv2wp_successful_csv_validate', array( $this, 'al_csvi_file_validate' ) );
-	            add_action( 'csv2wp_successful_csv_import',   array( $this, 'al_csvi_file_import' ) );
+                // add_action( 'csv2wp_successful_csv_upload',   array( $this, 'al_csvi_file_upload' ) );
+                // add_action( 'csv2wp_successful_csv_validate', array( $this, 'al_csvi_file_validate' ) );
+                // add_action( 'csv2wp_successful_csv_import',   array( $this, 'al_csvi_file_import' ) );
 
                 // Rankings Importer actions
-                add_action( 'ri_all_data_nuked',            array( $this, 'al_ri_all_nuked' ) );
-                add_action( 'ri_delete_user_rankings',      array( $this, 'al_ri_user_rankings_delete' ) );
-                add_action( 'ri_import_raw',                array( $this, 'al_ri_import_raw_data' ) );
-                add_action( 'ri_verify_csv',                array( $this, 'al_ri_verify_csv' ) );
-                add_action( 'ri_rankings_imported',         array( $this, 'al_ri_rankings_imported' ) );
-                add_action( 'ri_csv_file_upload',           array( $this, 'al_ri_csv_uploaded' ) );
+                // add_action( 'ri_all_data_nuked',            array( $this, 'al_ri_all_nuked' ) );
+                // add_action( 'ri_delete_user_rankings',      array( $this, 'al_ri_user_rankings_delete' ) );
+                // add_action( 'ri_import_raw',                array( $this, 'al_ri_import_raw_data' ) );
+                // add_action( 'ri_verify_csv',                array( $this, 'al_ri_verify_csv' ) );
+                // add_action( 'ri_rankings_imported',         array( $this, 'al_ri_rankings_imported' ) );
+                // add_action( 'ri_csv_file_upload',           array( $this, 'al_ri_csv_uploaded' ) );
 
 	            // load on each page load
 	            $this->al_load_includes();
@@ -223,26 +224,26 @@
 		        $capability     = get_option( 'al_log_user_role' );
 		        $my_plugin_hook = add_menu_page( 'Action Logger', 'Action Logger', $capability, 'action-logger', 'action_logger_dashboard', 'dashicons-editor-alignleft' );
 		        add_action( "load-$my_plugin_hook", array( $this, 'al_add_screen_options' ) );
-		        include( 'al-dashboard.php' ); // content for the settings page
+		        include( 'includes/al-dashboard.php' ); // content for the settings page
 
 		        add_submenu_page( NULL, 'Log actions', 'Log actions', 'manage_options', 'al-log-actions', 'action_logger_actions_page' );
-		        include( 'al-log-actions.php' ); // content for the settings page
+		        include( 'includes/al-log-actions.php' ); // content for the settings page
 
 		        add_submenu_page( NULL, 'Log settings', 'Log settings', 'manage_options', 'al-settings', 'action_logger_settings_page' );
-		        include( 'al-settings.php' ); // content for the settings page
+		        include( 'includes/al-settings.php' ); // content for the settings page
 
 		        add_submenu_page( NULL, 'Misc', 'Misc', 'manage_options', 'al-misc', 'action_logger_misc_page' );
-		        include( 'al-misc.php' ); // content for the settings page
+		        include( 'includes/al-misc.php' ); // content for the settings page
 	        }
 
 	        /**
 	         * Load included files
 	         */
 	        public function al_load_includes() {
-		        include( 'al-errors.php' );
-		        include( 'al-help-tabs.php' );
-		        include( 'al-functions.php' );
-		        include( 'al-admin-menu.php' );
+		        include( 'includes/al-errors.php' );
+		        include( 'includes/al-help-tabs.php' );
+		        include( 'includes/al-functions.php' );
+		        // include( 'al-admin-menu.php' );
 	        }
 
 	        /**
@@ -509,6 +510,16 @@
 
 	        }
 
+	        public static function al_admin_menu() {
+
+		        $string = false;
+
+		        if ( current_user_can( 'manage_options' ) ) {
+			        $string = '<p><a href="' . site_url() . '/wp-admin/admin.php?page=action-logger">' . esc_html__( 'Logs', 'action-logger' ) . '</a> | <a href="' . site_url() . '/wp-admin/admin.php?page=al-log-actions">' . esc_html__( 'Log actions', 'action-logger' ) . '</a> | <a href="' . site_url() . '/wp-admin/admin.php?page=al-settings">' . esc_html__( 'Settings', 'action-logger' ) . '</a> | <a href="' . site_url() . '/wp-admin/admin.php?page=al-misc">' . esc_html__( 'Misc', 'action-logger' ) . '</a></p>';
+		        }
+
+		        return $string;
+	        }
 
 	        /**
              * Set sceen options
@@ -539,7 +550,7 @@
 	         * @param string $action_description
 	         */
 	        public static function al_log_user_action( $action = false, $action_generator = false, $action_description = false ) {
-	         
+
 		        if ( false != $action_description ) {
 			        global $wpdb;
 			        $sql_data = array(
@@ -555,10 +566,13 @@
 	        }
 
 	        /**
+             * Shortcode logger function
+             *
 	         * @param $attributes
-             * return void
+	         *
+	         * @return bool|void
 	         */
-            public function al_register_shortcode_logger( $attributes ) {
+	        public function al_register_shortcode_logger( $attributes ) {
 
                 $post_title   = get_the_title();
                 $post_link    = get_permalink();
@@ -589,7 +603,7 @@
 	                return;
                 }
 
-                return;
+                return false;
             }
 
             /**
@@ -611,7 +625,7 @@
                 $post_title = $post->post_title;
                 $user_data  = get_userdata( get_current_user_id() );
                 $user_name  = $user_data->display_name;
-		        
+
 		        if ( $old_status == 'draft' && $new_status == 'publish' ) {
 
                     // draft > publish
@@ -623,7 +637,7 @@
 			        $this->al_log_user_action( $post_type . '_republished', 'Action Logger', sprintf( esc_html( __( '%s re-published %s.', 'action-logger' ) ), $user_name, $post_title ) );
 
 		        } elseif ( $old_status == 'publish' && $new_status == 'publish' ) {
-              
+
 		            // publish > publish
 			        $this->al_log_user_action( $post_type . '_changed', 'Action Logger', sprintf( esc_html__( '%s edited published %s %s.', 'action-logger' ), $user_name, $post_type, $post_title ) );
 
