@@ -19,9 +19,7 @@
 
             <div id="action-logger" class="">
 
-                <?php echo al_admin_menu(); ?>
-
-                <?php echo al_check_php_version(); ?>
+	            <?php echo ActionLogger::al_admin_menu(); ?>
 
                 <form name="purge-logs-form" action="" method="post">
                     <input name="purge_logs_nonce" type="hidden" value="<?php echo wp_create_nonce( 'purge-logs-nonce' ); ?>"/>

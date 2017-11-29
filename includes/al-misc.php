@@ -19,7 +19,7 @@
 
             <div id="action-logger" class="">
 
-                <?php echo al_admin_menu(); ?>
+	            <?php echo ActionLogger::al_admin_menu(); ?>
 
                 <h2><?php esc_html_e( 'Export data to CSV', 'action-logger' ); ?></h2>
                 <p><?php esc_html_e( 'By clicking this button you will trigger a download for a CSV (comma separated value) file.', 'action-logger' ); ?></p>

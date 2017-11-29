@@ -64,8 +64,9 @@
 				'default_value'      => 1,
 			),
 		);
+		$all_options = $wp_options;
 
-		// add option for events manager
+		// add option for events manager (NOT IN USE YET)
 		$em_options        = array(
 			array(
 				'action_name'        => 'em_booking_pending',
@@ -117,9 +118,9 @@
 				'default_value'      => 0,
 			),
 		);
-		$all_options = array_merge( $wp_options, $em_options );
+		// $all_options = array_merge( $wp_options, $em_options );
 
-		// csvi options
+		// csvi options (NOT IN USE YET)
 		$csvi_options      = array(
 			array(
 				'action_name'        => 'csvi_file_uploaded',
@@ -143,9 +144,9 @@
 				'default_value'      => 0,
 			),
 		);
-		$all_options = array_merge( $all_options, $csvi_options );
+		// $all_options = array_merge( $all_options, $csvi_options );
 
-		// add option for IDF rankings importer
+		// add option for IDF rankings importer (NOT IN USE YET)
 		$ri_options      = array(
 			array(
 				'action_name'        => 'ri_data_nuked',
@@ -190,17 +191,39 @@
 				'default_value'      => 1,
 			),
 		);
-		$all_options = array_merge( $all_options, $ri_options );
+		// $all_options = array_merge( $all_options, $ri_options );
 
 		return $all_options;
 
 	}
 
-	function al_check_php_version() {
-        $php_version = intval( phpversion() );
-        if ( $php_version < 5.4 ) {
-            // return '<p>' . esc_html( __( 'Your PHP version it too low. You should consider updating.', 'action-logger' ) ) . '</p>';
-        } else {
-            return false;
-        }
-    }
+	function ai_get_pagination( $get = false, $pages ) {
+
+		if ( $get == false || $pages == 1 ) {
+			return false;
+		}
+
+		$big = 999999999; // need an unlikely integer
+		if ( isset( $get[ 'paged' ] ) ) {
+			$page_number = $get[ 'paged' ];
+		} else {
+			$page_number = 1;
+		}
+		$pagination_args = array(
+			'base'      => str_replace( $big, '%#%', esc_url( get_pagenum_link( $big ) ) ),
+			'format'    => '/page/%#%',
+			'total'     => $pages,
+			'current'   => max(1, $page_number),
+			'show_all'  => false,
+			'end_size'  => 3,
+			'mid_size'  => 2,
+			'prev_next' => false,
+			'prev_text' => __( '&laquo; Previous', 'action-logger' ),
+			'next_text' => __( 'Next &raquo;', 'action-logger' ),
+			'type'      => 'list',
+		);
+		$pagination = sprintf( '<div class="paginator">%s</div>', paginate_links( $pagination_args ) );
+
+		return $pagination;
+
+	}
