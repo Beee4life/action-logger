@@ -233,7 +233,7 @@
 		        add_submenu_page( NULL, 'Log actions', 'Log actions', 'manage_options', 'al-log-actions', 'action_logger_actions_page' );
 		        include( 'al-log-actions.php' ); // content for the settings page
 
-		        add_submenu_page( NULL, 'Log actions', 'Log actions', 'manage_options', 'al-settings', 'action_logger_settings_page' );
+		        add_submenu_page( NULL, 'Log settings', 'Log settings', 'manage_options', 'al-settings', 'action_logger_settings_page' );
 		        include( 'al-settings.php' ); // content for the settings page
 
 		        add_submenu_page( NULL, 'Misc', 'Misc', 'manage_options', 'al-misc', 'action_logger_misc_page' );
