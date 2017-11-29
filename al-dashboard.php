@@ -60,8 +60,11 @@
                 <?php $item_count = 0; ?>
 
                 <p><?php esc_html_e( 'This page shows a log of all actions done by users, which are "interesting" to log.', 'action-logger' ); ?></p>
-                <h2><?php esc_html_e( 'Logs', 'action-logger' ); ?></h2>
-                <p><small><?php esc_html_e( 'Log items are sorted, newest to oldest.', 'action-logger' ); ?></small></p>
+                <p>
+                    <?php echo sprintf( esc_html__( 'You have %d log items.', 'action-logger' ), count( $items ) ); ?>
+                    <br />
+                    <small><?php esc_html_e( 'Log items are sorted, newest to oldest.', 'action-logger' ); ?></small>
+                </p>
 
                 <form name="logs-form" action="" method="post">
                     <input name="delete_action_items_nonce" type="hidden" value="<?php echo wp_create_nonce( 'delete-actions-items-nonce' ); ?>" />
