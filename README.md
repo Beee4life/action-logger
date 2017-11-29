@@ -15,16 +15,10 @@ This plugin gives you the option to log various (user) actions on your website. 
 * user change
 * user delete
 * post/page visit (through a shortcode)
-* post published
-* post changed
-* post deleted
-
-#### Events manager
-Next to that I included a few logging options for one of our favourite plugins: [Events Manager](http://wp-events-plugin.com/). Right now you can track the following actions but more expected to follow:
-* registration canceled
-* registration rejected
-* registration deleted
-* registration approved (in progress)
+* post published (every post type)
+* post changed (every post type)
+* post deleted (every post type)
+* post set to 'pending review' (every post type)
 
 ## Impact
 
@@ -77,13 +71,6 @@ Yes. This can be done on the settings page.
 * post deleted
 * post/page visitor visit (through shortcode)
 * post/page registered user visit (through shortcode)
-
-### Events manager
-* event registration canceled
-* event registration rejected
-* event registration deleted
-* event registration approved (not finished)
-* more actions to follow...
 
 = Can I use this plugin to track visit to posts/pages like registration confirmations or so ? =
 
@@ -153,6 +140,7 @@ Yes, check the Misc page.
 
 = Which plugins do you plan to include in the plugin ? =
 
+* [Events Manager](http://wp-events-plugin.com/)
 * [S2Member](http://www.s2member.com/)
 * [WooCommerce](https://woocommerce.com/)
 * [WP e-Commerce](https://wpecommerce.org/)
@@ -162,12 +150,3 @@ Yes, check the Misc page.
 ### Misc
 
 If you're a plugin author and you would like to see your hooks logged in this plugin, please contact me @ http://berryplasman.com.  
-
-### To Do
-* [ ] - Add filters in overview to filter certain actions/generators
-
-## Changelog
-
-**0.1**
-
-Initial release
