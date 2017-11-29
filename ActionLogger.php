@@ -91,12 +91,7 @@
 	            $this->al_check_log_table();
 	            $this->al_set_default_values(); // check if there are default settings
 
-	            $this->check_this();            // for testing stuff
-
             }
-
-	        public function check_this() {
-	        }
 
 	        /**
 	         * Function which runs upon plugin activation
@@ -544,11 +539,11 @@
 	         * @param string $action_description
 	         */
 	        public static function al_log_user_action( $action = false, $action_generator = false, $action_description = false ) {
-
+	         
 		        if ( false != $action_description ) {
 			        global $wpdb;
 			        $sql_data = array(
-				        'action_time'        => strtotime( date( 'Y-m-d  H:i:s', strtotime( '+' . get_option( 'gmt_offset' ) . ' hours' ) ) ),
+				        'action_time'        => current_time( 'timestamp' ),
 				        'action_user'        => get_current_user_id(),
 				        'action'             => $action,
 				        'action_generator'   => $action_generator,
@@ -610,23 +605,27 @@
 	         * @param $post       object
 	         */
 	        public function al_post_status_transitions( $new_status, $old_status, $post ) {
-		        $post_type = $post->post_type;
-		        $post_link = '<a href="' . esc_url( get_permalink( $post->ID ) ) . '">' . $post->post_title . '</a>';
-		        $user_name = get_userdata( get_current_user_id() )->display_name;
+
+                $post_type  = $post->post_type;
+                $post_link  = '<a href="' . esc_url( get_permalink( $post->ID ) ) . '">' . $post->post_title . '</a>';
+                $post_title = $post->post_title;
+                $user_data  = get_userdata( get_current_user_id() );
+                $user_name  = $user_data->display_name;
+		        
 		        if ( $old_status == 'draft' && $new_status == 'publish' ) {
 
                     // draft > publish
-			        $this->al_log_user_action( $post_type . '_published', 'Action Logger', sprintf( esc_html( __( '%s published %s.', 'action-logger' ) ), $user_name, $post_link ) );
+			        $this->al_log_user_action( $post_type . '_published', 'Action Logger', sprintf( esc_html( __( '%s published %s %s.', 'action-logger' ) ), $user_name, $post_type, $post_title ) );
 
 		        } elseif ( $old_status == 'pending' && $new_status == 'publish' ) {
 
 		            // pending > publish
-			        $this->al_log_user_action( $post_type . '_republished', 'Action Logger', sprintf( esc_html( __( '%s re-published %s.', 'action-logger' ) ), $user_name, $post_link ) );
+			        $this->al_log_user_action( $post_type . '_republished', 'Action Logger', sprintf( esc_html( __( '%s re-published %s.', 'action-logger' ) ), $user_name, $post_title ) );
 
 		        } elseif ( $old_status == 'publish' && $new_status == 'publish' ) {
-
+              
 		            // publish > publish
-			        $this->al_log_user_action( $post_type . '_changed', 'Action Logger', sprintf( esc_html__( '%s edited published post %s.', 'action-logger' ), $user_name, $post_link ) );
+			        $this->al_log_user_action( $post_type . '_changed', 'Action Logger', sprintf( esc_html__( '%s edited published %s %s.', 'action-logger' ), $user_name, $post_type, $post_title ) );
 
 		        } elseif ( $old_status == 'publish' && $new_status != 'publish' ) {
 
@@ -634,12 +633,12 @@
 			        if ( $old_status == 'publish' && $new_status == 'trash' ) {
 
                         // publish > trash
-				        $this->al_log_user_action( $post_type . '_deleted', 'Action Logger', sprintf( esc_html( __( '%s deleted %s.', 'action-logger' ) ), $user_name, get_the_title() ) );
+				        $this->al_log_user_action( $post_type . '_deleted', 'Action Logger', sprintf( esc_html( __( '%s deleted %s %s.', 'action-logger' ) ), $user_name, $post_type, $post_title ) );
 
 			        } elseif ( $old_status == 'publish' && $new_status == 'pending' ) {
 
                         // publish > pending
-				        $this->al_log_user_action( $post_type . '_pending', 'Action Logger', sprintf( esc_html( __( '%s marked %s as pending review.', 'action-logger' ) ), $user_name, get_the_title() ) );
+				        $this->al_log_user_action( $post_type . '_pending', 'Action Logger', sprintf( esc_html( __( '%s marked %s %s as pending review.', 'action-logger' ) ), $user_name, $post_type, $post_title ) );
 			        }
 		        }
 	        }
