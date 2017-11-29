@@ -5,7 +5,7 @@
      */
     function action_logger_dashboard() {
 
-        if ( ! current_user_can( 'edit_users' ) ) {
+        if ( ! current_user_can( get_option( 'al_log_user_role' ) ) ) {
             wp_die( esc_html( __( 'Sorry, you do not have sufficient permissions to access this page.', 'action-logger' ) ) );
         }
         ?>
