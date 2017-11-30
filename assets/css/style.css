@@ -61,6 +61,16 @@
     text-decoration: none;
 }
 
+#action-logger table.ai_post_types th {
+    text-align: center;
+}
+#action-logger table.ai_post_types th:first-child {
+    padding-right: 3em;
+}
+#action-logger table.ai_post_types tr td:first-child {
+    padding-right: 3em;
+}
+
 #action-logger span.checkbox {
     line-height: 2em;
 }
@@ -88,10 +98,6 @@
 .paginator span,
 .paginator a {
     margin: 0;
-}
-
-.paginator span:hover,
-.paginator a:hover {
 }
 
 .paginator span.current,
