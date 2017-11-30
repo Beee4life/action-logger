@@ -42,27 +42,41 @@
 				'action_description' => esc_html( __( 'Logs when a visitor visits a post/page with the shortcode on it.', 'action-logger' ) ),
 				'default_value'      => 1,
 			),
-			array(
-				'action_name'        => 'post_published',
-				'action_generator'   => 'WordPress',
-				'action_title'       => esc_html( __( 'Post published', 'action-logger' ) ),
-				'action_description' => esc_html( __( 'Logs when a post is published.', 'action-logger' ) ),
-				'default_value'      => 1,
-			),
-			array(
-				'action_name'        => 'post_changed',
-				'action_generator'   => 'WordPress',
-				'action_title'       => esc_html( __( 'Post changed', 'action-logger' ) ),
-				'action_description' => esc_html( __( 'Logs when a post is changed.', 'action-logger' ) ),
-				'default_value'      => 1,
-			),
-			array(
-				'action_name'        => 'post_deleted',
-				'action_generator'   => 'WordPress',
-				'action_title'       => esc_html( __( 'Post deleted', 'action-logger' ) ),
-				'action_description' => esc_html( __( 'Logs when a post is deleted.', 'action-logger' ) ),
-				'default_value'      => 1,
-			),
+			// array(
+			// 	'action_name'        => 'post_published',
+			// 	'action_generator'   => 'WordPress',
+			// 	'action_title'       => esc_html( __( 'Post published', 'action-logger' ) ),
+			// 	'action_description' => esc_html( __( 'Logs when a post is published.', 'action-logger' ) ),
+			// 	'default_value'      => 1,
+			// ),
+			// array(
+			// 	'action_name'        => 'post_changed',
+			// 	'action_generator'   => 'WordPress',
+			// 	'action_title'       => esc_html( __( 'Post changed', 'action-logger' ) ),
+			// 	'action_description' => esc_html( __( 'Logs when a post is changed.', 'action-logger' ) ),
+			// 	'default_value'      => 1,
+			// ),
+			// array(
+			// 	'action_name'        => 'post_pending',
+			// 	'action_generator'   => 'WordPress',
+			// 	'action_title'       => esc_html( __( 'Post pending', 'action-logger' ) ),
+			// 	'action_description' => esc_html( __( 'Logs when a post is marked as pending review.', 'action-logger' ) ),
+			// 	'default_value'      => 1,
+			// ),
+			// array(
+			// 	'action_name'        => 'post_deleted',
+			// 	'action_generator'   => 'WordPress',
+			// 	'action_title'       => esc_html( __( 'Post deleted', 'action-logger' ) ),
+			// 	'action_description' => esc_html( __( 'Logs when a post is deleted.', 'action-logger' ) ),
+			// 	'default_value'      => 1,
+			// ),
+			// array(
+			// 	'action_name'        => 'post_republished',
+			// 	'action_generator'   => 'WordPress',
+			// 	'action_title'       => esc_html( __( 'Post republished', 'action-logger' ) ),
+			// 	'action_description' => esc_html( __( 'Logs when a post is published again (from pending review).', 'action-logger' ) ),
+			// 	'default_value'      => 1,
+			// ),
 		);
 		$all_options = $wp_options;
 
@@ -197,7 +211,7 @@
 
 	}
 
-	function ai_get_pagination( $get = false, $pages ) {
+	function al_get_pagination( $get = false, $pages ) {
 
 		if ( $get == false || $pages == 1 ) {
 			return false;
@@ -227,3 +241,34 @@
 		return $pagination;
 
 	}
+    
+    /**
+     * Replace vars in log message
+     *
+     * @param $action_user
+     * @param $log_message
+     * @param $post_id
+     *
+     * @return bool|mixed
+     */
+	function al_replace_log_vars( $action_user, $log_message, $post_id ) {
+	    
+	    if ( false == $log_message ) {
+	        return false;
+        }
+        
+        $replaced_description = $log_message;
+        if ( strpos( $replaced_description, '#permalink#') !== false ) {
+            $replaced_description = str_replace( '#permalink#', get_the_permalink( $post_id ), $replaced_description );
+        }
+        if ( strpos( $replaced_description, '#post_title#') !== false ) {
+            $replaced_description = str_replace( '#post_title#', get_the_title( $post_id ), $replaced_description );
+        }
+        if ( $action_user > 0 ) {
+            $replaced_description = str_replace( '#user#', get_userdata( $action_user )->display_name, $replaced_description );
+        } else {
+            $replaced_description = str_replace( '#user#', 'A visitor', $replaced_description );
+        }
+        
+        return $replaced_description;
+    }

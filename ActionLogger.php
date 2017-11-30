@@ -54,13 +54,20 @@
 	            add_action( 'admin_enqueue_scripts',        array( $this, 'al_enqueue_action_logger_css' ) );
 	            add_action( 'admin_menu',                   array( $this, 'al_add_admin_pages' ) );
                 add_action( 'admin_init',                   array( $this, 'al_admin_menu' ) );
+                
                 add_action( 'admin_init',                   array( $this, 'al_delete_selected_items' ) );
                 add_action( 'admin_init',                   array( $this, 'al_delete_all_logs' ) );
                 add_action( 'admin_init',                   array( $this, 'al_log_actions_functions' ) );
+                add_action( 'admin_init',                   array( $this, 'al_store_post_types' ) );
                 add_action( 'admin_init',                   array( $this, 'al_settings_page_functions' ) );
+                
+                add_action( 'admin_init',                   array( $this, 'al_load_includes' ), 1 );
+                add_action( 'admin_init',                   array( $this, 'al_set_default_values' ) );
+                add_action( 'admin_init',                   array( $this, 'al_log_user_action' ) );
+                add_action( 'admin_init',                   array( $this, 'al_check_log_table' ) );
 	            add_action( 'al_cron_purge_logs',           array( $this, 'al_cron_jobs' ) );
-
-	            // Shortcode
+    
+                // Shortcode
 	            add_shortcode( 'actionlogger',         array( $this, 'al_register_shortcode_logger' ) );
 
 	            // WP Core actions
@@ -86,11 +93,6 @@
                 // add_action( 'ri_rankings_imported',         array( $this, 'al_ri_rankings_imported' ) );
                 // add_action( 'ri_csv_file_upload',           array( $this, 'al_ri_csv_uploaded' ) );
 
-	            // load on each page load
-	            $this->al_load_includes();
-	            $this->al_log_user_action();
-	            $this->al_check_log_table();
-	            $this->al_set_default_values(); // check if there are default settings
 
             }
 
@@ -155,6 +157,7 @@
                     action varchar(50) NULL,
                     action_generator varchar(50) NULL,
                     action_description varchar(100) NOT NULL,
+                    post_id int(8) NULL,
                     PRIMARY KEY (id)
                 );
                 <?php
@@ -188,6 +191,25 @@
 	                update_option( 'al_posts_per_page', 100 );
 	                update_option( 'al_purge_logs', 0 );
                 }
+    
+                $available_post_types = get_option( 'al_active_post_types' );
+                if ( false == $available_post_types ) {
+    
+                    $post_type_args       = array(
+                        'public'             => true,
+                        'publicly_queryable' => true,
+                    );
+                    $available_post_types = get_post_types( $post_type_args, 'names', 'OR' );
+                    $post_types           = array();
+                    foreach ( $available_post_types as $post_type ) {
+                        if ( $post_type != 'attachment' ) {
+                            $post_types[] = $post_type;
+                        }
+                    }
+                    update_option( 'al_active_post_types', $post_types );
+                }
+    
+    
             }
 
 
@@ -232,8 +254,8 @@
 		        add_submenu_page( NULL, 'Log settings', 'Log settings', 'manage_options', 'al-settings', 'action_logger_settings_page' );
 		        include( 'includes/al-settings.php' ); // content for the settings page
 
-		        add_submenu_page( NULL, 'Misc', 'Misc', 'manage_options', 'al-misc', 'action_logger_misc_page' );
-		        include( 'includes/al-misc.php' ); // content for the settings page
+		        // add_submenu_page( NULL, 'Misc', 'Misc', 'manage_options', 'al-misc', 'action_logger_misc_page' );
+		        // include( 'includes/al-misc.php' ); // content for the settings page
 	        }
 
 	        /**
@@ -243,7 +265,6 @@
 		        include( 'includes/al-errors.php' );
 		        include( 'includes/al-help-tabs.php' );
 		        include( 'includes/al-functions.php' );
-		        // include( 'al-admin-menu.php' );
 	        }
 
 	        /**
@@ -272,6 +293,24 @@
                         }
                         al_errors()->add( 'success_settings_saved', esc_html( __( 'Settings saved.', 'action-logger' ) ) );
 
+                    }
+                }
+            }
+            
+            public function al_store_post_types() {
+    
+                if ( isset( $_POST[ 'post_types_nonce' ] ) ) {
+                    if ( ! wp_verify_nonce( $_POST[ 'post_types_nonce' ], 'post-types-nonce' ) ) {
+                        al_errors()->add( 'error_nonce_no_match', esc_html( __( 'Something went wrong. Please try again.', 'action-logger' ) ) );
+            
+                        return;
+                    } else {
+                        
+                        echo '<pre>'; var_dump($_POST); echo '</pre>'; exit;
+                        update_option( 'al_active_post_types', $_POST['post_type'] );
+    
+                        al_errors()->add( 'success_posttypes_saved', esc_html( __( 'Post types saved.', 'action-logger' ) ) );
+    
                     }
                 }
             }
@@ -515,7 +554,10 @@
 		        $string = false;
 
 		        if ( current_user_can( 'manage_options' ) ) {
-			        $string = '<p><a href="' . site_url() . '/wp-admin/admin.php?page=action-logger">' . esc_html__( 'Logs', 'action-logger' ) . '</a> | <a href="' . site_url() . '/wp-admin/admin.php?page=al-log-actions">' . esc_html__( 'Log actions', 'action-logger' ) . '</a> | <a href="' . site_url() . '/wp-admin/admin.php?page=al-settings">' . esc_html__( 'Settings', 'action-logger' ) . '</a> | <a href="' . site_url() . '/wp-admin/admin.php?page=al-misc">' . esc_html__( 'Misc', 'action-logger' ) . '</a></p>';
+			        $string = '<p>';
+			        $string .= '<a href="' . site_url() . '/wp-admin/admin.php?page=action-logger">' . esc_html__( 'Logs', 'action-logger' ) . '</a> | <a href="' . site_url() . '/wp-admin/admin.php?page=al-log-actions">' . esc_html__( 'Log actions', 'action-logger' ) . '</a> | <a href="' . site_url() . '/wp-admin/admin.php?page=al-settings">' . esc_html__( 'Settings', 'action-logger' ) . '</a>';
+			        // $string .= ' | <a href="' . site_url() . '/wp-admin/admin.php?page=al-misc">' . esc_html__( 'Misc', 'action-logger' ) . '</a>';
+                    $string .= '</p>';
 		        }
 
 		        return $string;
@@ -549,7 +591,7 @@
 	         * @param string $action_generator
 	         * @param string $action_description
 	         */
-	        public static function al_log_user_action( $action = false, $action_generator = false, $action_description = false ) {
+	        public static function al_log_user_action( $action = false, $action_generator = false, $action_description = false, $post_id = false ) {
 
 		        if ( false != $action_description ) {
 			        global $wpdb;
@@ -559,51 +601,48 @@
 				        'action'             => $action,
 				        'action_generator'   => $action_generator,
 				        'action_description' => $action_description,
+                        'post_id'            => $post_id
 			        );
-			        $db_status = $wpdb->insert( $wpdb->prefix . 'action_logs', $sql_data );
+			        $wpdb->insert( $wpdb->prefix . 'action_logs', $sql_data );
 		        }
 
 	        }
-
-	        /**
-             * Shortcode logger function
+    
+            /**
+             * @param $attributes
              *
-	         * @param $attributes
-	         *
-	         * @return bool|void
-	         */
+             * @return void
+             */
 	        public function al_register_shortcode_logger( $attributes ) {
-
-                $post_title   = get_the_title();
-                $post_link    = get_permalink();
-                // $post_link    = '#';
-                $post_type    = get_post_type();
+        
+                // $post_type    = get_post_type();
                 $log_loggedin = get_option( 'al_user_visit_registered' );
                 $log_visitor  = get_option( 'al_user_visit_visitor' );
                 $log_it       = true;
-                $attributes   = shortcode_atts( array(
-                    'message' => 'visited <a href="' . $post_link . '">' . $post_title . '</a>',
+                $post_id      = false;
+                if ( is_singular() ) {
+                    $post_id = get_the_ID();
+                }
+                $attributes = shortcode_atts( array(
+                    'message' => 'visited <a href="#permalink#">#post_title#</a>',
                 ), $attributes, 'actionlogger' );
 
                 if ( is_user_logged_in() ) {
-                    $user = get_userdata( get_current_user_id() )->display_name;
                     if ( false == $log_loggedin ) {
                         $log_it = false;
                     }
                 } else {
-                    $user = esc_html__( 'A visitor', 'action-logger' );
                     if ( false == $log_visitor ) {
                         $log_it = false;
                     }
                 }
 
                 if ( ! is_admin() && true == $log_it ) {
-	                $this->al_log_user_action( $post_type . '_visit', 'Shortcode', $user . ' ' . $attributes[ 'message' ] );
-	                // $this->al_log_user_action( $post_type . '_visit', 'Shortcode', $user . ' did something on' );
+	                $this->al_log_user_action( get_post_type() . '_visit', 'Shortcode', '#user# ' . $attributes[ 'message' ], $post_id );
 	                return;
                 }
 
-                return false;
+                return;
             }
 
             /**
@@ -621,25 +660,28 @@
 	        public function al_post_status_transitions( $new_status, $old_status, $post ) {
 
                 $post_type  = $post->post_type;
-                $post_link  = '<a href="' . esc_url( get_permalink( $post->ID ) ) . '">' . $post->post_title . '</a>';
-                $post_title = $post->post_title;
+                $post_link  = '<a href="#permalink#">' . $post->post_title. '</a>';
                 $user_data  = get_userdata( get_current_user_id() );
                 $user_name  = $user_data->display_name;
+                
+                // @TODO: Add IF for ACF
+                // @TODO: Add IF for MC4WP
+                // @TODO: Add IF for nav_menu_item
 
 		        if ( $old_status == 'draft' && $new_status == 'publish' ) {
 
                     // draft > publish
-			        $this->al_log_user_action( $post_type . '_published', 'Action Logger', sprintf( esc_html( __( '%s published %s %s.', 'action-logger' ) ), $user_name, $post_type, $post_title ) );
+			        $this->al_log_user_action( $post_type . '_published', 'Action Logger', sprintf( esc_html( __( '#user# published %s %s.', 'action-logger' ) ), $post_type, $post_link ), $post->ID );
 
 		        } elseif ( $old_status == 'pending' && $new_status == 'publish' ) {
 
 		            // pending > publish
-			        $this->al_log_user_action( $post_type . '_republished', 'Action Logger', sprintf( esc_html( __( '%s re-published %s.', 'action-logger' ) ), $user_name, $post_title ) );
+			        $this->al_log_user_action( $post_type . '_republished', 'Action Logger', sprintf( esc_html( __( '#user# re-published %s.', 'action-logger' ) ), $post_link ), $post->ID );
 
 		        } elseif ( $old_status == 'publish' && $new_status == 'publish' ) {
 
 		            // publish > publish
-			        $this->al_log_user_action( $post_type . '_changed', 'Action Logger', sprintf( esc_html__( '%s edited published %s %s.', 'action-logger' ), $user_name, $post_type, $post_title ) );
+			        $this->al_log_user_action( $post_type . '_changed', 'Action Logger', sprintf( esc_html__( '#user# edited published %s %s.', 'action-logger' ), $post_type, $post_link ), $post->ID );
 
 		        } elseif ( $old_status == 'publish' && $new_status != 'publish' ) {
 
@@ -647,12 +689,12 @@
 			        if ( $old_status == 'publish' && $new_status == 'trash' ) {
 
                         // publish > trash
-				        $this->al_log_user_action( $post_type . '_deleted', 'Action Logger', sprintf( esc_html( __( '%s deleted %s %s.', 'action-logger' ) ), $user_name, $post_type, $post_title ) );
+				        $this->al_log_user_action( $post_type . '_deleted', 'Action Logger', sprintf( esc_html( __( '#user# deleted %s %s.', 'action-logger' ) ), $post_type, $post_link ), $post->ID );
 
 			        } elseif ( $old_status == 'publish' && $new_status == 'pending' ) {
 
                         // publish > pending
-				        $this->al_log_user_action( $post_type . '_pending', 'Action Logger', sprintf( esc_html( __( '%s marked %s %s as pending review.', 'action-logger' ) ), $user_name, $post_type, $post_title ) );
+				        $this->al_log_user_action( $post_type . '_pending', 'Action Logger', sprintf( esc_html( __( '#user# marked %s %s as pending review.', 'action-logger' ) ), $post_type, $post_link ), $post->ID );
 			        }
 		        }
 	        }

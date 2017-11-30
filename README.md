@@ -78,24 +78,28 @@ Yes. You can do this by inserting a simple shortcode to the page you want to tra
     
     [actionlogger]
 
-This will trigger a default log entry with the following description:
+This will create a default log entry with the following description:
 
-If a user is logged in, it will trigger the following log entry:
+If a user is logged in, it will create the following log entry:
 
-    {user->display_name} visited {post title}
+    #user# visited #title#
 
-If it's a visitor (not logged in), it will trigger the following log entry:
+If it's a visitor (not logged in), it will create the following log entry:
 
-    A visitor visited {post title}
+    A visitor visited #title#
 
-* user->display_name will be taken from the user who triggers the action
-* post title will be taken from the post/page where the shortcode is inserted and create a link to it.
+* \#user# generates `display_name` from the user who does the action
+* \#title# will be taken from the post/page where the shortcode is inserted
 
-Next to that 2 other values are stored:
-1. action
-2. generator
-
-The default action is `{post_type}_visit`.
+The following values are stored:
+1. action time - when was the action done (unix timestamp)
+2. action user - who did the action (integer)
+3. action - what was the action (string)
+4. action generator - which 'piece of code' generated the log message (string)
+5. action description - generated message of what happened (string)
+6. post_id - post id where the action occured, if appliccable (integer)
+ 
+The default action is `{post_type}_visit` , where `post_type` will be replaced with the post type involved.
 
 The default value for generator is `Shortcode`. 
 
@@ -108,7 +112,7 @@ This is defined as this:
 
 This will trigger a log entry with the following description:
 
-    {user->display_name} did something on the website
+    #user# did something on the website
 
 = Can I log my own custom action actions ? =
 
@@ -122,21 +126,26 @@ To make sure your site won't break if you deactivate the plugin, wrap it in a `c
         ActionLogger::al_log_user_action();
     }
 
-The function can contain 3 variables which are default all set to false. Use them in this order:
+The function can contain 4 variables which are default all set to false. Use them in this order:
 
 * $action
 * $action_generator
 * $action description
+* post_id
 
 This is defined as:
 
     if ( class_exists( 'ActionLogger' ) ) {
-        ActionLogger::al_log_user_action( $action, $generator, $message );
+        ActionLogger::al_log_user_action( $action, $generator, $message, $post_id );
     }
 
 = Can I export my logs to CSV ? =
 
 Yes, check the Misc page.
+
+= Why are some variables not stored as a value but as a variable ? =
+
+The values are 'generated' upon display/export. This way you always see the current name/title of a user/post, which makes searching easier. For example if a user changes his name 5 times, it's harder to track who it was. The same goes for a post title. Now the current state/value is always shown.
 
 = Which plugins do you plan to include in the plugin ? =
 

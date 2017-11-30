@@ -46,7 +46,6 @@
                         ORDER BY id DESC
                         LIMIT " . $ppp . $offset . "
                     ");
-
                 ?>
 
                 <?php if ( count( $items ) == 0 ) { ?>
@@ -65,7 +64,7 @@
                         <small><?php esc_html_e( 'Log items are sorted, newest to oldest.', 'action-logger' ); ?></small>
                     </p>
 
-                    <?php echo ai_get_pagination( $_GET, $pages ); ?>
+                    <?php echo al_get_pagination( $_GET, $pages ); ?>
 
                     <form name="logs-form" action="" method="post">
                         <input name="delete_action_items_nonce" type="hidden" value="<?php echo wp_create_nonce( 'delete-actions-items-nonce' ); ?>" />
@@ -92,7 +91,11 @@
                                         <td class="action"><?php echo $item->action; ?></td>
                                     <?php } ?>
                                     <td class="generator"><?php echo $item->action_generator; ?></td>
-                                    <td class="description"><?php echo $item->action_description; ?></td>
+                                    <td class="description">
+                                        <?php
+                                            echo al_replace_log_vars( $item->action_user, $item->action_description, $item->post_id );
+                                        ?>
+                                    </td>
                                     <?php if ( current_user_can( 'manage_options' ) ) { ?>
                                         <td class="checkbox">
                                             <label for="rows" class="screen-reader-text">
@@ -106,7 +109,7 @@
                             <?php } ?>
                             </tbody>
                         </table>
-                        <?php echo ai_get_pagination( $_GET, $pages ); ?>
+                        <?php echo al_get_pagination( $_GET, $pages ); ?>
                         <?php if ( current_user_can( 'manage_options' ) ) { ?>
                             <input name="delete_selected" type="submit" class="admin-button admin-button-small" value="<?php esc_html_e( 'Delete selected items', 'action-logger' ); ?>" />
                             <input name="delete_all" type="submit" class="admin-button admin-button-small" onclick="return confirm( 'Are you sure you want to delete all logs ?' )" value="<?php esc_html_e( 'Delete all', 'action-logger' ); ?>" />

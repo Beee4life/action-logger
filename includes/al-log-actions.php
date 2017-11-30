@@ -24,10 +24,17 @@
                 <h2><?php esc_html_e( 'Available log actions', 'action-logger' ); ?></h2>
                 <p><?php esc_html_e( 'Here you can select which actions you want to log/ignore.', 'action-logger' ); ?></p>
                 <?php
+                    $post_type_args = array(
+                        'public'             => true,
+                        'publicly_queryable' => true,
+                    );
+                    $available_post_types  = get_post_types( $post_type_args, 'names', 'OR' );
                     $available_log_actions = get_option( 'al_available_log_actions' );
+                    $active_post_types     = get_option( 'al_active_post_types' );
+
                     if ( $available_log_actions ) {
                         ?>
-                        <form name="settings-form" id="settings-form" action="" method="post">
+                        <form name="log_actions" id="settings-form" action="" method="post">
                             <input name="active_logs_nonce" type="hidden" value="<?php echo wp_create_nonce( 'active-logs-nonce' ); ?>"/>
                             <table>
                                 <thead>
@@ -47,11 +54,11 @@
                                         <?php
                                             $show = false;
                                             if ( class_exists( 'EM_Events' ) && 'Events Manager' == $action[ 'action_generator' ] ) {
-                                                $show = true;
+                                                // $show = true;
                                             } elseif ( class_exists( 'CSV_WP' ) && 'CSV Importer' == $action[ 'action_generator' ] ) {
-                                                $show = true;
+                                                // $show = true;
                                             } elseif ( class_exists( 'RankingsImport' ) && 'Rankings Importer' == $action[ 'action_generator' ] ) {
-                                                $show = true;
+                                                // $show = true;
                                             } elseif ( class_exists( 'S2Member' ) && 'S2Member' == $action[ 'action_generator' ] ) {
                                                 // $show = true;
                                             } elseif ( 'WordPress' == $action[ 'action_generator' ] ) {
@@ -88,6 +95,62 @@
                                     <?php } ?>
                                 </tbody>
                             </table>
+                            <input name="" type="submit" class="admin-button admin-button-small" value="<?php esc_html_e( 'Save settings', 'action-logger' ); ?>" />
+                        </form>
+
+                        <form name="post_types" id="post-types-form" action="" method="post">
+                            <input name="post_types_nonce" type="hidden" value="<?php echo wp_create_nonce( 'post-types-nonce' ); ?>"/>
+                            <?php if ( $available_post_types ) { ?>
+                                <table>
+                                    <thead>
+                                    <tr>
+                                        <th>Post types</th>
+                                        <th>Active</th>
+                                        <th>Publish</th>
+                                        <th>Edit</th>
+                                        <th>Delete</th>
+                                        <th>Pending</th>
+                                        <th>Republish</th>
+                                    </tr>
+                                    </thead>
+                                    <?php foreach ( $available_post_types as $post_type ) { ?>
+                                        <?php
+                                            $checked   = false;
+                                            if ( in_array( $post_type, $active_post_types ) ) {
+                                                $checked = 'checked';
+                                                $active  = 1;
+                                            }
+                                        ?>
+                                        <tr>
+                                            <td><?php echo $post_type; ?></td>
+                                            <td class="checkbox">
+                                                <label for="post-type" class="screen-reader-text"><?php esc_html_e( 'Active', 'action-logger' ); ?></label>
+                                                <input name="post_types[<?php echo $post_type; ?>]" id="post-type" type="checkbox" value="<?php echo $post_type; ?>" <?php echo $checked; ?>/>
+                                            </td>
+                                            <td class="checkbox">
+                                                <label for="post-type" class="screen-reader-text"><?php esc_html_e( 'Publish', 'action-logger' ); ?></label>
+                                                <input name="post_types[<?php echo $post_type; ?>][]" id="post-type" type="checkbox" value="publish" <?php echo $checked; ?>/>
+                                            </td>
+                                            <td class="checkbox">
+                                                <label for="post-type" class="screen-reader-text"><?php esc_html_e( 'Edit', 'action-logger' ); ?></label>
+                                                <input name="post_types[<?php echo $post_type; ?>][]" id="post-type" type="checkbox" value="edit" <?php echo $checked; ?>/>
+                                            </td>
+                                            <td class="checkbox">
+                                                <label for="post-type" class="screen-reader-text"><?php esc_html_e( 'Delete', 'action-logger' ); ?></label>
+                                                <input name="post_types[<?php echo $post_type; ?>][]" id="post-type" type="checkbox" value="delete" <?php echo $checked; ?>/>
+                                            </td>
+                                            <td class="checkbox">
+                                                <label for="post-type" class="screen-reader-text"><?php esc_html_e( 'Pending', 'action-logger' ); ?></label>
+                                                <input name="post_types[<?php echo $post_type; ?>][]" id="post-type" type="checkbox" value="pending" <?php echo $checked; ?>/>
+                                            </td>
+                                            <td class="checkbox">
+                                                <label for="post-type" class="screen-reader-text"><?php esc_html_e( 'Republish', 'action-logger' ); ?></label>
+                                                <input name="post_types[<?php echo $post_type; ?>][]" id="post-type" type="checkbox" value="republish" <?php echo $checked; ?>/>
+                                            </td>
+                                        </tr>
+                                    <?php } ?>
+                                </table>
+                            <?php } ?>
                             <input name="" type="submit" class="admin-button admin-button-small" value="<?php esc_html_e( 'Save settings', 'action-logger' ); ?>" />
                         </form>
                 <?php } ?>
