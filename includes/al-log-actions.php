@@ -31,6 +31,9 @@
                     $available_post_types  = get_post_types( $post_type_args, 'names', 'OR' );
                     $available_log_actions = get_option( 'al_available_log_actions' );
                     $active_post_types     = get_option( 'al_active_post_types' );
+                    if ( 0 == $active_post_types ) {
+                        $active_post_types = [];
+                    }
 
                     if ( $available_log_actions ) {
                         ?>
@@ -101,11 +104,11 @@
                         <form name="post_types" id="post-types-form" action="" method="post">
                             <input name="post_types_nonce" type="hidden" value="<?php echo wp_create_nonce( 'post-types-nonce' ); ?>"/>
                             <?php if ( $available_post_types ) { ?>
-                                <table>
+                                <table class="ai_post_types">
                                     <thead>
                                     <tr>
                                         <th>Post types</th>
-                                        <th>Active</th>
+                                        <th>Log</th>
                                         <th>Publish</th>
                                         <th>Edit</th>
                                         <th>Delete</th>
@@ -113,42 +116,97 @@
                                         <th>Republish</th>
                                     </tr>
                                     </thead>
+                                    <tbody>
                                     <?php foreach ( $available_post_types as $post_type ) { ?>
-                                        <?php
-                                            $checked   = false;
-                                            if ( in_array( $post_type, $active_post_types ) ) {
-                                                $checked = 'checked';
-                                                $active  = 1;
-                                            }
-                                        ?>
                                         <tr>
                                             <td><?php echo $post_type; ?></td>
                                             <td class="checkbox">
+                                                <?php
+                                                    $checked    = false;
+                                                    $key_exists = array_key_exists( $post_type, $active_post_types );
+                                                    if ( true == $key_exists ) {
+                                                        $in_array = in_array( 'active', $active_post_types[$post_type] );
+                                                        if ( true == $in_array ) {
+                                                            $checked = 'checked';
+                                                        }
+                                                    }
+                                                ?>
                                                 <label for="post-type" class="screen-reader-text"><?php esc_html_e( 'Active', 'action-logger' ); ?></label>
-                                                <input name="post_types[<?php echo $post_type; ?>]" id="post-type" type="checkbox" value="<?php echo $post_type; ?>" <?php echo $checked; ?>/>
+                                                <input name="post_types[<?php echo $post_type; ?>][]" id="post-type" type="checkbox" value="active" <?php echo $checked; ?>/>
                                             </td>
+                                            
                                             <td class="checkbox">
+                                                <?php
+                                                    $checked    = false;
+                                                    if ( true == $key_exists ) {
+                                                        $in_array = in_array( 'publish', $active_post_types[$post_type] );
+                                                        if ( true == $in_array ) {
+                                                            $checked = 'checked';
+                                                        }
+                                                    }
+                                                ?>
                                                 <label for="post-type" class="screen-reader-text"><?php esc_html_e( 'Publish', 'action-logger' ); ?></label>
                                                 <input name="post_types[<?php echo $post_type; ?>][]" id="post-type" type="checkbox" value="publish" <?php echo $checked; ?>/>
                                             </td>
+                                            
                                             <td class="checkbox">
+                                                <?php
+                                                    $checked    = false;
+                                                    if ( true == $key_exists ) {
+                                                        $in_array = in_array( 'edit', $active_post_types[$post_type] );
+                                                        if ( true == $in_array ) {
+                                                            $checked = 'checked';
+                                                        }
+                                                    }
+                                                ?>
                                                 <label for="post-type" class="screen-reader-text"><?php esc_html_e( 'Edit', 'action-logger' ); ?></label>
                                                 <input name="post_types[<?php echo $post_type; ?>][]" id="post-type" type="checkbox" value="edit" <?php echo $checked; ?>/>
                                             </td>
+                                            
                                             <td class="checkbox">
+                                                <?php
+                                                    $checked    = false;
+                                                    if ( true == $key_exists ) {
+                                                        $in_array = in_array( 'delete', $active_post_types[$post_type] );
+                                                        if ( true == $in_array ) {
+                                                            $checked = 'checked';
+                                                        }
+                                                    }
+                                                ?>
                                                 <label for="post-type" class="screen-reader-text"><?php esc_html_e( 'Delete', 'action-logger' ); ?></label>
                                                 <input name="post_types[<?php echo $post_type; ?>][]" id="post-type" type="checkbox" value="delete" <?php echo $checked; ?>/>
                                             </td>
+                                            
                                             <td class="checkbox">
+                                                <?php
+                                                    $checked    = false;
+                                                    if ( true == $key_exists ) {
+                                                        $in_array = in_array( 'pending', $active_post_types[$post_type] );
+                                                        if ( true == $in_array ) {
+                                                            $checked = 'checked';
+                                                        }
+                                                    }
+                                                ?>
                                                 <label for="post-type" class="screen-reader-text"><?php esc_html_e( 'Pending', 'action-logger' ); ?></label>
                                                 <input name="post_types[<?php echo $post_type; ?>][]" id="post-type" type="checkbox" value="pending" <?php echo $checked; ?>/>
                                             </td>
+                                            
                                             <td class="checkbox">
+                                                <?php
+                                                    $checked    = false;
+                                                    if ( true == $key_exists ) {
+                                                        $in_array = in_array( 'republish', $active_post_types[$post_type] );
+                                                        if ( true == $in_array ) {
+                                                            $checked = 'checked';
+                                                        }
+                                                    }
+                                                ?>
                                                 <label for="post-type" class="screen-reader-text"><?php esc_html_e( 'Republish', 'action-logger' ); ?></label>
                                                 <input name="post_types[<?php echo $post_type; ?>][]" id="post-type" type="checkbox" value="republish" <?php echo $checked; ?>/>
                                             </td>
                                         </tr>
                                     <?php } ?>
+                                    </tbody>
                                 </table>
                             <?php } ?>
                             <input name="" type="submit" class="admin-button admin-button-small" value="<?php esc_html_e( 'Save settings', 'action-logger' ); ?>" />
