@@ -92,7 +92,8 @@
                 // add_action( 'ri_verify_csv',                array( $this, 'al_ri_verify_csv' ) );
                 // add_action( 'ri_rankings_imported',         array( $this, 'al_ri_rankings_imported' ) );
                 // add_action( 'ri_csv_file_upload',           array( $this, 'al_ri_csv_uploaded' ) );
-
+    
+                // $this->al_set_post_types();
 
             }
 
@@ -647,19 +648,21 @@
              */
 	        public function al_register_shortcode_logger( $attributes ) {
         
-                // $post_type    = get_post_type();
                 $log_loggedin = get_option( 'al_user_visit_registered' );
                 $log_visitor  = get_option( 'al_user_visit_visitor' );
                 $log_it       = true;
-                $post_id      = false;
-                if ( is_singular() ) {
-                    $post_id = get_the_ID();
-                }
-                $attributes = shortcode_atts( array(
-                    'message' => 'visited <a href="#permalink#">#post_title#</a>',
-                ), $attributes, 'actionlogger' );
-
+                $who          = 'A visitor';
+                $post_id      = get_the_ID();
+                $post_link    = false;
+                // $post_link    = get_the_permalink( $post_id );
+                $title        = get_the_title( $post_id );
+                // $message      = 'visited ' . $title;
+        
+                $message = 'visited <a href="' . $post_link .'">' . $title . '</a>';
+                
                 if ( is_user_logged_in() ) {
+                    $who = get_userdata( get_current_user_id() )->display_name;
+    
                     if ( false == $log_loggedin ) {
                         $log_it = false;
                     }
@@ -668,9 +671,13 @@
                         $log_it = false;
                     }
                 }
-
+       
+                $attributes = shortcode_atts( array(
+                    'message' => $message,
+                ), $attributes, 'actionlogger' );
+        
                 if ( ! is_admin() && true == $log_it ) {
-	                $this->al_log_user_action( get_post_type() . '_visit', 'Shortcode', '#user# ' . $attributes[ 'message' ], $post_id );
+	                $this->al_log_user_action( get_post_type() . '_visit', 'Shortcode', $who . ' ' . $message, $post_id );
 	                return;
                 }
 
@@ -708,27 +715,27 @@
                     if ( $old_status == 'draft' && $new_status == 'publish' && in_array( 'publish', $active_post_types[$post_type] ) ) {
         
                         // draft > publish
-                        $this->al_log_user_action( $post_type . '_published', 'Action Logger', sprintf( esc_html( __( '#user# published %s %s.', 'action-logger' ) ), $post_type, $post_link ), $post->ID );
+                        $this->al_log_user_action( $post_type . '_published', 'Action Logger', sprintf( esc_html( __( '%s published %s %s.', 'action-logger' ) ), $user_name, $post_type, $post_link ), $post->ID );
         
                     } elseif ( $old_status == 'pending' && $new_status == 'publish' && in_array( 'republish', $active_post_types[$post_type] ) ) {
         
                         // pending > publish
-                        $this->al_log_user_action( $post_type . '_republished', 'Action Logger', sprintf( esc_html( __( '#user# re-published %s.', 'action-logger' ) ), $post_link ), $post->ID );
+                        $this->al_log_user_action( $post_type . '_republished', 'Action Logger', sprintf( esc_html( __( '%s re-published %s.', 'action-logger' ) ), $user_name, $post_link ), $post->ID );
         
                     } elseif ( $old_status == 'publish' && $new_status == 'publish' && in_array( 'edit', $active_post_types[$post_type] ) ) {
         
                         // publish > publish
-                        $this->al_log_user_action( $post_type . '_changed', 'Action Logger', sprintf( esc_html__( '#user# edited published %s %s.', 'action-logger' ), $post_type, $post_link ), $post->ID );
+                        $this->al_log_user_action( $post_type . '_changed', 'Action Logger', sprintf( esc_html__( '%s edited published %s %s.', 'action-logger' ), $user_name, $post_type, $post_link ), $post->ID );
         
                     } elseif ( $old_status == 'publish' && $new_status == 'trash' && in_array( 'deleted', $active_post_types[$post_type] ) ) {
         
                         // publish > trash
-                        $this->al_log_user_action( $post_type . '_deleted', 'Action Logger', sprintf( esc_html( __( '#user# deleted %s %s.', 'action-logger' ) ), $post_type, $post_link ), $post->ID );
+                        $this->al_log_user_action( $post_type . '_deleted', 'Action Logger', sprintf( esc_html( __( '%s deleted %s %s.', 'action-logger' ) ), $user_name, $post_type, $post_link ), $post->ID );
         
                     } elseif ( $old_status == 'publish' && $new_status == 'pending' && in_array( 'pending', $active_post_types[$post_type] ) ) {
         
                         // publish > pending
-                        $this->al_log_user_action( $post_type . '_pending', 'Action Logger', sprintf( esc_html( __( '#user# marked %s %s as pending review.', 'action-logger' ) ), $post_type, $post_link ), $post->ID );
+                        $this->al_log_user_action( $post_type . '_pending', 'Action Logger', sprintf( esc_html( __( '%s marked %s %s as pending review.', 'action-logger' ) ), $user_name, $post_type, $post_link ), $post->ID );
         
                     }
                 }
