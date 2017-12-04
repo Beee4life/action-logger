@@ -54,19 +54,19 @@
 	            add_action( 'admin_enqueue_scripts',        array( $this, 'al_enqueue_action_logger_css' ) );
 	            add_action( 'admin_menu',                   array( $this, 'al_add_admin_pages' ) );
                 add_action( 'admin_init',                   array( $this, 'al_admin_menu' ) );
-                
+
                 add_action( 'admin_init',                   array( $this, 'al_delete_selected_items' ) );
                 add_action( 'admin_init',                   array( $this, 'al_delete_all_logs' ) );
                 add_action( 'admin_init',                   array( $this, 'al_log_actions_functions' ) );
                 add_action( 'admin_init',                   array( $this, 'al_store_post_types' ) );
                 add_action( 'admin_init',                   array( $this, 'al_settings_page_functions' ) );
-                
+
                 add_action( 'admin_init',                   array( $this, 'al_load_includes' ), 1 );
                 add_action( 'admin_init',                   array( $this, 'al_set_default_values' ) );
                 add_action( 'admin_init',                   array( $this, 'al_log_user_action' ) );
                 add_action( 'admin_init',                   array( $this, 'al_check_log_table' ) );
 	            add_action( 'al_cron_purge_logs',           array( $this, 'al_cron_jobs' ) );
-    
+
                 // Shortcode
 	            add_shortcode( 'actionlogger',         array( $this, 'al_register_shortcode_logger' ) );
 
@@ -192,18 +192,18 @@
 	                update_option( 'al_posts_per_page', 100 );
 	                update_option( 'al_purge_logs', 0 );
                 }
-    
+
             }
-    
+
             /**
              * Set post types on plugin activate
              */
             public function al_set_post_types() {
-                
+
                 $available_post_types = get_option( 'al_active_post_types' );
                 // $available_post_types = false;
                 if ( false == $available_post_types ) {
-        
+
                     $post_type_args       = array(
                         'public'             => true,
                         'publicly_queryable' => true,
@@ -221,7 +221,7 @@
                     }
                     update_option( 'al_active_post_types', $post_types );
                 }
-    
+
             }
 
 
@@ -308,20 +308,20 @@
                     }
                 }
             }
-            
+
             public function al_store_post_types() {
-    
+
                 if ( isset( $_POST[ 'post_types_nonce' ] ) ) {
                     if ( ! wp_verify_nonce( $_POST[ 'post_types_nonce' ], 'post-types-nonce' ) ) {
                         al_errors()->add( 'error_nonce_no_match', esc_html( __( 'Something went wrong. Please try again.', 'action-logger' ) ) );
-            
+
                         return;
                     } else {
-    
+
                         $submitted_post_types = $_POST['post_types'];
-                        
+
                         // echo '<pre>'; var_dump($submitted_post_types); echo '</pre>'; exit;
-                        
+
                         if ( $submitted_post_types ) {
                             foreach( $submitted_post_types as $post_type => $actions ) {
                                 if ( ! in_array( 'active', $actions ) ) {
@@ -329,17 +329,17 @@
                                 }
                             }
                         }
-                        
+
                         // echo '<pre>'; var_dump($submitted_post_types); echo '</pre>'; exit;
                         if ( empty( $submitted_post_types ) ) {
                             // die('XYZ');
                             $submitted_post_types = 0;
                         }
-                        
+
                         update_option( 'al_active_post_types', $submitted_post_types );
-                        
+
                         al_errors()->add( 'success_posttypes_saved', esc_html( __( 'Post types saved.', 'action-logger' ) ) );
-    
+
                     }
                 }
             }
@@ -410,7 +410,7 @@
                                 $array_item['action_description'] = al_replace_log_vars( $array_item['action_user'], $array_item['action_description'], $array_item['post_id'] );
                                 $csv_array[] = $array_item;
                             }
-    
+
                             $filename  = "export.csv";
                             $delimiter = ",";
 
@@ -432,7 +432,7 @@
                             $f = fopen( 'php://output', 'w' );
 
                             fputcsv( $f, $csv_header, $delimiter );
-                            
+
                             foreach ( $csv_array as $line ) {
                                 fputcsv( $f, $line, $delimiter );
                             }
@@ -558,7 +558,6 @@
 	        public function al_add_screen_options() {
 
 		        $screen = get_current_screen();
-		        // echo '<pre>'; var_dump($screen); echo '</pre>'; exit;
 
 		        if ( 'toplevel_page_action-logger' != $screen->id ) {
 			        return false;
@@ -639,14 +638,14 @@
 		        }
 
 	        }
-    
+
             /**
              * @param $attributes
              *
              * @return void
              */
 	        public function al_register_shortcode_logger( $attributes ) {
-        
+
                 // $post_type    = get_post_type();
                 $log_loggedin = get_option( 'al_user_visit_registered' );
                 $log_visitor  = get_option( 'al_user_visit_visitor' );
@@ -695,41 +694,37 @@
                 $post_link  = '<a href="#permalink#">' . $post->post_title. '</a>';
                 $user_data  = get_userdata( get_current_user_id() );
                 $user_name  = $user_data->display_name;
-                
-                // @TODO: Add IF for ACF
-                // @TODO: Add IF for MC4WP
-                // @TODO: Add IF for nav_menu_item
-        
+
                 $active_post_types     = get_option( 'al_active_post_types' );
                 // if post type is active in active post types
                 if ( array_key_exists( $post_type, $active_post_types ) ) {
                     // log it (if actions are active)
-    
-                    if ( $old_status == 'draft' && $new_status == 'publish' && in_array( 'publish', $active_post_types[$post_type] ) ) {
-        
+
+                    if ( $old_status != 'publish' && $new_status == 'publish' && in_array( 'publish', $active_post_types[$post_type] ) ) {
+
                         // draft > publish
                         $this->al_log_user_action( $post_type . '_published', 'Action Logger', sprintf( esc_html( __( '#user# published %s %s.', 'action-logger' ) ), $post_type, $post_link ), $post->ID );
-        
+
                     } elseif ( $old_status == 'pending' && $new_status == 'publish' && in_array( 'republish', $active_post_types[$post_type] ) ) {
-        
+
                         // pending > publish
                         $this->al_log_user_action( $post_type . '_republished', 'Action Logger', sprintf( esc_html( __( '#user# re-published %s.', 'action-logger' ) ), $post_link ), $post->ID );
-        
+
                     } elseif ( $old_status == 'publish' && $new_status == 'publish' && in_array( 'edit', $active_post_types[$post_type] ) ) {
-        
+
                         // publish > publish
                         $this->al_log_user_action( $post_type . '_changed', 'Action Logger', sprintf( esc_html__( '#user# edited published %s %s.', 'action-logger' ), $post_type, $post_link ), $post->ID );
-        
+
                     } elseif ( $old_status == 'publish' && $new_status == 'trash' && in_array( 'deleted', $active_post_types[$post_type] ) ) {
-        
+
                         // publish > trash
                         $this->al_log_user_action( $post_type . '_deleted', 'Action Logger', sprintf( esc_html( __( '#user# deleted %s %s.', 'action-logger' ) ), $post_type, $post_link ), $post->ID );
-        
+
                     } elseif ( $old_status == 'publish' && $new_status == 'pending' && in_array( 'pending', $active_post_types[$post_type] ) ) {
-        
+
                         // publish > pending
                         $this->al_log_user_action( $post_type . '_pending', 'Action Logger', sprintf( esc_html( __( '#user# marked %s %s as pending review.', 'action-logger' ) ), $post_type, $post_link ), $post->ID );
-        
+
                     }
                 }
             }
@@ -741,7 +736,6 @@
              * @param $user_id
              */
             public function al_log_user_create( $user_id ) {
-                // echo '<pre>'; var_dump( $user_id ); echo '</pre>'; exit;
                 if ( false != get_option( 'al_wp_user_create' ) ) {
 	                $this->al_log_user_action( 'user_registered', 'Action Logger', sprintf( esc_html( __( 'New user registered: %s.', 'action-logger' ) ), get_userdata( $user_id )->display_name ) );
                 }
