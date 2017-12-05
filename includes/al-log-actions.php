@@ -113,7 +113,7 @@
                                         <th>Edit</th>
                                         <th>Delete</th>
                                         <th>Pending</th>
-                                        <th>Republish</th>
+                                        <!--<th>Republish</th>-->
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -134,7 +134,7 @@
                                                 <label for="post-type" class="screen-reader-text"><?php esc_html_e( 'Active', 'action-logger' ); ?></label>
                                                 <input name="post_types[<?php echo $post_type; ?>][]" id="post-type" type="checkbox" value="active" <?php echo $checked; ?>/>
                                             </td>
-                                            
+
                                             <td class="checkbox">
                                                 <?php
                                                     $checked    = false;
@@ -148,7 +148,7 @@
                                                 <label for="post-type" class="screen-reader-text"><?php esc_html_e( 'Publish', 'action-logger' ); ?></label>
                                                 <input name="post_types[<?php echo $post_type; ?>][]" id="post-type" type="checkbox" value="publish" <?php echo $checked; ?>/>
                                             </td>
-                                            
+
                                             <td class="checkbox">
                                                 <?php
                                                     $checked    = false;
@@ -162,7 +162,7 @@
                                                 <label for="post-type" class="screen-reader-text"><?php esc_html_e( 'Edit', 'action-logger' ); ?></label>
                                                 <input name="post_types[<?php echo $post_type; ?>][]" id="post-type" type="checkbox" value="edit" <?php echo $checked; ?>/>
                                             </td>
-                                            
+
                                             <td class="checkbox">
                                                 <?php
                                                     $checked    = false;
@@ -176,7 +176,7 @@
                                                 <label for="post-type" class="screen-reader-text"><?php esc_html_e( 'Delete', 'action-logger' ); ?></label>
                                                 <input name="post_types[<?php echo $post_type; ?>][]" id="post-type" type="checkbox" value="delete" <?php echo $checked; ?>/>
                                             </td>
-                                            
+
                                             <td class="checkbox">
                                                 <?php
                                                     $checked    = false;
@@ -190,8 +190,8 @@
                                                 <label for="post-type" class="screen-reader-text"><?php esc_html_e( 'Pending', 'action-logger' ); ?></label>
                                                 <input name="post_types[<?php echo $post_type; ?>][]" id="post-type" type="checkbox" value="pending" <?php echo $checked; ?>/>
                                             </td>
-                                            
-                                            <td class="checkbox">
+
+                                            <td class="hidden checkbox">
                                                 <?php
                                                     $checked    = false;
                                                     if ( true == $key_exists ) {
