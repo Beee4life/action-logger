@@ -626,6 +626,7 @@
 	        public static function al_log_user_action( $action = false, $action_generator = false, $action_description = false, $post_id = false ) {
 
 		        if ( false != $action_description ) {
+		         
 			        global $wpdb;
 			        $sql_data = array(
 				        'action_time'        => current_time( 'timestamp' ),
@@ -635,6 +636,7 @@
 				        'action_description' => $action_description,
                         'post_id'            => $post_id
 			        );
+			        // echo '<pre>'; var_dump($sql_data); echo '</pre>'; exit;
 			        $wpdb->insert( $wpdb->prefix . 'action_logs', $sql_data );
 		        }
 
@@ -652,12 +654,10 @@
                 $log_it       = true;
                 $who          = 'A visitor';
                 $post_id      = get_the_ID();
-                // $post_link    = false;
+                $post_link    = false;
                 $post_link    = get_the_permalink( $post_id );
-                $title        = get_the_title( $post_id );
-                // $message      = 'visited ' . $title;
 
-                $message = 'visited <a href="' . $post_link .'">' . $title . '</a>';
+                $message = 'visited <a href="' . $post_link .'">' . get_the_title( $post_id ) . '</a>';
 
                 if ( is_user_logged_in() ) {
                     $who = get_userdata( get_current_user_id() )->display_name;
@@ -670,7 +670,7 @@
                         $log_it = false;
                     }
                 }
-
+                
                 $attributes = shortcode_atts( array(
                     'message' => $message,
                 ), $attributes, 'actionlogger' );
