@@ -94,7 +94,6 @@
                 // add_action( 'ri_csv_file_upload',           array( $this, 'al_ri_csv_uploaded' ) );
 
 	            include( 'includes/al-functions.php' );
-                // $this->al_set_post_types();
 	            
             }
 
@@ -104,7 +103,7 @@
 	        public function al_plugin_activation() {
 		        $this->al_prepare_log_table();
 		        $this->al_set_default_values();
-		        $this->al_set_post_types();
+                $this->al_set_post_types();
 
 		        if ( ! wp_next_scheduled( 'al_cron_purge_logs' ) ) {
 			        wp_schedule_event( time(), 'daily', 'al_cron_purge_logs' );
@@ -201,27 +200,22 @@
              */
             public function al_set_post_types() {
 
-                // $available_post_types = get_option( 'al_active_post_types' );
-                $available_post_types = false;
-                if ( false == $available_post_types ) {
-
-                    $post_type_args       = array(
-                        'public'             => true,
-                        'publicly_queryable' => true,
-                    );
-                    $available_post_types = get_post_types( $post_type_args, 'names', 'OR' );
-                    $post_types           = array();
-                    foreach ( $available_post_types as $post_type ) {
-                        $post_type_array = array();
-                        if ( $post_type != 'attachment' ) {
-                            $post_types[$post_type][] = 'active';
-                            $post_types[$post_type][] = 'publish';
-                            $post_types[$post_type][] = 'edit';
-                            $post_types[$post_type][] = 'delete';
-                        }
+                $post_type_args       = array(
+                    'public'             => true,
+                    'publicly_queryable' => true,
+                );
+                $available_post_types = get_post_types( $post_type_args, 'names', 'OR' );
+                $post_types           = array();
+                foreach ( $available_post_types as $post_type ) {
+                    $post_type_array = array();
+                    if ( $post_type != 'attachment' ) {
+                        $post_types[$post_type][] = 'active';
+                        $post_types[$post_type][] = 'publish';
+                        $post_types[$post_type][] = 'edit';
+                        $post_types[$post_type][] = 'delete';
                     }
-                    update_option( 'al_active_post_types', $post_types );
                 }
+                update_option( 'al_active_post_types', $post_types );
 
             }
 
