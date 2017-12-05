@@ -251,24 +251,15 @@
      *
      * @return bool|mixed
      */
-	function al_replace_log_vars( $action_user, $log_message, $post_id ) {
+	function al_replace_log_vars( $log_message, $post_id ) {
 	    
 	    if ( false == $log_message ) {
 	        return false;
         }
         
-        $replaced_description = $log_message;
-        if ( strpos( $replaced_description, '#permalink#') !== false ) {
-            $replaced_description = str_replace( '#permalink#', get_the_permalink( $post_id ), $replaced_description );
-        }
-        if ( strpos( $replaced_description, '#post_title#') !== false ) {
-            $replaced_description = str_replace( '#post_title#', get_the_title( $post_id ), $replaced_description );
-        }
-        if ( $action_user > 0 ) {
-            $replaced_description = str_replace( '#user#', get_userdata( $action_user )->display_name, $replaced_description );
-        } else {
-            $replaced_description = str_replace( '#user#', 'A visitor', $replaced_description );
+        if ( strpos( $log_message, '#permalink#' ) !== false ) {
+            $log_message = str_replace( '#permalink#', get_the_permalink( $post_id ), $log_message );
         }
         
-        return $replaced_description;
+        return $log_message;
     }
