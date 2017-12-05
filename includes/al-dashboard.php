@@ -93,7 +93,12 @@
                                     <td class="generator"><?php echo $item->action_generator; ?></td>
                                     <td class="description">
                                         <?php
-                                            echo al_replace_log_vars( $item->action_user, $item->action_description, $item->post_id );
+                                            // echo al_replace_log_vars( $item->action_user, $item->action_description, $item->post_id );
+                                            if ( 'Shortcode' == $item->action_generator ) {
+                                                echo $item->action_description. ' <a href="' . get_the_permalink( $item->post_id ) . '">' . get_the_title( $item->post_id ) . '</a>';
+                                            } else {
+	                                            echo $item->action_description;
+                                            }
                                         ?>
                                     </td>
                                     <?php if ( current_user_can( 'manage_options' ) ) { ?>
