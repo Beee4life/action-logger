@@ -55,7 +55,6 @@
                     <?php rsort( $items ); ?>
                     <?php $pages = ceil( ( count( $all_items ) / $ppp ) ); ?>
                     <?php $item_count = 0; ?>
-                    <?php //echo $pages; ?>
 
                     <p><?php esc_html_e( 'This page shows a log of all actions done by users, which are "interesting" to log.', 'action-logger' ); ?></p>
                     <p>
@@ -84,22 +83,14 @@
                             </thead>
                             <tbody>
                             <?php foreach( $items as $item ) { ?>
-                                <?php //if ( ! isset( $_GET[ 'paged' ] ) ) { $item_count++; } ?>
                                 <tr class="row">
-                                    <td class="datetime"><?php echo date( 'M j @ H:i:s', $item->action_time ); ?> (+<?php echo get_option( 'gmt_offset' ); ?>)</td>
+                                    <td class="datetime"><?php echo date( 'M j @ H:i:s', $item->action_time ); ?> (UTC +<?php echo get_option( 'gmt_offset' ); ?>)</td>
                                     <?php if ( current_user_can( 'manage_options' ) ) { ?>
                                         <td class="action"><?php echo $item->action; ?></td>
                                     <?php } ?>
                                     <td class="generator"><?php echo $item->action_generator; ?></td>
                                     <td class="description">
-                                        <?php
-                                            // echo al_replace_log_vars( $item->action_user, $item->action_description, $item->post_id );
-                                            if ( 'Shortcode' == $item->action_generator ) {
-                                                echo $item->action_description. ' <a href="' . get_the_permalink( $item->post_id ) . '">' . get_the_title( $item->post_id ) . '</a>';
-                                            } else {
-	                                            echo $item->action_description;
-                                            }
-                                        ?>
+                                        <?php echo al_replace_log_vars( $item->action_description, $item->post_id ); ?>
                                     </td>
                                     <?php if ( current_user_can( 'manage_options' ) ) { ?>
                                         <td class="checkbox">
@@ -110,7 +101,7 @@
                                         </td>
                                     <?php } ?>
                                 </tr>
-                                <?php if ( $item_count == $ppp ) { break; } ?>
+                                <?php //if ( $item_count == $ppp ) { break; } ?>
                             <?php } ?>
                             </tbody>
                         </table>
