@@ -110,3 +110,8 @@
     pointer-events: none;
     padding:        0 10px;
 }
+
+
+form#settings-form {
+    margin-bottom: 1em;
+}
