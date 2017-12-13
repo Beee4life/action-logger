@@ -241,7 +241,7 @@
 		return $pagination;
 
 	}
-    
+
     /**
      * Replace vars in log message
      *
@@ -252,14 +252,19 @@
      * @return bool|mixed
      */
 	function al_replace_log_vars( $log_message, $post_id ) {
-	    
+
 	    if ( false == $log_message ) {
 	        return false;
         }
-        
+
+        if ( strpos( $log_message, '#user#' ) !== false ) {
+	        $user_data   = get_userdata( get_current_user_id() );
+	        $user_name   = $user_data->display_name;
+	        $log_message = str_replace( '#user#', $user_name, $log_message );
+        }
         if ( strpos( $log_message, '#permalink#' ) !== false ) {
             $log_message = str_replace( '#permalink#', get_the_permalink( $post_id ), $log_message );
         }
-        
+
         return $log_message;
     }
