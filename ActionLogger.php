@@ -57,6 +57,7 @@
 
                 add_action( 'admin_init',                   array( $this, 'al_delete_selected_items' ) );
                 add_action( 'admin_init',                   array( $this, 'al_delete_all_logs' ) );
+                add_action( 'admin_init',                   array( $this, 'al_reset_all' ) );
                 add_action( 'admin_init',                   array( $this, 'al_log_actions_functions' ) );
                 add_action( 'admin_init',                   array( $this, 'al_store_post_types' ) );
                 add_action( 'admin_init',                   array( $this, 'al_settings_page_functions' ) );
@@ -94,7 +95,9 @@
                 // add_action( 'ri_csv_file_upload',           array( $this, 'al_ri_csv_uploaded' ) );
 
 	            include( 'includes/al-functions.php' );
-	            
+
+	            // $this->al_store_post_type_actions();
+
             }
 
 	        /**
@@ -195,6 +198,7 @@
                 }
             }
 
+
             /**
              * Set post types on plugin activate
              */
@@ -205,17 +209,39 @@
                     'publicly_queryable' => true,
                 );
                 $available_post_types = get_post_types( $post_type_args, 'names', 'OR' );
-                $post_types           = array();
-                foreach ( $available_post_types as $post_type ) {
-                    $post_type_array = array();
-                    if ( $post_type != 'attachment' ) {
-                        $post_types[$post_type][] = 'active';
-                        $post_types[$post_type][] = 'publish';
-                        $post_types[$post_type][] = 'edit';
-                        $post_types[$post_type][] = 'delete';
-                    }
+                // unset($available_post_types['attachment']);
+                // $post_types           = array();
+                // foreach ( $available_post_types as $post_type ) {
+                //     $post_type_array = array();
+                //     if ( $post_type != 'attachment' ) {
+                //         $post_types[$post_type][] = 'active';
+                //         $post_types[$post_type][] = 'publish';
+                //         $post_types[$post_type][] = 'edit';
+                //         $post_types[$post_type][] = 'delete';
+                //         $post_types[$post_type][] = 'pending';
+                //     }
+                // }
+                update_option( 'al_active_post_types', $available_post_types );
+
+            }
+
+
+            /**
+             * Check if any post types actions have been added/removed
+             */
+            public function al_store_post_type_actions() {
+
+                $post_type_args       = array(
+                    'public'             => true,
+                    'publicly_queryable' => true,
+                );
+	            $available_post_types = get_post_types( $post_type_args, 'names', 'OR' );
+	            $stored_post_types    = get_option( 'al_active_post_types' );
+	            $array_diffs          = array_diff( $stored_post_types, $available_post_types );
+	            if ( count( $array_diffs ) > 0 ) {
+	                // store new post types if there are differences
+		            update_option( 'al_active_post_types', $array_diffs );
                 }
-                update_option( 'al_active_post_types', $post_types );
 
             }
 
@@ -265,6 +291,7 @@
 		        include( 'includes/al-misc.php' ); // content for the settings page
 	        }
 
+
 	        /**
 	         * Load included files
 	         */
@@ -272,6 +299,7 @@
 		        include( 'includes/al-errors.php' );
 		        include( 'includes/al-help-tabs.php' );
 	        }
+
 
 	        /**
              * All form action for the settings page, except the nuke database action
@@ -303,6 +331,7 @@
                 }
             }
 
+
             public function al_store_post_types() {
 
                 if ( isset( $_POST[ 'post_types_nonce' ] ) ) {
@@ -313,8 +342,6 @@
                     } else {
 
                         $submitted_post_types = $_POST['post_types'];
-
-                        // echo '<pre>'; var_dump($submitted_post_types); echo '</pre>'; exit;
 
                         if ( $submitted_post_types ) {
                             foreach( $submitted_post_types as $post_type => $actions ) {
@@ -394,7 +421,7 @@
                         ");
 
                         if ( count( $items ) > 0 ) {
-    
+
                             $csv_array = [];
                             foreach( $items as $item ) {
                                 // make array from object
@@ -402,7 +429,7 @@
                                 $array_item[ 'action_description' ] = al_replace_log_vars( $array_item[ 'action_description' ], $array_item[ 'post_id' ] );
                                 $csv_array[] = $array_item;
                             }
-                            
+
                             $filename  = "export.csv";
                             $delimiter = ",";
 
@@ -496,6 +523,7 @@
                 }
             }
 
+
             /**
              * Delete all logs (truncate the table)
              */
@@ -519,17 +547,58 @@
                 }
             }
 
+
 	        /**
 	         * Empty log table
-             *
-             * @param bool $truncate
+	         *
+	         * @param bool $truncate
 	         */
-            public function al_truncate_log_table( $truncate = false ) {
+	        public function al_truncate_log_table( $truncate = false ) {
 
-                if ( false != $truncate ) {
-                    global $wpdb;
-                    $prefix = $wpdb->get_blog_prefix();
-                    $wpdb->query( 'TRUNCATE TABLE ' . $prefix . 'action_logs' );
+		        if ( false != $truncate ) {
+			        global $wpdb;
+			        $prefix = $wpdb->get_blog_prefix();
+			        $wpdb->query( 'TRUNCATE TABLE ' . $prefix . 'action_logs' );
+		        }
+	        }
+
+
+	        /**
+             * Reset to factory settings
+             */
+            public function al_reset_all() {
+
+                if ( isset( $_POST[ 'reset_all_nonce' ] ) ) {
+                    if ( ! wp_verify_nonce( $_POST[ 'reset_all_nonce' ], 'reset-all-nonce' ) ) {
+                        al_errors()->add( 'error_nonce_no_match', esc_html( __( 'Something went wrong. Please try again.', 'action-logger' ) ) );
+
+                        return;
+                    } else {
+
+                        if ( isset( $_POST[ 'reset_all' ] ) ) {
+
+	                        global $wpdb;
+	                        $wpdb->query( "DROP TABLE {$wpdb->prefix}action_logs" );
+
+	                        $options   = get_option( 'al_available_log_actions' );
+	                        $actions   = array();
+	                        foreach ( $options as $key => $value ) {
+		                        $actions[] = $value['action_name'];
+	                        }
+	                        $actions[] = 'active_post_types';
+	                        $actions[] = 'available_log_actions';
+	                        $actions[] = 'log_user_role';
+	                        $actions[] = 'posts_per_page';
+	                        $actions[] = 'purge_logs';
+	                        foreach ( $actions as $action ) {
+		                        delete_option( 'al_' . $action );
+	                        }
+
+	                        al_errors()->add( 'success_all_reset', esc_html( __( 'Everything set to default.', 'action-logger' ) ) );
+
+                            return;
+                        }
+                    }
                 }
             }
 
@@ -617,7 +686,7 @@
 	        public static function al_log_user_action( $action = false, $action_generator = false, $action_description = false, $post_id = false ) {
 
 		        if ( false != $action_description ) {
-            
+
                     global $wpdb;
 			        $sql_data = array(
 				        'action_time'        => current_time( 'timestamp' ),

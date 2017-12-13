@@ -112,8 +112,14 @@
                 <p><?php // esc_html_e( 'Delete all items. Watch out, there\'s no confirmation. Delete = delete !', 'action-logger' ); ?></p>
                 <form name="delete-logs" action="" method="post">
                     <input name="delete_all_logs_nonce" type="hidden" value="<?php echo wp_create_nonce( 'delete-all-logs-nonce' ); ?>" />
-                    <label for="delete-all-checkbox" class="screen-reader-text"><?php esc_html_e( 'Delete', 'action-logger' ); ?></label>
                     <input name="delete_all" type="submit" class="admin-button admin-button-small" onclick="return confirm( 'Are you sure you want to delete all logs ?' )" value="<?php esc_html_e( 'Delete all logs', 'action-logger' ); ?>" />
+                </form>
+
+                <h2><?php esc_html_e( 'Reset to default settings', 'action-logger' ); ?></h2>
+                <p><?php esc_html_e( 'This deletes all logs and stored values.', 'action-logger' ); ?></p>
+                <form name="reset" action="" method="post">
+                    <input name="reset_all_nonce" type="hidden" value="<?php echo wp_create_nonce( 'reset-all-nonce' ); ?>" />
+                    <input name="reset_all" type="submit" class="admin-button admin-button-small" onclick="return confirm( 'Are you sure you want to reset everything ?' )" value="<?php esc_html_e( 'Reset', 'action-logger' ); ?>" />
                 </form>
 
             </div><!-- end #action-logger -->
