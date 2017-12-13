@@ -90,7 +90,7 @@
                                     <?php } ?>
                                     <td class="generator"><?php echo $item->action_generator; ?></td>
                                     <td class="description">
-                                        <?php echo al_replace_log_vars( $item->action_description, $item->post_id ); ?>
+                                        <?php echo al_replace_log_vars( $item->user_id, $item->action_description, $item->post_id ); ?>
                                     </td>
                                     <?php if ( current_user_can( 'manage_options' ) ) { ?>
                                         <td class="checkbox">

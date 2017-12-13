@@ -251,14 +251,14 @@
      *
      * @return bool|mixed
      */
-	function al_replace_log_vars( $log_message, $post_id ) {
+	function al_replace_log_vars( $user_id, $log_message, $post_id ) {
 
 	    if ( false == $log_message ) {
 	        return false;
         }
 
         if ( strpos( $log_message, '#user#' ) !== false ) {
-	        $user_data   = get_userdata( get_current_user_id() );
+	        $user_data   = get_userdata( $user_id );
 	        $user_name   = $user_data->display_name;
 	        $log_message = str_replace( '#user#', $user_name, $log_message );
         }
