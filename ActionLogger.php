@@ -97,7 +97,11 @@
 	            include( 'includes/al-functions.php' );
 
 	            // $this->al_store_post_type_actions();
+	            // $this->test_this();
 
+            }
+
+            public function test_this() {
             }
 
 	        /**
@@ -209,19 +213,19 @@
                     'publicly_queryable' => true,
                 );
                 $available_post_types = get_post_types( $post_type_args, 'names', 'OR' );
-                // unset($available_post_types['attachment']);
-                // $post_types           = array();
-                // foreach ( $available_post_types as $post_type ) {
-                //     $post_type_array = array();
-                //     if ( $post_type != 'attachment' ) {
-                //         $post_types[$post_type][] = 'active';
-                //         $post_types[$post_type][] = 'publish';
-                //         $post_types[$post_type][] = 'edit';
-                //         $post_types[$post_type][] = 'delete';
-                //         $post_types[$post_type][] = 'pending';
-                //     }
-                // }
-                update_option( 'al_active_post_types', $available_post_types );
+                unset($available_post_types['attachment']);
+                $post_types           = array();
+                foreach ( $available_post_types as $post_type ) {
+                    $post_type_array = array();
+                    if ( $post_type != 'attachment' ) {
+                        $post_types[$post_type][] = 'active';
+                        $post_types[$post_type][] = 'publish';
+                        $post_types[$post_type][] = 'edit';
+                        $post_types[$post_type][] = 'delete';
+                        $post_types[$post_type][] = 'pending';
+                    }
+                }
+                update_option( 'al_active_post_types', $post_types );
 
             }
 
