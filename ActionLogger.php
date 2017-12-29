@@ -361,7 +361,7 @@
 
                         update_option( 'al_active_post_types', $submitted_post_types );
 
-                        al_errors()->add( 'success_posttypes_saved', esc_html( __( 'Post types saved.', 'action-logger' ) ) );
+                        al_errors()->add( 'success_posttypes_saved', esc_html( __( 'Post type options saved.', 'action-logger' ) ) );
 
                     }
                 }
