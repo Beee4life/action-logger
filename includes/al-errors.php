@@ -34,7 +34,7 @@
 					$prefix     = esc_html( __( 'Error', 'action-logger' ) );
 				}
 			}
-			echo '<div class="notice ' . $span_class . 'is-dismissible">';
+			echo '<div class="notice al-notice ' . $span_class . 'is-dismissible">';
 			foreach( $codes as $code ) {
 				$message = al_errors()->get_error_message( $code );
 				echo '<div class="">';
