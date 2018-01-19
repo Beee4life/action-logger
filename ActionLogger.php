@@ -257,7 +257,7 @@
 		        $purge_logs_after = ( false != get_option( 'al_purge_logs' ) ) ? intval( get_option( 'al_purge_logs' ) ) : 30;
 		        // only purge when it's not set to forever/0
 		        if ( 0 !== $purge_logs_after ) {
-			        $now_ts           = strtotime( date( 'Y-m-d  H:i:s', strtotime( '+' . get_option( 'gmt_offset' ) . ' hours' ) ) );
+			        $now_ts           = current_time( 'timestamp' );
 			        $purge_range      = $purge_logs_after * 24 * 60 * 60;
 			        $purge_date       = $now_ts - $purge_range;
 
@@ -598,7 +598,7 @@
 		                        delete_option( 'al_' . $action );
 	                        }
 
-	                        al_errors()->add( 'success_all_reset', esc_html( __( 'Everything set to default.', 'action-logger' ) ) );
+	                        al_errors()->add( 'success_all_reset', esc_html( __( 'All settings are reset to default settings.', 'action-logger' ) ) );
 
                             return;
                         }
