@@ -1,136 +1,138 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Action Logger 1.0\n"
-"POT-Creation-Date: 2017-10-07 20:39+0200\n"
-"PO-Revision-Date: 2017-10-07 20:39+0200\n"
+"POT-Creation-Date: 2018-01-19 20:57+0100\n"
+"PO-Revision-Date: 2018-01-19 20:59+0100\n"
 "Last-Translator: Beee\n"
 "Language-Team: \n"
 "Language: nl_NL\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.0.4\n"
+"X-Generator: Poedit 2.0.6\n"
 "X-Poedit-Basepath: ..\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Poedit-KeywordsList: __;_x;_e;esc_attr_e;esc_html_e\n"
+"X-Poedit-KeywordsList: __;_x;_e;esc_attr_e;esc_html_e;_n:1,2\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: languages\n"
 
-#: action-logger.php:265 action-logger.php:298 action-logger.php:316
-#: action-logger.php:334 action-logger.php:387 action-logger.php:411
-#: action-logger.php:452
+#: ActionLogger.php:315 ActionLogger.php:343 ActionLogger.php:380
+#: ActionLogger.php:398 ActionLogger.php:416 ActionLogger.php:472
+#: ActionLogger.php:496 ActionLogger.php:538 ActionLogger.php:577
 msgid "Something went wrong. Please try again."
 msgstr "Er is iets verkeerd gegaan. Probeer opnieuw."
 
-#: action-logger.php:282 action-logger.php:306 action-logger.php:324
-#: action-logger.php:398
+#: ActionLogger.php:332 ActionLogger.php:388 ActionLogger.php:406
+#: ActionLogger.php:483
 msgid "Settings saved."
 msgstr "Instellingen opgeslagen."
 
-#: action-logger.php:419 action-logger.php:460
+#: ActionLogger.php:364
+msgid "Post type options saved."
+msgstr "Post type instellingen opgeslagen."
+
+#: ActionLogger.php:504 ActionLogger.php:546
 msgid "All logs deleted."
 msgstr "Alle logs verwijderd."
 
-#: action-logger.php:432
+#: ActionLogger.php:517
 msgid "All selected items are successfully deleted from the database."
 msgstr "Alle geselecteerde items zijn succesvol verwijderd uit de database."
 
-#: action-logger.php:437
+#: ActionLogger.php:522
 msgid "You didn't select any lines. If you did, then something went wrong."
 msgstr ""
 "Je hebt geen items geselecteerd. Als je dat wel gedaan hebt is er iets "
 "verkeerd gegaan."
 
-#: action-logger.php:498 al-dashboard.php:63
-msgid "Logs"
-msgstr "Logs"
+#: ActionLogger.php:601
+msgid "All settings are reset to default settings."
+msgstr "Alle instellingen zijn gereset naar de default instellingen."
 
-#: action-logger.php:498
-msgid "Settings"
-msgstr "Instellingen"
-
-#: action-logger.php:498
-msgid "Misc"
-msgstr "Misc"
-
-#: action-logger.php:526
+#: ActionLogger.php:640
 #, php-format
 msgid "Log entries (%d max)"
 msgstr "Log items (max %d)"
 
-#: action-logger.php:636
+#: ActionLogger.php:770
 #, php-format
-msgid "%s published %s."
-msgstr "%s heeft %s gepubliceerd."
+msgid "%s deleted %s %s"
+msgstr "%s heeft %s verwijderd %s"
 
-#: action-logger.php:641
+#: ActionLogger.php:773
 #, php-format
-msgid "%s re-published %s."
-msgstr "%s heeft %s opnieuw gepubliceerd."
+msgid "%s changed %s %s"
+msgstr "%s heeft een %s gewijzigd %s"
 
-#: action-logger.php:654
+#: ActionLogger.php:775
 #, php-format
-msgid "%s deleted %s."
-msgstr "%s heeft %s verwijderd."
+msgid "%s marked %s %s as pending review"
+msgstr "%s heeft %s gemarkeerd als Wachtend op goedkeuring %s"
 
-#: action-logger.php:659
+#: ActionLogger.php:779
 #, php-format
-msgid "%s marked %s as pending review."
-msgstr "%s heeft %s gemarkeerd als Wachtend op goedkeuring."
+msgid "%s republished %s %s"
+msgstr "%s heeft %s opnieuw gepubliceerd %s"
 
-#: action-logger.php:673
+#: ActionLogger.php:781
+#, php-format
+msgid "%s published %s %s"
+msgstr "%s heeft %s gepubliceerd %s"
+
+#: ActionLogger.php:795
 #, php-format
 msgid "New user registered: %s."
 msgstr "Nieuwe gebruiker geregistreerd: %s."
 
-#: action-logger.php:688
+#: ActionLogger.php:810
 #, php-format
 msgid "%s changed the user of %s."
 msgstr "%s heeft de user info gewijzigd van %s."
 
-#: action-logger.php:701
+#: ActionLogger.php:823
 #, php-format
 msgid "%s deleted the user of %s."
 msgstr "%s heeft de gebruiker verwijderd van %s."
 
-#: action-logger.php:766
+#: ActionLogger.php:888
 msgid "the booking with booking ID:"
 msgstr "de boeking met boeking ID:"
 
-#: action-logger.php:779
+#: ActionLogger.php:901
 #, php-format
 msgid "%s deleted bookings for an event."
 msgstr "%s heeft boekingen verwijderd van een event."
 
-#: action-logger.php:792 action-logger.php:856
+#: ActionLogger.php:914 ActionLogger.php:978
 #, php-format
 msgid "%s successfully uploaded the file: \"%s\"."
 msgstr "%s heeft succesvol het bestand “%s” ge-upload."
 
-#: action-logger.php:803
+#: ActionLogger.php:925
 #, php-format
 msgid "%s successfully validated the file: \"%s\"."
 msgstr "%s heeft succesvol het bestand “%s” gevalideerd."
 
-#: action-logger.php:814 action-logger.php:849
+#: ActionLogger.php:936 ActionLogger.php:971
 #, php-format
 msgid "%s successfully imported %d lines from file."
 msgstr "%s heeft succesvol %d regels geïmporteerd vanuit een bestand."
 
-#: action-logger.php:842
+#: ActionLogger.php:964
 #, php-format
 msgid "%s successfully verified %s."
 msgstr "%s heeft succesvol %s gevalideerd."
 
-#: al-dashboard.php:9 al-log-actions.php:9 al-misc.php:9 al-settings.php:9
+#: includes/al-dashboard.php:9 includes/al-log-actions.php:9
+#: includes/al-misc.php:9 includes/al-settings.php:9
 msgid "Sorry, you do not have sufficient permissions to access this page."
 msgstr "Sorry, je hebt niet genoeg rechten om deze pagina te bekijken."
 
-#: al-dashboard.php:55
+#: includes/al-dashboard.php:52
 msgid "No logs (yet)..."
 msgstr "Nog geen logs…"
 
-#: al-dashboard.php:62
+#: includes/al-dashboard.php:59
 msgid ""
 "This page shows a log of all actions done by users, which are \"interesting"
 "\" to log."
@@ -138,269 +140,270 @@ msgstr ""
 "Deze pagina geeft een log weer van alle gebruikers, welke “interessant” zijn "
 "om te loggen."
 
-#: al-dashboard.php:64
+#: includes/al-dashboard.php:61
+#, php-format
+msgid "You have 1 log item."
+msgid_plural "You have %d log items."
+msgstr[0] "Je hebt 1 log item."
+msgstr[1] "Je hebt %d log items."
+
+#: includes/al-dashboard.php:63
 msgid "Log items are sorted, newest to oldest."
 msgstr "Log items zijn gesorteerd van nieuw naar oud."
 
-#: al-dashboard.php:71
-msgid "Date/time"
-msgstr "Datum/tijd"
-
-#: al-dashboard.php:73
-msgid "Action"
-msgstr "Actie"
-
-#: al-dashboard.php:75
-msgid "Generated by"
-msgstr "Gegenereerd door"
-
-#: al-dashboard.php:76
-msgid "Description"
-msgstr "Beschrijving"
-
-#: al-dashboard.php:78 al-dashboard.php:95 al-settings.php:116
+#: includes/al-dashboard.php:78 includes/al-dashboard.php:94
+#: includes/al-log-actions.php:176
 msgid "Delete"
 msgstr "Verwijderen"
 
-#: al-dashboard.php:121
-msgid "&laquo; Previous"
-msgstr "&laquo; Vorige"
+#: includes/al-dashboard.php:80
+msgid "Date/time"
+msgstr "Datum/tijd"
 
-#: al-dashboard.php:122
-msgid "Next &raquo;"
-msgstr "Volgende &raquo;"
+#: includes/al-dashboard.php:82
+msgid "Action"
+msgstr "Actie"
 
-#: al-dashboard.php:129
+#: includes/al-dashboard.php:84
+msgid "Generated by"
+msgstr "Gegenereerd door"
+
+#: includes/al-dashboard.php:85
+msgid "Description"
+msgstr "Beschrijving"
+
+#: includes/al-dashboard.php:114
 msgid "Delete selected items"
 msgstr "Verwijder geselecteerde items"
 
-#: al-dashboard.php:130
+#: includes/al-dashboard.php:115
 msgid "Delete all"
 msgstr "Alles verwijderen"
 
-#: al-errors.php:27
+#: includes/al-errors.php:27
 msgid "Warning"
 msgstr "Waarschuwing"
 
-#: al-errors.php:34
+#: includes/al-errors.php:34
 msgid "Error"
 msgstr "Fout"
 
-#: al-errors.php:46
+#: includes/al-errors.php:46
 msgid "Dismiss this notice"
 msgstr "Sluit deze melding"
 
-#: al-functions.php:13
+#: includes/al-functions.php:13
 msgid "Create user"
 msgstr "Gebruiker aanmaken"
 
-#: al-functions.php:14
+#: includes/al-functions.php:14
 msgid "Logs when a new user is created in WordPress."
 msgstr "Logt wanneer een nieuwe gebruiker wordt aangemaakt in WordPress."
 
-#: al-functions.php:20
+#: includes/al-functions.php:20
 msgid "Change user"
 msgstr "Wijzig gebruiker"
 
-#: al-functions.php:21
+#: includes/al-functions.php:21
 msgid "Logs when a user is changed (by another user) in WordPress."
 msgstr ""
 "Logt wanneer een gebruiker is gewijzigd (door een andere gebruiker) in "
 "WordPress."
 
-#: al-functions.php:27
+#: includes/al-functions.php:27
 msgid "Delete user"
 msgstr "Verwijder gebruiker"
 
-#: al-functions.php:28
+#: includes/al-functions.php:28
 msgid "Logs when a user is deleted in WordPress."
 msgstr "Logt wanneer een gebruiker verwijderd wordt in WordPress."
 
-#: al-functions.php:34
+#: includes/al-functions.php:34
 msgid "User visit (visitor)"
 msgstr "Gebruikersbezoek (bezoeker)"
 
-#: al-functions.php:35
+#: includes/al-functions.php:35
 msgid ""
 "Logs when a registered user visits a post/page with the shortcode on it."
 msgstr ""
 "Logt wanneer een geregistreerde gebruiker een post/pagina bezoekt met de "
 "shortcode."
 
-#: al-functions.php:41
+#: includes/al-functions.php:41
 msgid "User visit (registered)"
 msgstr "Gebruikersbezoek (geregistreerd)"
 
-#: al-functions.php:42
+#: includes/al-functions.php:42
 msgid "Logs when a visitor visits a post/page with the shortcode on it."
 msgstr "Logt wanneer een bezoeker een post/pagina bezoekt met de shortcode."
 
-#: al-functions.php:48
-msgid "Post published"
-msgstr "Post gepubliceerd"
-
-#: al-functions.php:49
-msgid "Logs when a post is published."
-msgstr "Logt wanneer een post is gepubliceerd."
-
-#: al-functions.php:55
-msgid "Post changed"
-msgstr "Post gewijzigd"
-
-#: al-functions.php:56
-msgid "Logs when a post is changed."
-msgstr "Logt wanneer een post gewijzigd is."
-
-#: al-functions.php:62
-msgid "Post deleted"
-msgstr "Post verwijderd"
-
-#: al-functions.php:63
-msgid "Logs when a post is deleted."
-msgstr "Logt wanneer een post is verwijderd."
-
-#: al-functions.php:73
+#: includes/al-functions.php:88
 msgid "Booking pending"
 msgstr "Boeking in afwachting goedkeuring"
 
-#: al-functions.php:74
+#: includes/al-functions.php:89
 msgid "Logs when a booking is pending."
 msgstr "Logt wanneer een boeking wacht op goedkeuring."
 
-#: al-functions.php:80
+#: includes/al-functions.php:95
 msgid "Booking approved"
 msgstr "Boeking goedgekeurd"
 
-#: al-functions.php:81
+#: includes/al-functions.php:96
 msgid "Logs when a booking is approved."
 msgstr "Logt wanneer een boeking is goedgekeurd/bevestigd."
 
-#: al-functions.php:87
+#: includes/al-functions.php:102
 msgid "Booking rejected"
 msgstr "Boeking geweigerd"
 
-#: al-functions.php:88
+#: includes/al-functions.php:103
 msgid "Logs when a booking is rejected."
 msgstr "Logt wanneer een boeking geweigerd wordt."
 
-#: al-functions.php:94
+#: includes/al-functions.php:109
 msgid "Booking canceled"
 msgstr "Boeking geannuleerd"
 
-#: al-functions.php:95
+#: includes/al-functions.php:110
 msgid "Logs when a booking is canceled."
 msgstr "Logt wanneer een boeking geannuleerd is."
 
-#: al-functions.php:101
+#: includes/al-functions.php:116
 msgid "Booking awaiting online payment"
 msgstr "Registratie wacht op online betaling"
 
-#: al-functions.php:102
+#: includes/al-functions.php:117
 msgid "Logs when a booking is awaiting online payment."
 msgstr "Logt wanneer een in afwachting is van een online betaling."
 
-#: al-functions.php:108
+#: includes/al-functions.php:123
 msgid "Booking awaiting offline payment"
 msgstr "Registratie wacht op offline betaling"
 
-#: al-functions.php:109
+#: includes/al-functions.php:124
 msgid "Logs when a booking is awaiting offline payment."
 msgstr "Logt wanneer een in afwachting is van een offline betaling."
 
-#: al-functions.php:115
+#: includes/al-functions.php:130
 msgid "Booking deleted"
 msgstr "Boeking verwijderd"
 
-#: al-functions.php:116
+#: includes/al-functions.php:131
 msgid "Logs when a booking is deleted."
 msgstr "Logt wanneer een boeking is verwijderd."
 
-#: al-functions.php:127 al-functions.php:188
+#: includes/al-functions.php:142 includes/al-functions.php:203
 msgid "CSV file uploaded"
 msgstr "CSV bestand geupload"
 
-#: al-functions.php:128
+#: includes/al-functions.php:143
 msgid "Logs when a csv file is uploaded."
 msgstr "Logt wanneer een CSV bestand is ge-upload."
 
-#: al-functions.php:134
+#: includes/al-functions.php:149
 msgid "CSV file validated"
 msgstr "CSV file gevalideerd"
 
-#: al-functions.php:135
+#: includes/al-functions.php:150
 msgid "Logs when a csv file is validated."
 msgstr "Logt wanneer een CSV bestand succesvol is gevalideerd."
 
-#: al-functions.php:141
+#: includes/al-functions.php:156
 msgid "CSV data imported"
 msgstr "CSV data geïmporteerd"
 
-#: al-functions.php:142
+#: includes/al-functions.php:157
 msgid "Logs when csv data is imported"
 msgstr "Logt wanneer CSV data succesvol is geïmporteerd"
 
-#: al-functions.php:154
+#: includes/al-functions.php:169
 msgid "Logs when all data is deleted"
 msgstr "Logt wanneer alle data verwijderd is"
 
-#: al-functions.php:160
+#: includes/al-functions.php:175
 msgid "Ind. rankings deleted"
 msgstr "Individuele rankings verwijderd"
 
-#: al-functions.php:161
+#: includes/al-functions.php:176
 msgid "Logs when individual rankings are deleted."
 msgstr "Logt wanneer individuele rankings worden verwijderd."
 
-#: al-functions.php:167
+#: includes/al-functions.php:182
 msgid "Raw CSV import"
 msgstr "Raw CSV data geïmporteerd"
 
-#: al-functions.php:168
+#: includes/al-functions.php:183
 msgid "Logs when raw data is imported"
 msgstr "Logt wanneer raw CSV data succesvol is geïmporteerd"
 
-#: al-functions.php:174
+#: includes/al-functions.php:189
 msgid "CSV file verified"
 msgstr "CSV file gevalideerd"
 
-#: al-functions.php:175
+#: includes/al-functions.php:190
 msgid "Logs when a csv file is succssful verified"
 msgstr "Logt wanneer een CSV bestand succesvol is geverifieerd"
 
-#: al-functions.php:181
+#: includes/al-functions.php:196
 msgid "Rankings imported from file"
 msgstr "Rankings geïmporteerd vanuit bestand"
 
-#: al-functions.php:182
+#: includes/al-functions.php:197
 msgid "Logs when a rankings are imported"
 msgstr "Logt wanneer rankings succesvol zijn geïmporteerd"
 
-#: al-functions.php:189
+#: includes/al-functions.php:204
 msgid "Logs when a csv file is uploaded"
 msgstr "Logt wanneer een CSV bestand is ge-upload"
 
-#: al-log-actions.php:26
+#: includes/al-functions.php:235
+msgid "&laquo; Previous"
+msgstr "&laquo; Vorige"
+
+#: includes/al-functions.php:236
+msgid "Next &raquo;"
+msgstr "Volgende &raquo;"
+
+#: includes/al-log-actions.php:24
 msgid "Available log actions"
 msgstr "Beschikbare log acties"
 
-#: al-log-actions.php:27
+#: includes/al-log-actions.php:25
 msgid "Here you can select which actions you want to log/ignore."
 msgstr "Hier kun je selecteren welke acties je wilt loggen/negeren."
 
-#: al-log-actions.php:84
+#: includes/al-log-actions.php:92 includes/al-log-actions.php:134
 msgid "Active"
 msgstr "Actief"
 
-#: al-log-actions.php:93 al-settings.php:73 al-settings.php:96
-#: al-settings.php:108
+#: includes/al-log-actions.php:101 includes/al-log-actions.php:212
+#: includes/al-settings.php:71 includes/al-settings.php:95
+#: includes/al-settings.php:107
 msgid "Save settings"
 msgstr "Instellingen opslaan"
 
-#: al-misc.php:24
+#: includes/al-log-actions.php:148
+msgid "Publish"
+msgstr "Publiceren"
+
+#: includes/al-log-actions.php:162
+msgid "Edit"
+msgstr "Bewerken"
+
+#: includes/al-log-actions.php:190
+msgid "Pending"
+msgstr "Pending"
+
+#: includes/al-log-actions.php:204
+msgid "Republish"
+msgstr "Opnieuw publiceren"
+
+#: includes/al-misc.php:24
 msgid "Export data to CSV"
 msgstr "Exporteer data naar CSV"
 
-#: al-misc.php:25
+#: includes/al-misc.php:25
 msgid ""
 "By clicking this button you will trigger a download for a CSV (comma "
 "separated value) file."
@@ -408,15 +411,15 @@ msgstr ""
 "Door op deze button te klikken, trigger je een download voor een CSV (komma "
 "gescheiden waarden) document."
 
-#: al-misc.php:29
+#: includes/al-misc.php:29
 msgid "Export to CSV"
 msgstr "Exporteer naar CSV"
 
-#: al-misc.php:32
+#: includes/al-misc.php:32
 msgid "Support"
 msgstr "Help"
 
-#: al-misc.php:33
+#: includes/al-misc.php:33
 #, php-format
 msgid ""
 "If you know about this plugin, you probably know me and know where to reach "
@@ -427,20 +430,20 @@ msgstr ""
 "ik te bereiken ben. Zo niet, dan report het issue aub op GitHub in de <a "
 "href=“%s”>issues sectie</a>."
 
-#: al-misc.php:34
+#: includes/al-misc.php:34
 msgid "Find more info about the plugin on"
 msgstr "Vind meer info over de plugin op"
 
-#: al-misc.php:36
+#: includes/al-misc.php:36
 msgid "About the author"
 msgstr "Over de auteur"
 
-#: al-misc.php:38
+#: includes/al-misc.php:38
 #, php-format
 msgid "This plugin is created by %s, a Wordpress developer from Amsterdam."
 msgstr "Deze plugin is gebouwd door %s, een Wordpress developer uit Amsterdam."
 
-#: al-misc.php:39
+#: includes/al-misc.php:39
 msgid ""
 "This plugin is free to use but a small donation will be very much "
 "appreciated. This will give me more options to continue to develop it in my "
@@ -450,21 +453,19 @@ msgstr ""
 "gewaardeerd. Daarmee kan ik doorgaan en de plugin in mijn vrije tijd door "
 "ontwikkelen."
 
-#: al-settings.php:28
+#: includes/al-settings.php:26
 msgid "Purge logs"
 msgstr "Verwijder logs"
 
-#: al-settings.php:30
-msgid ""
-"Select how long you want to keep the logs. Default is 1 month (30 days)."
-msgstr ""
-"Selecteer hoe lang je de logs wilt bewaren. Standaard is 1 maand (30 dagen)."
+#: includes/al-settings.php:28
+msgid "Select how long you want to keep the logs. Default is Forever."
+msgstr "Selecteer hoe lang je de logs wilt bewaren. Default is voor altijd."
 
-#: al-settings.php:78
+#: includes/al-settings.php:76
 msgid "Who can do what"
 msgstr "Wie kan wat doen"
 
-#: al-settings.php:80
+#: includes/al-settings.php:78
 msgid ""
 "Here you can select what capability a user needs to see the logs. The "
 "default setting is \"manage_options\" which belongs to administrator."
@@ -473,7 +474,7 @@ msgstr ""
 "logs te kunnen zien. De standaard instelling is “manage_options” welke bij "
 "administrators hoort."
 
-#: al-settings.php:81
+#: includes/al-settings.php:79
 msgid ""
 "The reason why it's set per capability instead of per user is because two "
 "users with the same role can have different capabilities."
@@ -481,11 +482,11 @@ msgstr ""
 "De reden waarom het per ‘recht’ is ingesteld ipv per gebruiker is omdat twee "
 "gebruikers met dezelfde rol, verschillende rechten kunnen hebben."
 
-#: al-settings.php:99
+#: includes/al-settings.php:98
 msgid "Preserve data when uninstalling"
 msgstr "Bewaar data bij plugin verwijdering"
 
-#: al-settings.php:106
+#: includes/al-settings.php:105
 msgid ""
 "If you uninstall the plugin, all data and settings are removed as well. If "
 "you check this box, your logs and settings won't be deleted upon uninstall."
@@ -494,13 +495,49 @@ msgstr ""
 "verwijderd. Als je deze optie aanvinkt, worden je data en instellingen "
 "bewaard als de plugin verwijderd wordt."
 
-#: al-settings.php:112
+#: includes/al-settings.php:111
 msgid "Nuke 'em all"
 msgstr "Alles verwijderen"
 
-#: al-settings.php:117
+#: includes/al-settings.php:115
 msgid "Delete all logs"
 msgstr "Alle logs verwijderen"
+
+#: includes/al-settings.php:118
+msgid "Reset to default settings"
+msgstr "Reset naar default instellingen"
+
+#: includes/al-settings.php:119
+msgid "This deletes all logs and stored values."
+msgstr "Dit delete alle logs en opgeslagen instellingen."
+
+#: includes/al-settings.php:122
+msgid "Reset"
+msgstr "Reset"
+
+#~ msgid "Logs"
+#~ msgstr "Logs"
+
+#~ msgid "Settings"
+#~ msgstr "Instellingen"
+
+#~ msgid "Misc"
+#~ msgstr "Misc"
+
+#~ msgid "Logs when a post is published."
+#~ msgstr "Logt wanneer een post is gepubliceerd."
+
+#~ msgid "Post changed"
+#~ msgstr "Post gewijzigd"
+
+#~ msgid "Logs when a post is changed."
+#~ msgstr "Logt wanneer een post gewijzigd is."
+
+#~ msgid "Post deleted"
+#~ msgstr "Post verwijderd"
+
+#~ msgid "Logs when a post is deleted."
+#~ msgstr "Logt wanneer een post is verwijderd."
 
 #~ msgid "%s edited published post %s."
 #~ msgstr "%s heeft de gepubliceerd post %s bijgewerkt."
@@ -515,9 +552,6 @@ msgstr "Alle logs verwijderen"
 
 #~ msgid "%s took %s offline."
 #~ msgstr "%s heeft %s offline gehaald."
-
-#~ msgid "%s changed a post."
-#~ msgstr "%s heeft een post gewijzigd."
 
 #~ msgid "%s deleted a post."
 #~ msgstr "%s heeft een post verwijderd."

@@ -2,459 +2,544 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Action Logger 1.0\n"
-"POT-Creation-Date: 2017-10-07 19:16+0200\n"
+"POT-Creation-Date: 2018-01-19 20:59+0100\n"
 "PO-Revision-Date: 2017-09-10 03:44+0200\n"
 "Last-Translator: Beee\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.0.4\n"
+"X-Generator: Poedit 2.0.6\n"
 "X-Poedit-Basepath: ..\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "Language: en\n"
-"X-Poedit-KeywordsList: __;_x;_e;esc_attr_e;esc_html_e\n"
+"X-Poedit-KeywordsList: __;_e;_x;_ex;_n:1,2;esc_attr__;esc_attr_e;esc_html__;esc_html_e\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: action-logger.php:231 action-logger.php:264 action-logger.php:282
-#: action-logger.php:300 action-logger.php:353 action-logger.php:377
-#: action-logger.php:418
-msgid "Something went wrong. Please try again."
-msgstr ""
-
-#: action-logger.php:248 action-logger.php:272 action-logger.php:290
-#: action-logger.php:364
-msgid "Settings saved."
-msgstr ""
-
-#: action-logger.php:385 action-logger.php:426
-msgid "All logs deleted."
-msgstr ""
-
-#: action-logger.php:398
-msgid "All selected items are successfully deleted from the database."
-msgstr ""
-
-#: action-logger.php:403
-msgid "You didn't select any lines. If you did, then something went wrong."
-msgstr ""
-
-#: action-logger.php:464 al-dashboard.php:63
-msgid "Logs"
-msgstr ""
-
-#: action-logger.php:464
+#: ActionLogger.php:135 ActionLogger.php:654
 msgid "Settings"
 msgstr ""
 
-#: action-logger.php:464
-msgid "Misc"
+#: ActionLogger.php:315 ActionLogger.php:343 ActionLogger.php:380
+#: ActionLogger.php:398 ActionLogger.php:416 ActionLogger.php:472
+#: ActionLogger.php:496 ActionLogger.php:538 ActionLogger.php:577
+msgid "Something went wrong. Please try again."
 msgstr ""
 
-#: action-logger.php:492
+#: ActionLogger.php:332 ActionLogger.php:388 ActionLogger.php:406
+#: ActionLogger.php:483
+msgid "Settings saved."
+msgstr ""
+
+#: ActionLogger.php:364
+msgid "Post type options saved."
+msgstr ""
+
+#: ActionLogger.php:504 ActionLogger.php:546
+msgid "All logs deleted."
+msgstr ""
+
+#: ActionLogger.php:517
+msgid "All selected items are successfully deleted from the database."
+msgstr ""
+
+#: ActionLogger.php:522
+msgid "You didn't select any lines. If you did, then something went wrong."
+msgstr ""
+
+#: ActionLogger.php:601
+msgid "All settings are reset to default settings."
+msgstr ""
+
+#: ActionLogger.php:640
 #, php-format
 msgid "Log entries (%d max)"
 msgstr ""
 
-#: action-logger.php:602
-#, php-format
-msgid "%s published %s."
+#: ActionLogger.php:654
+msgid "Logs"
 msgstr ""
 
-#: action-logger.php:607
-#, php-format
-msgid "%s re-published %s."
+#: ActionLogger.php:654 includes/al-help-tabs.php:35
+msgid "Log actions"
 msgstr ""
 
-#: action-logger.php:620
-#, php-format
-msgid "%s deleted %s."
+#: ActionLogger.php:655
+msgid "Misc"
 msgstr ""
 
-#: action-logger.php:625
+#: ActionLogger.php:770
 #, php-format
-msgid "%s marked %s as pending review."
+msgid "%s deleted %s %s"
 msgstr ""
 
-#: action-logger.php:639
+#: ActionLogger.php:773
+#, php-format
+msgid "%s changed %s %s"
+msgstr ""
+
+#: ActionLogger.php:775
+#, php-format
+msgid "%s marked %s %s as pending review"
+msgstr ""
+
+#: ActionLogger.php:779
+#, php-format
+msgid "%s republished %s %s"
+msgstr ""
+
+#: ActionLogger.php:781
+#, php-format
+msgid "%s published %s %s"
+msgstr ""
+
+#: ActionLogger.php:795
 #, php-format
 msgid "New user registered: %s."
 msgstr ""
 
-#: action-logger.php:654
+#: ActionLogger.php:810
 #, php-format
 msgid "%s changed the user of %s."
 msgstr ""
 
-#: action-logger.php:667
+#: ActionLogger.php:823
 #, php-format
 msgid "%s deleted the user of %s."
 msgstr ""
 
-#: action-logger.php:732
+#: ActionLogger.php:888
 msgid "the booking with booking ID:"
 msgstr ""
 
-#: action-logger.php:745
+#: ActionLogger.php:901
 #, php-format
 msgid "%s deleted bookings for an event."
 msgstr ""
 
-#: action-logger.php:758 action-logger.php:822
+#: ActionLogger.php:914 ActionLogger.php:978
 #, php-format
 msgid "%s successfully uploaded the file: \"%s\"."
 msgstr ""
 
-#: action-logger.php:769
+#: ActionLogger.php:925
 #, php-format
 msgid "%s successfully validated the file: \"%s\"."
 msgstr ""
 
-#: action-logger.php:780 action-logger.php:815
+#: ActionLogger.php:936 ActionLogger.php:971
 #, php-format
 msgid "%s successfully imported %d lines from file."
 msgstr ""
 
-#: action-logger.php:808
+#: ActionLogger.php:943
+#, php-format
+msgid "%s nuked all rankings."
+msgstr ""
+
+#: ActionLogger.php:950
+#, php-format
+msgid "%s deleted %d individual rankings for %s."
+msgstr ""
+
+#: ActionLogger.php:964
 #, php-format
 msgid "%s successfully verified %s."
 msgstr ""
 
-#: al-dashboard.php:9 al-log-actions.php:9 al-misc.php:9 al-settings.php:9
+#: includes/al-dashboard.php:9 includes/al-log-actions.php:9
+#: includes/al-misc.php:9 includes/al-settings.php:9
 msgid "Sorry, you do not have sufficient permissions to access this page."
 msgstr ""
 
-#: al-dashboard.php:55
+#: includes/al-dashboard.php:52
 msgid "No logs (yet)..."
 msgstr ""
 
-#: al-dashboard.php:62
+#: includes/al-dashboard.php:59
 msgid "This page shows a log of all actions done by users, which are \"interesting\" to log."
 msgstr ""
 
-#: al-dashboard.php:64
+#: includes/al-dashboard.php:61
+#, php-format
+msgid "You have 1 log item."
+msgid_plural "You have %d log items."
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/al-dashboard.php:63
 msgid "Log items are sorted, newest to oldest."
 msgstr ""
 
-#: al-dashboard.php:71
-msgid "Date/time"
-msgstr ""
-
-#: al-dashboard.php:73
-msgid "Action"
-msgstr ""
-
-#: al-dashboard.php:75
-msgid "Generated by"
-msgstr ""
-
-#: al-dashboard.php:76
-msgid "Description"
-msgstr ""
-
-#: al-dashboard.php:78 al-dashboard.php:95 al-settings.php:116
+#: includes/al-dashboard.php:78 includes/al-dashboard.php:94
+#: includes/al-log-actions.php:176
 msgid "Delete"
 msgstr ""
 
-#: al-dashboard.php:121
-msgid "&laquo; Previous"
+#: includes/al-dashboard.php:80
+msgid "Date/time"
 msgstr ""
 
-#: al-dashboard.php:122
-msgid "Next &raquo;"
+#: includes/al-dashboard.php:82
+msgid "Action"
 msgstr ""
 
-#: al-dashboard.php:129
+#: includes/al-dashboard.php:84
+msgid "Generated by"
+msgstr ""
+
+#: includes/al-dashboard.php:85
+msgid "Description"
+msgstr ""
+
+#: includes/al-dashboard.php:114
 msgid "Delete selected items"
 msgstr ""
 
-#: al-dashboard.php:130
+#: includes/al-dashboard.php:115
 msgid "Delete all"
 msgstr ""
 
-#: al-errors.php:27
+#: includes/al-errors.php:27
 msgid "Warning"
 msgstr ""
 
-#: al-errors.php:34
+#: includes/al-errors.php:34
 msgid "Error"
 msgstr ""
 
-#: al-errors.php:46
+#: includes/al-errors.php:46
 msgid "Dismiss this notice"
 msgstr ""
 
-#: al-functions.php:13
+#: includes/al-functions.php:13
 msgid "Create user"
 msgstr ""
 
-#: al-functions.php:14
+#: includes/al-functions.php:14
 msgid "Logs when a new user is created in WordPress."
 msgstr ""
 
-#: al-functions.php:20
+#: includes/al-functions.php:20
 msgid "Change user"
 msgstr ""
 
-#: al-functions.php:21
+#: includes/al-functions.php:21
 msgid "Logs when a user is changed (by another user) in WordPress."
 msgstr ""
 
-#: al-functions.php:27
+#: includes/al-functions.php:27
 msgid "Delete user"
 msgstr ""
 
-#: al-functions.php:28
+#: includes/al-functions.php:28
 msgid "Logs when a user is deleted in WordPress."
 msgstr ""
 
-#: al-functions.php:34
+#: includes/al-functions.php:34
 msgid "User visit (visitor)"
 msgstr ""
 
-#: al-functions.php:35
+#: includes/al-functions.php:35
 msgid "Logs when a registered user visits a post/page with the shortcode on it."
 msgstr ""
 
-#: al-functions.php:41
+#: includes/al-functions.php:41
 msgid "User visit (registered)"
 msgstr ""
 
-#: al-functions.php:42
+#: includes/al-functions.php:42
 msgid "Logs when a visitor visits a post/page with the shortcode on it."
 msgstr ""
 
-#: al-functions.php:48
-msgid "Post published"
-msgstr ""
-
-#: al-functions.php:49
-msgid "Logs when a post is published."
-msgstr ""
-
-#: al-functions.php:55
-msgid "Post changed"
-msgstr ""
-
-#: al-functions.php:56
-msgid "Logs when a post is changed."
-msgstr ""
-
-#: al-functions.php:62
-msgid "Post deleted"
-msgstr ""
-
-#: al-functions.php:63
-msgid "Logs when a post is deleted."
-msgstr ""
-
-#: al-functions.php:73
+#: includes/al-functions.php:88
 msgid "Booking pending"
 msgstr ""
 
-#: al-functions.php:74
+#: includes/al-functions.php:89
 msgid "Logs when a booking is pending."
 msgstr ""
 
-#: al-functions.php:80
+#: includes/al-functions.php:95
 msgid "Booking approved"
 msgstr ""
 
-#: al-functions.php:81
+#: includes/al-functions.php:96
 msgid "Logs when a booking is approved."
 msgstr ""
 
-#: al-functions.php:87
+#: includes/al-functions.php:102
 msgid "Booking rejected"
 msgstr ""
 
-#: al-functions.php:88
+#: includes/al-functions.php:103
 msgid "Logs when a booking is rejected."
 msgstr ""
 
-#: al-functions.php:94
+#: includes/al-functions.php:109
 msgid "Booking canceled"
 msgstr ""
 
-#: al-functions.php:95
+#: includes/al-functions.php:110
 msgid "Logs when a booking is canceled."
 msgstr ""
 
-#: al-functions.php:101
+#: includes/al-functions.php:116
 msgid "Booking awaiting online payment"
 msgstr ""
 
-#: al-functions.php:102
+#: includes/al-functions.php:117
 msgid "Logs when a booking is awaiting online payment."
 msgstr ""
 
-#: al-functions.php:108
+#: includes/al-functions.php:123
 msgid "Booking awaiting offline payment"
 msgstr ""
 
-#: al-functions.php:109
+#: includes/al-functions.php:124
 msgid "Logs when a booking is awaiting offline payment."
 msgstr ""
 
-#: al-functions.php:115
+#: includes/al-functions.php:130
 msgid "Booking deleted"
 msgstr ""
 
-#: al-functions.php:116
+#: includes/al-functions.php:131
 msgid "Logs when a booking is deleted."
 msgstr ""
 
-#: al-functions.php:127 al-functions.php:188
+#: includes/al-functions.php:142 includes/al-functions.php:203
 msgid "CSV file uploaded"
 msgstr ""
 
-#: al-functions.php:128
+#: includes/al-functions.php:143
 msgid "Logs when a csv file is uploaded."
 msgstr ""
 
-#: al-functions.php:134
+#: includes/al-functions.php:149
 msgid "CSV file validated"
 msgstr ""
 
-#: al-functions.php:135
+#: includes/al-functions.php:150
 msgid "Logs when a csv file is validated."
 msgstr ""
 
-#: al-functions.php:141
+#: includes/al-functions.php:156
 msgid "CSV data imported"
 msgstr ""
 
-#: al-functions.php:142
+#: includes/al-functions.php:157
 msgid "Logs when csv data is imported"
 msgstr ""
 
-#: al-functions.php:154
+#: includes/al-functions.php:169
 msgid "Logs when all data is deleted"
 msgstr ""
 
-#: al-functions.php:160
+#: includes/al-functions.php:175
 msgid "Ind. rankings deleted"
 msgstr ""
 
-#: al-functions.php:161
+#: includes/al-functions.php:176
 msgid "Logs when individual rankings are deleted."
 msgstr ""
 
-#: al-functions.php:167
+#: includes/al-functions.php:182
 msgid "Raw CSV import"
 msgstr ""
 
-#: al-functions.php:168
+#: includes/al-functions.php:183
 msgid "Logs when raw data is imported"
 msgstr ""
 
-#: al-functions.php:174
+#: includes/al-functions.php:189
 msgid "CSV file verified"
 msgstr ""
 
-#: al-functions.php:175
+#: includes/al-functions.php:190
 msgid "Logs when a csv file is succssful verified"
 msgstr ""
 
-#: al-functions.php:181
+#: includes/al-functions.php:196
 msgid "Rankings imported from file"
 msgstr ""
 
-#: al-functions.php:182
+#: includes/al-functions.php:197
 msgid "Logs when a rankings are imported"
 msgstr ""
 
-#: al-functions.php:189
+#: includes/al-functions.php:204
 msgid "Logs when a csv file is uploaded"
 msgstr ""
 
-#: al-log-actions.php:26
+#: includes/al-functions.php:235
+msgid "&laquo; Previous"
+msgstr ""
+
+#: includes/al-functions.php:236
+msgid "Next &raquo;"
+msgstr ""
+
+#: includes/al-help-tabs.php:25
+msgid "Dashboard"
+msgstr ""
+
+#: includes/al-help-tabs.php:26
+msgid "This page will show all your logged entries."
+msgstr ""
+
+#: includes/al-help-tabs.php:27
+msgid "You can select individual logs by checking the checkbox and click \"Delete selected items\"."
+msgstr ""
+
+#: includes/al-help-tabs.php:36
+msgid "If you activate a plugin for which we have incorporated the actions, then the loggable actions will show on this page, when the plugin is activated."
+msgstr ""
+
+#: includes/al-help-tabs.php:37
+msgid "You can enable/disbale each individual action. Just (de)select it and click \"Save settings\"."
+msgstr ""
+
+#: includes/al-help-tabs.php:44
+msgid "Log settings"
+msgstr ""
+
+#: includes/al-help-tabs.php:45
+msgid "On this page you can:"
+msgstr ""
+
+#: includes/al-help-tabs.php:47
+msgid "select who can see the logs"
+msgstr ""
+
+#: includes/al-help-tabs.php:48
+msgid "select to preserve the data when uninstalling"
+msgstr ""
+
+#: includes/al-help-tabs.php:49
+msgid "delete all logs"
+msgstr ""
+
+#: includes/al-help-tabs.php:55
+msgid "Author's website"
+msgstr ""
+
+#: includes/al-log-actions.php:24
 msgid "Available log actions"
 msgstr ""
 
-#: al-log-actions.php:27
+#: includes/al-log-actions.php:25
 msgid "Here you can select which actions you want to log/ignore."
 msgstr ""
 
-#: al-log-actions.php:84
+#: includes/al-log-actions.php:92 includes/al-log-actions.php:134
 msgid "Active"
 msgstr ""
 
-#: al-log-actions.php:93 al-settings.php:73 al-settings.php:96
-#: al-settings.php:108
+#: includes/al-log-actions.php:101 includes/al-log-actions.php:212
+#: includes/al-settings.php:71 includes/al-settings.php:95
+#: includes/al-settings.php:107
 msgid "Save settings"
 msgstr ""
 
-#: al-misc.php:24
+#: includes/al-log-actions.php:148
+msgid "Publish"
+msgstr ""
+
+#: includes/al-log-actions.php:162
+msgid "Edit"
+msgstr ""
+
+#: includes/al-log-actions.php:190
+msgid "Pending"
+msgstr ""
+
+#: includes/al-log-actions.php:204
+msgid "Republish"
+msgstr ""
+
+#: includes/al-misc.php:24
 msgid "Export data to CSV"
 msgstr ""
 
-#: al-misc.php:25
+#: includes/al-misc.php:25
 msgid "By clicking this button you will trigger a download for a CSV (comma separated value) file."
 msgstr ""
 
-#: al-misc.php:29
+#: includes/al-misc.php:29
 msgid "Export to CSV"
 msgstr ""
 
-#: al-misc.php:32
+#: includes/al-misc.php:32
 msgid "Support"
 msgstr ""
 
-#: al-misc.php:33
+#: includes/al-misc.php:33
 #, php-format
 msgid "If you know about this plugin, you probably know me and know where to reach me. If not, please report it on GitHub in the <a href=\"%s\">issues section</a>."
 msgstr ""
 
-#: al-misc.php:34
+#: includes/al-misc.php:34
 msgid "Find more info about the plugin on"
 msgstr ""
 
-#: al-misc.php:36
+#: includes/al-misc.php:36
 msgid "About the author"
 msgstr ""
 
-#: al-misc.php:38
+#: includes/al-misc.php:38
 #, php-format
 msgid "This plugin is created by %s, a Wordpress developer from Amsterdam."
 msgstr ""
 
-#: al-misc.php:39
+#: includes/al-misc.php:39
 msgid "This plugin is free to use but a small donation will be very much appreciated. This will give me more options to continue to develop it in my spare time."
 msgstr ""
 
-#: al-settings.php:28
+#: includes/al-settings.php:26
 msgid "Purge logs"
 msgstr ""
 
-#: al-settings.php:30
-msgid "Select how long you want to keep the logs. Default is 1 month (30 days)."
+#: includes/al-settings.php:28
+msgid "Select how long you want to keep the logs. Default is Forever."
 msgstr ""
 
-#: al-settings.php:78
+#: includes/al-settings.php:76
 msgid "Who can do what"
 msgstr ""
 
-#: al-settings.php:80
+#: includes/al-settings.php:78
 msgid "Here you can select what capability a user needs to see the logs. The default setting is \"manage_options\" which belongs to administrator."
 msgstr ""
 
-#: al-settings.php:81
+#: includes/al-settings.php:79
 msgid "The reason why it's set per capability instead of per user is because two users with the same role can have different capabilities."
 msgstr ""
 
-#: al-settings.php:99
+#: includes/al-settings.php:98
 msgid "Preserve data when uninstalling"
 msgstr ""
 
-#: al-settings.php:106
+#: includes/al-settings.php:105
 msgid "If you uninstall the plugin, all data and settings are removed as well. If you check this box, your logs and settings won't be deleted upon uninstall."
 msgstr ""
 
-#: al-settings.php:112
+#: includes/al-settings.php:111
 msgid "Nuke 'em all"
 msgstr ""
 
-#: al-settings.php:117
+#: includes/al-settings.php:115
 msgid "Delete all logs"
+msgstr ""
+
+#: includes/al-settings.php:118
+msgid "Reset to default settings"
+msgstr ""
+
+#: includes/al-settings.php:119
+msgid "This deletes all logs and stored values."
+msgstr ""
+
+#: includes/al-settings.php:122
+msgid "Reset"
 msgstr ""
