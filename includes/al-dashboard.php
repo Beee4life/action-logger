@@ -58,14 +58,14 @@
 
                     <p><?php esc_html_e( 'This page shows a log of all actions done by users, which are "interesting" to log.', 'action-logger' ); ?></p>
                     <p>
-                        <?php echo sprintf( esc_html__( 'You have %d log items.', 'action-logger' ), count( $all_items ) ); ?>
+                        <?php echo sprintf( _n( 'You have 1 log item.', 'You have %d log items.', count( $all_items ), 'action-logger' ), count( $all_items ) ); ?>
                         <br />
                         <small><?php esc_html_e( 'Log items are sorted, newest to oldest.', 'action-logger' ); ?></small>
                     </p>
 
-                    <form name="filter-form" action="" method="post">
-                        <input name="filter_results" type="submit" class="admin-button admin-button-small" value="<?php esc_html_e( 'Filter', 'action-logger' ); ?>" />
-                    </form>
+<!--                    <form name="filter-form" action="" method="post">-->
+<!--                        <input name="filter_results" type="submit" class="admin-button admin-button-small" value="--><?php //esc_html_e( 'Filter', 'action-logger' ); ?><!--" />-->
+<!--                    </form>-->
 
                     <?php echo al_get_pagination( $_GET, $pages ); ?>
 
