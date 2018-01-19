@@ -1,28 +1,33 @@
-# Action Logger
+=== Action Logger ===
+Contributors: beee4life
+Tags: log, logs, user, actions
+Requires at least: 3.6.0
+Tested up to: 4.9.2
+Stable tag: 0.1
+License: GPLv2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Welcome to the Action Logger plugin for [Wordpress](http://wordpress.org). I built this initially for the IDF (International Downhill Federation), to keep tabs on actions from other users, but along the way I though many more users would find this interesting to use so that's why it's here now :)
+== Description ==
 
-## Description
+This plugin gives you the option to log various actions on your website.
 
-## Installation
-
-This plugin gives you the option to log various actions on your website. Default there are a few actions which can be tracked from within WordPress' core and some from plugins I like/use.
+== Installation ==
 
 1. Install the plugin through WordPress' admin panel at Plugins > Add New
 2. Activate the plugin through the 'Plugins' menu in WordPress
 
 Once activated you will find a "Settings" link next to the deactivate button.
 
-## Usage
+== Usage ==
 
 You can use this plugin in 2 ways:
-1. by including a piece of code in your template/plugin (see FAQ below)
+1. by including a piece of code in your template/plugin (see explanation below)
 1. by using the shortcode in your posts/pages
 
 The first option offers a lot more logging possibilities, but requires php knowledge.
 How to do either is explained in the FAQ.
 
-## FAQ
+== FAQ ==
 
 = Can I disable the logs I'm not interested in =
 
@@ -39,13 +44,6 @@ Yes. This can be done on the settings page.
 * post deleted
 * post/page visitor visit (through shortcode)
 * post/page registered user visit (through shortcode)
-
-### Events manager
-* event registration canceled
-* event registration rejected
-* event registration deleted
-* event registration approved (in progress)
-* more actions to follow...
 
 = Can I use this plugin to track visit to special pages like registration confirmations or so ? =
 
@@ -73,7 +71,6 @@ You can override the default message with a variable.
 
 This is defined as this:
 [actionlogger message="did something on the website"]
-
 
 This will trigger a log entry with the following description:
 {user->display_name} did something on the website
@@ -112,15 +109,11 @@ Yes, check the Misc page.
 * Mailchimp for Wordpress
 
 
-### Misc
+== Misc ==
 
 If you're a plugin author and you would like to see your hooks logged in this plugin, please contact me @ http://berryplasman.com.
 
 ### To Do
-* [X] - Add shortcode to track thank you pages and other status pages
-* [X] - Add panel to select what to track
-* [X] - Add WP errors
-* [X] - Add option to select which user roles can see the logger
 * [ ] - Add pagination in overview
 * [ ] - Add filters in overview to filter certain actions/generators
 * [ ] - Add auto-purge logs after x days
@@ -132,7 +125,7 @@ If you're a plugin author and you would like to see your hooks logged in this pl
 * [ ] - Add BuddyPress hooks
 * [ ] - Add WP4MC hooks
 
-## Changelog
+== Changelog ==
 
 ** 0.1 beta **
 Initial release
