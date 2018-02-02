@@ -167,8 +167,9 @@
                     action_generator varchar(50) NULL,
                     action_description varchar(100) NOT NULL,
                     post_id int(8) NULL,
-                    PRIMARY KEY (id)
-                );
+                    PRIMARY KEY  (id)
+                )
+                COLLATE <?php echo $wpdb->collate; ?>;
                 <?php
                 $sql = ob_get_clean();
                 dbDelta( $sql );
@@ -265,9 +266,9 @@
 			        $wpdb->query(
 				        $wpdb->prepare(
 					        "
-                        DELETE FROM {$wpdb->prefix}action_logs
-                        WHERE action_time < %d
-                        ",
+                            DELETE FROM {$wpdb->prefix}action_logs
+                            WHERE action_time < %d
+                            ",
 					        $now_ts
 				        )
 			        );
