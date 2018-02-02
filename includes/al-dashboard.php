@@ -74,9 +74,7 @@
                         <table class="action-logs">
                             <thead>
                             <tr class="row">
-                                <?php if ( current_user_can( 'manage_options' ) ) { ?>
-                                    <th class=""><?php esc_html_e( 'Delete', 'action-logger' ); ?></th>
-                                <?php } ?>
+                                <th class=""><?php esc_html_e( 'Delete', 'action-logger' ); ?></th>
                                 <th class="datetime"><?php esc_html_e( 'Date/time', 'action-logger' ); ?></th>
                                 <?php if ( current_user_can( 'manage_options' ) ) { ?>
                                     <th class="action"><?php esc_html_e( 'Action', 'action-logger' ); ?></th>
@@ -88,14 +86,12 @@
                             <tbody>
                             <?php foreach( $items as $item ) { ?>
                                 <tr class="row">
-                                    <?php if ( current_user_can( 'manage_options' ) ) { ?>
-                                        <td class="checkbox">
-                                            <label for="rows" class="screen-reader-text">
-                                                <?php esc_html_e( 'Delete', 'action-logger' ); ?>
-                                            </label>
-                                            <input name="rows[]" id="rows" type="checkbox" value="<?php echo $item->id; ?>" />
-                                        </td>
-                                    <?php } ?>
+                                    <td class="checkbox">
+                                        <label for="rows" class="screen-reader-text">
+                                            <?php esc_html_e( 'Delete', 'action-logger' ); ?>
+                                        </label>
+                                        <input name="rows[]" id="rows" type="checkbox" value="<?php echo $item->id; ?>" />
+                                    </td>
                                     <td class="datetime"><?php echo date( 'M j @ H:i:s', $item->action_time ); ?> (UTC +<?php echo get_option( 'gmt_offset' ); ?>)</td>
                                     <?php if ( current_user_can( 'manage_options' ) ) { ?>
                                         <td class="action"><?php echo $item->action; ?></td>
@@ -110,10 +106,8 @@
                             </tbody>
                         </table>
                         <?php echo al_get_pagination( $_GET, $pages ); ?>
-                        <?php if ( current_user_can( 'manage_options' ) ) { ?>
-                            <input name="delete_selected" type="submit" class="admin-button admin-button-small" value="<?php esc_html_e( 'Delete selected items', 'action-logger' ); ?>" />
-                            <input name="delete_all" type="submit" class="admin-button admin-button-small" onclick="return confirm( 'Are you sure you want to delete all logs ?' )" value="<?php esc_html_e( 'Delete all', 'action-logger' ); ?>" />
-                        <?php } ?>
+                        <input name="delete_selected" type="submit" class="admin-button admin-button-small" value="<?php esc_html_e( 'Delete selected items', 'action-logger' ); ?>" />
+                        <input name="delete_all" type="submit" class="admin-button admin-button-small" onclick="return confirm( 'Are you sure you want to delete all logs ?' )" value="<?php esc_html_e( 'Delete all', 'action-logger' ); ?>" />
                     </form>
 
                 <?php } ?>
