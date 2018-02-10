@@ -701,7 +701,7 @@
 				        'action_description' => $action_description,
                         'post_id'            => $post_id
 			        );
-			        $filtered_sql_data = apply_filters( 'ai_override_log_data', $sql_data );
+			        $filtered_sql_data = apply_filters( 'al_override_log_data', $sql_data );
 			        $wpdb->insert( $wpdb->prefix . 'action_logs', $filtered_sql_data );
 		        }
 
