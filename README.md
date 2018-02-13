@@ -6,7 +6,7 @@ It's not live yet, but the plugin does what it needs to do, except for a few min
 
 ## Description 
 
-This plugin gives you the option to log various actions on your website. Default there are a few actions which can be tracked from within WordPress' core and some from plugins I like/use.
+This plugin gives you the option to log various actions on your website. There are a few (core WP) actions which can be tracked but the power is that you can log anything you want by adding the logger somewhere in your code.
 
 ### Loggable actions
 
@@ -14,9 +14,9 @@ This plugin gives you the option to log various actions on your website. Default
 * user registration
 * user change
 * user delete
+* post change
+* post publish
+* post delete
+* post trash
 
-#### Events manager
-Next to that I included a few logging options for one of our favourite plugins: [Events Manager](http://wp-events-plugin.com/) + [Pro](https://eventsmanagerpro.com/). Right now you can track the following actions but more expected to follow:
-* registration canceled
-* registration rejected
-* registration deleted
+V0.1 is not out yet, but if you're feeling frisky, check out the develop branch.
