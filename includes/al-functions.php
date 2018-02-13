@@ -266,5 +266,10 @@
             $log_message = str_replace( '#permalink#', get_the_permalink( $post_id ), $log_message );
         }
 
+        // this code exists for a custom plugin I am using
+        if ( strpos( $log_message, '#orderlink#' ) !== false ) {
+            $log_message = str_replace( '#orderlink#', site_url() . '/wp-admin/admin.php?page=sd8-orders', $log_message );
+        }
+
         return $log_message;
     }
