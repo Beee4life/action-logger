@@ -66,7 +66,6 @@
                 add_action( 'admin_init',                   array( $this, 'al_set_default_values' ) );
                 add_action( 'admin_init',                   array( $this, 'al_log_user_action' ) );
                 add_action( 'admin_init',                   array( $this, 'al_check_log_table' ) );
-	            add_action( 'al_cron_purge_logs',           array( $this, 'al_cron_jobs' ) );
 
                 // Shortcode
 	            add_shortcode( 'actionlogger',         array( $this, 'al_register_shortcode_logger' ) );
@@ -94,6 +93,7 @@
                 // add_action( 'ri_rankings_imported',         array( $this, 'al_ri_rankings_imported' ) );
                 // add_action( 'ri_csv_file_upload',           array( $this, 'al_ri_csv_uploaded' ) );
 
+	            include( 'includes/al-crons.php' );
 	            include( 'includes/al-functions.php' );
 
 	            // $this->al_store_post_type_actions();
@@ -249,31 +249,6 @@
                 }
 
             }
-
-
-	        /**
-	         * Function which runs when cron job is triggered
-	         */
-	        public function al_cron_jobs() {
-		        $purge_logs_after = get_option( 'al_purge_logs', 0 );
-		        // only purge when it's not set to forever/0
-		        if ( 0 != $purge_logs_after ) {
-			        $now_ts           = current_time( 'timestamp' );
-			        $purge_range      = $purge_logs_after * 24 * 60 * 60;
-			        $purge_date       = $now_ts - $purge_range;
-
-			        global $wpdb;
-			        $wpdb->query(
-				        $wpdb->prepare(
-					        "
-                            DELETE FROM {$wpdb->prefix}action_logs
-                            WHERE action_time < %d
-                            ",
-					        $now_ts
-				        )
-			        );
-                }
-	        }
 
 
 	        /**
