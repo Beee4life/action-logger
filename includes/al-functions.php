@@ -273,3 +273,22 @@
 
         return $log_message;
     }
+
+    function al_available_post_types( $post_type_args = false, $output = false, $operator = false ) {
+
+	    if ( false == $post_type_args ) {
+            $post_type_args = array(
+                'public'             => true,
+                'publicly_queryable' => true,
+            );
+        }
+        if ( false == $output ) {
+            $output = 'names';
+        }
+        if ( false == $operator ) {
+            $operator = 'OR';
+        }
+
+        return get_post_types( $post_type_args, $output, $operator );
+    }
+    add_filter( 'al_get_post_types', 'al_available_post_types', 1 );
