@@ -252,7 +252,7 @@
 
 
 	        /**
-	         * Function which runs when cron job is triggered
+	         * Function which runs when cron job is triggered (probably delete @TODO)
 	         */
 	        public function al_cron_jobs() {
 		        $purge_logs_after = get_option( 'al_purge_logs', 0 );
