@@ -28,8 +28,8 @@
                         'public'             => true,
                         'publicly_queryable' => true,
                     );
-                    $available_post_types  = apply_filters( 'al_get_post_types', false, false, false );
-                    $available_log_actions = get_option( 'al_available_log_actions' );
+                    $available_post_types  = get_post_types( $post_type_args, 'names', 'OR' );
+                    $available_log_actions = get_option( 'al_available_log_actions');
                     $active_post_types     = get_option( 'al_active_post_types' );
                     if ( 0 == $active_post_types ) {
                         $active_post_types = [];
@@ -98,9 +98,9 @@
                             <input name="" type="submit" class="admin-button admin-button-small" value="<?php esc_html_e( 'Save settings', 'action-logger' ); ?>" />
                         </form>
 
-                        <form name="post_types" id="post-types-form" action="" method="post">
-                            <input name="post_types_nonce" type="hidden" value="<?php echo wp_create_nonce( 'post-types-nonce' ); ?>"/>
-                            <?php if ( $available_post_types ) { ?>
+                        <?php if ( $available_post_types ) { ?>
+                            <form name="post_types" id="post-types-form" action="" method="post">
+                                <input name="post_types_nonce" type="hidden" value="<?php echo wp_create_nonce( 'post-types-nonce' ); ?>"/>
                                 <table class="ai_post_types">
                                     <thead>
                                     <tr>
@@ -205,9 +205,9 @@
                                     <?php } ?>
                                     </tbody>
                                 </table>
-                            <?php } ?>
-                            <input name="" type="submit" class="admin-button admin-button-small" value="<?php esc_html_e( 'Save settings', 'action-logger' ); ?>" />
-                        </form>
+                                <input name="" type="submit" class="admin-button admin-button-small" value="<?php esc_html_e( 'Save settings', 'action-logger' ); ?>" />
+                            </form>
+                        <?php } ?>
                 <?php } ?>
 
             </div><!-- end #action-logger -->

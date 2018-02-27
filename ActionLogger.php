@@ -209,12 +209,11 @@
              */
             public function al_set_post_types() {
 
-                $post_type_args       = array(
+                $post_type_args = array(
                     'public'             => true,
                     'publicly_queryable' => true,
                 );
                 $available_post_types = get_post_types( $post_type_args, 'names', 'OR' );
-                unset($available_post_types['attachment']);
                 $post_types           = array();
                 foreach ( $available_post_types as $post_type ) {
                     $post_type_array = array();
@@ -236,13 +235,13 @@
              */
             public function al_store_post_type_actions() {
 
-                $post_type_args       = array(
+                $post_type_args = array(
                     'public'             => true,
                     'publicly_queryable' => true,
                 );
-	            $available_post_types = get_post_types( $post_type_args, 'names', 'OR' );
-	            $stored_post_types    = get_option( 'al_active_post_types' );
-	            $array_diffs          = array_diff( $stored_post_types, $available_post_types );
+                $available_post_types = get_post_types( $post_type_args, 'names', 'OR' );
+                $stored_post_types    = get_option( 'al_active_post_types' );
+                $array_diffs          = array_diff( $stored_post_types, $available_post_types );
 	            if ( count( $array_diffs ) > 0 ) {
 	                // store new post types if there are differences
 		            update_option( 'al_active_post_types', $array_diffs );
