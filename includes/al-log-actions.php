@@ -28,7 +28,6 @@
                         'public'             => true,
                         'publicly_queryable' => true,
                     );
-                    // $available_post_types  = get_post_types( $post_type_args, 'names', 'OR' ); // TODO: remove ?
                     $available_post_types  = apply_filters( 'al_get_post_types', false, false, false );
                     $available_log_actions = get_option( 'al_available_log_actions' );
                     $active_post_types     = get_option( 'al_active_post_types' );
@@ -51,7 +50,6 @@
                                 </thead>
                                 <tbody>
                                     <?php $action_counter = 0; ?>
-                                    <?php //echo '<pre>'; var_dump($available_log_actions); echo '</pre>'; exit; ?>
                                     <?php foreach( $available_log_actions as $action ) { ?>
                                         <?php $action_counter++; ?>
                                         <?php
