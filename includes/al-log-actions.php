@@ -43,7 +43,6 @@
                             <table>
                                 <thead>
                                     <tr>
-                                        <th class="hidden">Action name</th>
                                         <th class="">Action</th>
                                         <th class="">Generator</th>
                                         <th class="">Description</th>
@@ -75,7 +74,6 @@
                                             ?>
 
                                             <tr>
-                                                <td class="hidden"><?php echo $action[ 'action_name' ]; ?></td>
                                                 <td class=""><?php esc_html_e( $action[ 'action_title' ], 'action-logger' ); ?></td>
                                                 <td class=""><?php echo $action[ 'action_generator' ]; ?></td>
                                                 <td class=""><?php esc_html_e( $action[ 'action_description' ], 'action-logger' ); ?></td>
