@@ -781,7 +781,7 @@
             public function al_log_user_change( $user_id, $old_user_data ) {
                 // don't log when a a user edits his own profile
                 if ( $user_id != get_current_user_id() ) {
-                    if ( false != get_option( 'al_wp_user_change' ) ) {
+                    if ( false != get_option( 'al_wp_user_change' ) && get_current_user_id() > 0 ) {
                         $this->al_log_user_action( 'user_changed', 'Action Logger', sprintf( esc_html( __( '%s changed the user of %s.', 'action-logger' ) ), get_userdata( get_current_user_id() )->display_name, get_userdata( $user_id )->display_name ) );
                     }
                 }
