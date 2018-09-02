@@ -141,7 +141,7 @@ This is defined as:
 
 = Can I export my logs to CSV ? =
 
-Yes, check the Misc page.
+Yes, check the Misc page (in the plugin).
 
 = Why are some variables not stored as a value but as a variable ? =
 
