@@ -63,7 +63,7 @@
                 add_action( 'admin_init',                   array( $this, 'al_settings_page_functions' ) );
 
                 add_action( 'admin_init',                   array( $this, 'al_load_includes' ), 1 );
-                add_action( 'admin_init',                   array( $this, 'al_set_default_values' ) );
+                // add_action( 'admin_init',                   array( $this, 'al_set_default_values' ) );
                 add_action( 'admin_init',                   array( $this, 'al_log_user_action' ) );
                 add_action( 'admin_init',                   array( $this, 'al_check_log_table' ) );
 
