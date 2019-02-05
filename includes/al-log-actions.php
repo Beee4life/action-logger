@@ -95,7 +95,7 @@
                                     <?php } ?>
                                 </tbody>
                             </table>
-                            <input name="" type="submit" class="admin-button admin-button-small" value="<?php esc_html_e( 'Save settings', 'action-logger' ); ?>" />
+                            <input type="submit" class="admin-button admin-button-small" value="<?php esc_html_e( 'Save settings', 'action-logger' ); ?>" />
                         </form>
 
                         <?php if ( $available_post_types ) { ?>
@@ -205,7 +205,7 @@
                                     <?php } ?>
                                     </tbody>
                                 </table>
-                                <input name="" type="submit" class="admin-button admin-button-small" value="<?php esc_html_e( 'Save settings', 'action-logger' ); ?>" />
+                                <input type="submit" class="admin-button admin-button-small" value="<?php esc_html_e( 'Save settings', 'action-logger' ); ?>" />
                             </form>
                         <?php } ?>
                 <?php } ?>

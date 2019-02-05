@@ -104,7 +104,7 @@
                         <p>
                             <input name="preserve_settings" id="preserve-settings" type="checkbox" value="1" <?php if ( false != $checked ) { echo 'checked '; } ?>/> <span class="checkbox"><?php esc_html_e( "If you uninstall the plugin, all data and settings are removed as well. If you check this box, your logs and settings won't be deleted upon uninstall.", 'action-logger' ); ?></span>
                         </p>
-                        <input name="" type="submit" class="admin-button admin-button-small" value="<?php esc_html_e( 'Save settings', 'action-logger' ); ?>" />
+                        <input type="submit" class="admin-button admin-button-small" value="<?php esc_html_e( 'Save settings', 'action-logger' ); ?>" />
                     </form>
                 </div>
 

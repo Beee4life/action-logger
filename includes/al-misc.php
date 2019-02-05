@@ -26,7 +26,7 @@
                 <form name="export-form" action="" method="post">
                     <input name="export_csv" type="hidden" value="1" />
                     <input name="export_csv_nonce" type="hidden" value="<?php echo wp_create_nonce( 'export-csv-nonce' ); ?>"/>
-                    <input name="" type="submit" class="admin-button admin-button-small" value="<?php esc_html_e( 'Export to CSV', 'action-logger' ); ?>"/>
+                    <input type="submit" class="admin-button admin-button-small" value="<?php esc_html_e( 'Export to CSV', 'action-logger' ); ?>"/>
                 </form>
 
                 <h2><?php esc_html_e( 'Support', 'action-logger' ); ?></h2>
