@@ -39,11 +39,13 @@ Yes. This can be done on the settings page.
 * user registration
 * user change
 * user delete
-* post published
-* post changed
-* post deleted
-* post/page visitor visit (through shortcode)
-* post/page registered user visit (through shortcode)
+* post/page visit (through a shortcode)
+* post published (every post type)
+* post changed (every post type)
+* post deleted (every post type)
+* post set to 'pending review' (every post type)
+* plugin activated
+* plugin deactivated
 
 = Can I use this plugin to track visit to special pages like registration confirmations or so ? =
 
