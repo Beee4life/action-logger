@@ -42,10 +42,10 @@
                             <table>
                                 <thead>
                                     <tr>
-                                        <th class="">Action</th>
-                                        <th class="">Generator</th>
-                                        <th class="">Description</th>
-                                        <th class="checkbox">Active</th>
+                                        <th class=""><?php esc_html_e( 'Action', 'action-logger' ); ?></th>
+                                        <th class=""><?php esc_html_e( 'Generator', 'action-logger' ); ?></th>
+                                        <th class=""><?php esc_html_e( 'Description', 'action-logger' ); ?></th>
+                                        <th class="checkbox"><?php esc_html_e( 'Active', 'action-logger' ); ?></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -190,6 +190,7 @@
 
                                             <td class="hidden checkbox">
                                                 <?php
+                                                    // @TODO: look into this
                                                     $checked    = false;
                                                     if ( true == $key_exists ) {
                                                         $in_array = in_array( 'republish', $active_post_types[$post_type] );
