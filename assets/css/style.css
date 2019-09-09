@@ -7,19 +7,16 @@
     display: none;
 }
 
-#action-logger {
-}
-
 #action-logger p {
     max-width: 60%;
 }
 
 #action-logger table {
-    max-width:       100%;
     border-collapse: collapse;
     border-style:    hidden;
     border-spacing:  0;
     margin-bottom:   2em;
+    max-width:       100%;
 }
 
 #action-logger table th,
