@@ -77,7 +77,7 @@
                 add_action( 'activated_plugin',             array( $this, 'al_log_plugin_activation' ), 10, 2 );
                 add_action( 'deactivated_plugin',           array( $this, 'al_log_plugin_deactivation' ), 10, 2 );
     
-                // EM actions
+                // EM actions (test)
                 // add_action( 'em_bookings_deleted',          array( $this, 'al_log_registration_delete' ), 10, 2 );
                 // add_action( 'em_booking_save',              array( $this, 'al_log_registration_change' ), 10, 2 );
     
@@ -421,7 +421,7 @@
                             // see http://www.php.net/manual/en/wrappers.php.php#refsect2-wrappers.php-unknown-unknown-unknown-descriptioq
                             $f = fopen( 'php://output', 'w' );
 
-                            // fputcsv( $f, $csv_header, $delimiter );
+                            fputcsv( $f, $csv_header, $delimiter );
 
                             foreach ( $csv_array as $line ) {
                                 fputcsv( $f, $line, $delimiter );
