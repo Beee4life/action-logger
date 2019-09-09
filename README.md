@@ -19,10 +19,12 @@ This plugin gives you the option to log various (user) actions on your website. 
 * post changed (every post type)
 * post deleted (every post type)
 * post set to 'pending review' (every post type)
+* plugin activated
+* plugin deactivated
 
 ## Impact
 
-The overall impact is minimal.
+The overall impact is minimal. This plugin only 'watches' and doesn't interfere with any Wordpress actions.
 
 * Upon activation a new database table named `{your table prefix}_action_logs` is created.
 * Upon activation a handful of default settings (true/false) are stored in the database which was just created.
@@ -60,7 +62,7 @@ Both options are explained in the F.A.Q.
 
 Yes. This can be done on the settings page.
 
-= Which plugins/actions are default included in the plugin =
+= Which actions are included in the plugin =
 
 ### WP core
 * user registration
@@ -71,6 +73,8 @@ Yes. This can be done on the settings page.
 * post deleted
 * post/page visitor visit (through shortcode)
 * post/page registered user visit (through shortcode)
+* plugin activated
+* plugin deactivated
 
 = Can I use this plugin to track visit to posts/pages like registration confirmations or so ? =
 
@@ -158,4 +162,4 @@ The values are 'generated' upon display/export. This way you always see the curr
 
 ### Misc
 
-If you're a plugin author and you would like to see your hooks logged in this plugin, please contact me @ http://berryplasman.com.  
+If you're a plugin author and you would like to see your hooks logged in this plugin, please contact me @ https://berryplasman.com.  
