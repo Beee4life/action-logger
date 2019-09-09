@@ -163,3 +163,19 @@ The values are 'generated' upon display/export. This way you always see the curr
 ### Misc
 
 If you're a plugin author and you would like to see your hooks logged in this plugin, please contact me @ https://berryplasman.com.  
+
+### Todo
+* [X] - Add shortcode to track thank you pages and other status pages
+* [X] - Add panel to select what to track
+* [X] - Add WP errors
+* [X] - Add option to select which user roles can see the logger
+* [ ] - Add pagination in overview
+* [ ] - Add filters in overview to filter certain actions/generators
+* [ ] - Add option to 'keep logs for X days'
+* [ ] - Add auto-purge logs after x days
+* [ ] - Add EM registration approve
+* [ ] - Add EM hooks
+* [ ] - Add S2Member hooks
+* [ ] - Add WooCommerce hooks
+* [ ] - Add BuddyPress hooks
+* [ ] - Add WP4MC hooks
