@@ -6,12 +6,12 @@
     Plugin URI: https://github.com/Beee4life/action-logger
     Description: This plugin logs several actions which are interesting to log, to know who did what, such as creating/deleting/promoting users.
     Author: Beee
-    Author URI: http://berryplasman.com
+    Author URI: https://berryplasman.com
     Text-domain: action-logger
     Domain Path: /languages
     License: GPL v2
 
-    http://www.berryplasman.com
+    https://www.berryplasman.com
        ___  ____ ____ ____
       / _ )/ __/  __/  __/
      / _  / _/   _/   _/
@@ -38,7 +38,7 @@
                 // vars
                 $this->settings = array(
                     'path'    => trailingslashit( dirname( __FILE__ ) ),
-                    'version' => '1.0.0',
+                    'version' => '0.1 beta',
                 );
 
                 // (de)activation hooks
@@ -63,7 +63,6 @@
                 add_action( 'admin_init',                   array( $this, 'al_settings_page_functions' ) );
 
                 add_action( 'admin_init',                   array( $this, 'al_load_includes' ), 1 );
-                // add_action( 'admin_init',                   array( $this, 'al_set_default_values' ) );
                 add_action( 'admin_init',                   array( $this, 'al_log_user_action' ) );
                 add_action( 'admin_init',                   array( $this, 'al_check_log_table' ) );
 
@@ -75,33 +74,24 @@
                 add_action( 'profile_update',               array( $this, 'al_log_user_change' ), 10, 2 );
                 add_action( 'delete_user',                  array( $this, 'al_log_user_delete' ), 10, 1 );
                 add_action( 'transition_post_status',       array( $this, 'al_post_status_transitions'), 10, 3 );
-
+                add_action( 'activated_plugin',             array( $this, 'al_log_plugin_activation' ), 10, 2 );
+                add_action( 'deactivated_plugin',           array( $this, 'al_log_plugin_deactivation' ), 10, 2 );
+    
                 // EM actions
                 // add_action( 'em_bookings_deleted',          array( $this, 'al_log_registration_delete' ), 10, 2 );
                 // add_action( 'em_booking_save',              array( $this, 'al_log_registration_change' ), 10, 2 );
-
+    
                 // CSV Importer actions
-                // add_action( 'csv2wp_successful_csv_upload',   array( $this, 'al_csvi_file_upload' ) );
-                // add_action( 'csv2wp_successful_csv_validate', array( $this, 'al_csvi_file_validate' ) );
-                // add_action( 'csv2wp_successful_csv_import',   array( $this, 'al_csvi_file_import' ) );
-
-                // Rankings Importer actions
-                // add_action( 'ri_all_data_nuked',            array( $this, 'al_ri_all_nuked' ) );
-                // add_action( 'ri_delete_user_rankings',      array( $this, 'al_ri_user_rankings_delete' ) );
-                // add_action( 'ri_import_raw',                array( $this, 'al_ri_import_raw_data' ) );
-                // add_action( 'ri_verify_csv',                array( $this, 'al_ri_verify_csv' ) );
-                // add_action( 'ri_rankings_imported',         array( $this, 'al_ri_rankings_imported' ) );
-                // add_action( 'ri_csv_file_upload',           array( $this, 'al_ri_csv_uploaded' ) );
-
+                add_action( 'csv2wp_successful_csv_upload',   array( $this, 'al_csvi_file_upload' ) );
+                add_action( 'csv2wp_successful_csv_validate', array( $this, 'al_csvi_file_validate' ) );
+                add_action( 'csv2wp_successful_csv_import',   array( $this, 'al_csvi_file_import' ) );
+    
                 include( 'includes/al-crons.php' );
                 include( 'includes/al-functions.php' );
 
+                // @TODO: look into this
                 // $this->al_store_post_type_actions();
-                // $this->test_this();
 
-            }
-
-            public function test_this() {
             }
 
             /**
@@ -160,7 +150,7 @@
                 global $wpdb;
                 ?>
                 CREATE TABLE <?php echo $wpdb->prefix; ?>action_logs (
-                    id int(6) unsigned NOT NULL auto_increment,
+                    id int(8) unsigned NOT NULL auto_increment,
                     action_time int(14) unsigned NOT NULL,
                     action_user int(6) unsigned NOT NULL,
                     action varchar(50) NULL,
@@ -189,7 +179,6 @@
             public function al_set_default_values() {
 
                 $available_options = get_option( 'al_available_log_actions' );
-                // $available_options = false;
                 if ( false == $available_options ) {
 
                     $all_options = get_available_actions();
@@ -309,8 +298,11 @@
                     }
                 }
             }
-
-
+    
+    
+            /**
+             * ??
+             */
             public function al_store_post_types() {
 
                 if ( isset( $_POST[ 'post_types_nonce' ] ) ) {
@@ -593,7 +585,7 @@
             /**
              * Add screen options
              *
-             * @return bool
+             * @return bool|void
              */
             public function al_add_screen_options() {
 
@@ -617,9 +609,16 @@
                         'option'  => 'al_ppp'
                     )
                 );
+                
+                return;
 
             }
-
+    
+            /**
+             * Admin menu
+             *
+             * @return bool|string
+             */
             public static function al_admin_menu() {
 
                 $string = false;
@@ -758,7 +757,25 @@
                     }
                 }
             }
-
+    
+            public function al_log_plugin_activation( $plugin, $network_activation ) {
+                $path          = explode( '/', $plugin );
+                $plugin_folder = $path[ 0 ];
+                $user_data     = get_userdata( get_current_user_id() );
+                $user_name     = $user_data->display_name;
+    
+                $this->al_log_user_action( 'plugin_activated', 'Action Logger', sprintf( esc_html( __( '%s activated the plugin %s', 'action-logger' ) ), $user_name, $plugin_folder ) );
+                
+            }
+            
+            public function al_log_plugin_deactivation( $plugin, $network_activation ) {
+                $path          = explode( '/', $plugin );
+                $plugin_folder = $path[ 0 ];
+                $user_data     = get_userdata( get_current_user_id() );
+                $user_name     = $user_data->display_name;
+    
+                $this->al_log_user_action( 'plugin_deactivated', 'Action Logger', sprintf( esc_html( __( '%s deactivated the plugin %s', 'action-logger' ) ), $user_name, $plugin_folder ) );
+            }
 
             /**
              * Log user creation
@@ -909,48 +926,6 @@
                 $user_name = get_userdata( get_current_user_id() )->display_name;
                 if ( class_exists( 'CSV_WP' ) && false != get_option( 'al_csvi_file_imported' ) ) {
                     $this->al_log_user_action( 'csv_imported', 'Action Logger', sprintf( esc_html( __( '%s successfully imported %d lines from file.', 'action-logger' ) ), $user_name, $line_number ) );
-                }
-            }
-
-            public function al_ri_all_nuked() {
-                if ( false != get_option( 'al_ri_data_nuked' ) ) {
-                    $user = get_userdata( get_current_user_id() )->display_name;
-                    $this->al_log_user_action( 'nuke_all', 'Rankings Importer', sprintf( esc_html__( '%s nuked all rankings.', 'action-logger' ), $user ) );
-                }
-            }
-
-            public function al_ri_user_rankings_delete( $user_id, $count ) {
-                if ( false != get_option( 'al_ri_rankings_deleted' ) ) {
-                    $user = get_userdata( get_current_user_id() )->display_name;
-                    $this->al_log_user_action( 'individual_ranking_deleted', 'Rankings Importer', sprintf( esc_html__( '%s deleted %d individual rankings for %s.', 'action-logger' ), $user, $count, $user_id ) );
-                }
-            }
-
-            public function al_ri_import_raw_data( $count ) {
-                if ( false != get_option( 'al_ri_import_raw' ) ) {
-                    $user = get_userdata( get_current_user_id() )->display_name;
-                    $this->al_log_user_action( 'import_raw', 'Rankings Importer', $user . ' uploaded ' . $count . ' lines through raw import' );
-                }
-            }
-
-            public function al_ri_verify_csv() {
-                if ( false != get_option( 'al_ri_data_verified' ) ) {
-                    $user = get_userdata( get_current_user_id() )->display_name;
-                    $this->al_log_user_action( 'upload_rankings_csv', 'Rankings Importer', sprintf( esc_html( __( '%s successfully verified %s.', 'action-logger' ) ), $user, $_POST[ 'file_name' ][0] ) );
-                }
-            }
-
-            public function al_ri_rankings_imported( $line_number = false ) {
-                if ( false != get_option( 'al_ri_rankings_imported' ) ) {
-                    $user = get_userdata( get_current_user_id() )->display_name;
-                    $this->al_log_user_action( 'rankings_imported', 'Rankings Importer', sprintf( esc_html( __( '%s successfully imported %d lines from file.', 'action-logger' ) ), $user, $line_number ) );
-                }
-            }
-
-            public function al_ri_csv_uploaded() {
-                if ( false != get_option( 'al_ri_file_uploaded' ) ) {
-                    $user = get_userdata( get_current_user_id() )->display_name;
-                    $this->al_log_user_action( 'upload_rankings_csv', 'Rankings Importer', sprintf( esc_html( __( '%s successfully uploaded the file: "%s".', 'action-logger' ) ), $user, $_FILES[ 'csv_upload' ][ 'name' ] ) );
                 }
             }
 
