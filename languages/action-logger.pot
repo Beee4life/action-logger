@@ -2,149 +2,144 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Action Logger 1.0\n"
-"POT-Creation-Date: 2018-01-19 20:59+0100\n"
+"POT-Creation-Date: 2019-09-10 00:06+0200\n"
 "PO-Revision-Date: 2017-09-10 03:44+0200\n"
 "Last-Translator: Beee\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.0.6\n"
+"X-Generator: Poedit 2.2.3\n"
 "X-Poedit-Basepath: ..\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "Language: en\n"
 "X-Poedit-KeywordsList: __;_e;_x;_ex;_n:1,2;esc_attr__;esc_attr_e;esc_html__;esc_html_e\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: ActionLogger.php:135 ActionLogger.php:654
+#: ActionLogger.php:125 ActionLogger.php:628
 msgid "Settings"
 msgstr ""
 
-#: ActionLogger.php:315 ActionLogger.php:343 ActionLogger.php:380
-#: ActionLogger.php:398 ActionLogger.php:416 ActionLogger.php:472
-#: ActionLogger.php:496 ActionLogger.php:538 ActionLogger.php:577
+#: ActionLogger.php:279 ActionLogger.php:310 ActionLogger.php:347
+#: ActionLogger.php:365 ActionLogger.php:383 ActionLogger.php:439
+#: ActionLogger.php:463 ActionLogger.php:505 ActionLogger.php:544
 msgid "Something went wrong. Please try again."
 msgstr ""
 
-#: ActionLogger.php:332 ActionLogger.php:388 ActionLogger.php:406
-#: ActionLogger.php:483
+#: ActionLogger.php:296 ActionLogger.php:355 ActionLogger.php:373
+#: ActionLogger.php:450
 msgid "Settings saved."
 msgstr ""
 
-#: ActionLogger.php:364
+#: ActionLogger.php:331
 msgid "Post type options saved."
 msgstr ""
 
-#: ActionLogger.php:504 ActionLogger.php:546
+#: ActionLogger.php:471 ActionLogger.php:513
 msgid "All logs deleted."
 msgstr ""
 
-#: ActionLogger.php:517
+#: ActionLogger.php:484
 msgid "All selected items are successfully deleted from the database."
 msgstr ""
 
-#: ActionLogger.php:522
+#: ActionLogger.php:489
 msgid "You didn't select any lines. If you did, then something went wrong."
 msgstr ""
 
-#: ActionLogger.php:601
+#: ActionLogger.php:568
 msgid "All settings are reset to default settings."
 msgstr ""
 
-#: ActionLogger.php:640
+#: ActionLogger.php:607
 #, php-format
 msgid "Log entries (%d max)"
 msgstr ""
 
-#: ActionLogger.php:654
+#: ActionLogger.php:628
 msgid "Logs"
 msgstr ""
 
-#: ActionLogger.php:654 includes/al-help-tabs.php:35
+#: ActionLogger.php:628 includes/al-help-tabs.php:35
 msgid "Log actions"
 msgstr ""
 
-#: ActionLogger.php:655
+#: ActionLogger.php:629
 msgid "Misc"
 msgstr ""
 
-#: ActionLogger.php:770
+#: ActionLogger.php:744
 #, php-format
 msgid "%s deleted %s %s"
 msgstr ""
 
-#: ActionLogger.php:773
+#: ActionLogger.php:747
 #, php-format
 msgid "%s changed %s %s"
 msgstr ""
 
-#: ActionLogger.php:775
+#: ActionLogger.php:749
 #, php-format
 msgid "%s marked %s %s as pending review"
 msgstr ""
 
-#: ActionLogger.php:779
+#: ActionLogger.php:753
 #, php-format
 msgid "%s republished %s %s"
 msgstr ""
 
-#: ActionLogger.php:781
+#: ActionLogger.php:755
 #, php-format
 msgid "%s published %s %s"
 msgstr ""
 
-#: ActionLogger.php:795
+#: ActionLogger.php:767
+#, php-format
+msgid "%s activated the plugin %s"
+msgstr ""
+
+#: ActionLogger.php:777
+#, php-format
+msgid "%s deactivated the plugin %s"
+msgstr ""
+
+#: ActionLogger.php:787
 #, php-format
 msgid "New user registered: %s."
 msgstr ""
 
-#: ActionLogger.php:810
+#: ActionLogger.php:802
 #, php-format
 msgid "%s changed the user of %s."
 msgstr ""
 
-#: ActionLogger.php:823
+#: ActionLogger.php:815
 #, php-format
 msgid "%s deleted the user of %s."
 msgstr ""
 
-#: ActionLogger.php:888
+#: ActionLogger.php:880
 msgid "the booking with booking ID:"
 msgstr ""
 
-#: ActionLogger.php:901
+#: ActionLogger.php:893
 #, php-format
 msgid "%s deleted bookings for an event."
 msgstr ""
 
-#: ActionLogger.php:914 ActionLogger.php:978
+#: ActionLogger.php:906
 #, php-format
 msgid "%s successfully uploaded the file: \"%s\"."
 msgstr ""
 
-#: ActionLogger.php:925
+#: ActionLogger.php:917
 #, php-format
 msgid "%s successfully validated the file: \"%s\"."
 msgstr ""
 
-#: ActionLogger.php:936 ActionLogger.php:971
+#: ActionLogger.php:928
 #, php-format
 msgid "%s successfully imported %d lines from file."
-msgstr ""
-
-#: ActionLogger.php:943
-#, php-format
-msgid "%s nuked all rankings."
-msgstr ""
-
-#: ActionLogger.php:950
-#, php-format
-msgid "%s deleted %d individual rankings for %s."
-msgstr ""
-
-#: ActionLogger.php:964
-#, php-format
-msgid "%s successfully verified %s."
 msgstr ""
 
 #: includes/al-dashboard.php:9 includes/al-log-actions.php:9
@@ -172,7 +167,7 @@ msgid "Log items are sorted, newest to oldest."
 msgstr ""
 
 #: includes/al-dashboard.php:78 includes/al-dashboard.php:94
-#: includes/al-log-actions.php:176
+#: includes/al-log-actions.php:173
 msgid "Delete"
 msgstr ""
 
@@ -432,29 +427,29 @@ msgstr ""
 msgid "Here you can select which actions you want to log/ignore."
 msgstr ""
 
-#: includes/al-log-actions.php:92 includes/al-log-actions.php:134
+#: includes/al-log-actions.php:89 includes/al-log-actions.php:131
 msgid "Active"
 msgstr ""
 
-#: includes/al-log-actions.php:101 includes/al-log-actions.php:212
+#: includes/al-log-actions.php:98 includes/al-log-actions.php:208
 #: includes/al-settings.php:71 includes/al-settings.php:95
 #: includes/al-settings.php:107
 msgid "Save settings"
 msgstr ""
 
-#: includes/al-log-actions.php:148
+#: includes/al-log-actions.php:145
 msgid "Publish"
 msgstr ""
 
-#: includes/al-log-actions.php:162
+#: includes/al-log-actions.php:159
 msgid "Edit"
 msgstr ""
 
-#: includes/al-log-actions.php:190
+#: includes/al-log-actions.php:187
 msgid "Pending"
 msgstr ""
 
-#: includes/al-log-actions.php:204
+#: includes/al-log-actions.php:201
 msgid "Republish"
 msgstr ""
 
