@@ -125,7 +125,7 @@
                 $add_this = array(
                     '<a href="' . admin_url( 'admin.php?page=al-settings' ) . '">' . esc_html__( 'Settings', 'action-logger' ) . '</a>',
                 );
-                return array_merge( $add_this, $links );
+                return array_merge( $links, $add_this );
             }
 
             /**
