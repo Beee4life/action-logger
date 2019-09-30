@@ -1,7 +1,7 @@
 <?php
     /*
     Plugin Name: Action Logger
-    Version: 0.1 beta
+    Version: 0.1-beta
     Tags: log
     Plugin URI: https://github.com/Beee4life/action-logger
     Description: This plugin logs several actions which are interesting to log, to know who did what, such as creating/deleting/promoting users.
@@ -38,7 +38,7 @@
                 // vars
                 $this->settings = array(
                     'path'    => trailingslashit( dirname( __FILE__ ) ),
-                    'version' => '0.1 beta',
+                    'version' => '0.1-beta',
                 );
 
                 // (de)activation hooks
@@ -55,8 +55,7 @@
                 add_action( 'admin_menu',                   array( $this, 'al_add_admin_pages' ) );
                 add_action( 'admin_init',                   array( $this, 'al_admin_menu' ) );
 
-                add_action( 'admin_init',                   array( $this, 'al_delete_selected_items' ) );
-                add_action( 'admin_init',                   array( $this, 'al_delete_all_logs' ) );
+                add_action( 'admin_init',                   array( $this, 'al_delete_items' ) );
                 add_action( 'admin_init',                   array( $this, 'al_reset_all' ) );
                 add_action( 'admin_init',                   array( $this, 'al_log_actions_functions' ) );
                 add_action( 'admin_init',                   array( $this, 'al_store_post_types' ) );
@@ -276,8 +275,8 @@
              */
             public function al_log_actions_functions() {
 
-                if ( isset( $_POST[ 'active_logs_nonce' ] ) ) {
-                    if ( ! wp_verify_nonce( $_POST[ 'active_logs_nonce' ], 'active-logs-nonce' ) ) {
+                if ( isset( $_POST[ 'al_active_logs_nonce' ] ) ) {
+                    if ( ! wp_verify_nonce( $_POST[ 'al_active_logs_nonce' ], 'al-active-logs-nonce' ) ) {
                         al_errors()->add( 'error_nonce_no_match', esc_html( __( 'Something went wrong. Please try again.', 'action-logger' ) ) );
 
                         return;
@@ -307,14 +306,14 @@
              */
             public function al_store_post_types() {
 
-                if ( isset( $_POST[ 'post_types_nonce' ] ) ) {
-                    if ( ! wp_verify_nonce( $_POST[ 'post_types_nonce' ], 'post-types-nonce' ) ) {
+                if ( isset( $_POST[ 'al_post_types_nonce' ] ) ) {
+                    if ( ! wp_verify_nonce( $_POST[ 'al_post_types_nonce' ], 'al-post-types-nonce' ) ) {
                         al_errors()->add( 'error_nonce_no_match', esc_html( __( 'Something went wrong. Please try again.', 'action-logger' ) ) );
 
                         return;
                     } else {
 
-                        $submitted_post_types = $_POST['post_types'];
+                        $submitted_post_types = $_POST['al_post_types'];
 
                         if ( $submitted_post_types ) {
                             foreach( $submitted_post_types as $post_type => $actions ) {
@@ -344,15 +343,15 @@
                 /**
                  * Update who can manage
                  */
-                if ( isset( $_POST[ 'purge_logs_nonce' ] ) ) {
-                    if ( ! wp_verify_nonce( $_POST[ 'purge_logs_nonce' ], 'purge-logs-nonce' ) ) {
+                if ( isset( $_POST[ 'al_purge_logs_nonce' ] ) ) {
+                    if ( ! wp_verify_nonce( $_POST[ 'al_purge_logs_nonce' ], 'al-purge-logs-nonce' ) ) {
                         al_errors()->add( 'error_nonce_no_match', esc_html( __( 'Something went wrong. Please try again.', 'action-logger' ) ) );
 
                         return;
                     } else {
 
-                        if ( isset( $_POST[ 'purge_logs' ] ) ) {
-                            update_option( 'al_purge_logs', $_POST[ 'purge_logs' ] );
+                        if ( isset( $_POST[ 'al_purge_logs' ] ) ) {
+                            update_option( 'al_purge_logs', $_POST[ 'al_purge_logs' ] );
                         }
                         al_errors()->add( 'success_settings_saved', esc_html( __( 'Settings saved.', 'action-logger' ) ) );
 
@@ -362,15 +361,15 @@
                 /**
                  * Update who can manage
                  */
-                if ( isset( $_POST[ 'settings_page_nonce' ] ) ) {
-                    if ( ! wp_verify_nonce( $_POST[ 'settings_page_nonce' ], 'settings-page-nonce' ) ) {
+                if ( isset( $_POST[ 'al_settings_page_nonce' ] ) ) {
+                    if ( ! wp_verify_nonce( $_POST[ 'al_settings_page_nonce' ], 'al-    settings-page-nonce' ) ) {
                         al_errors()->add( 'error_nonce_no_match', esc_html( __( 'Something went wrong. Please try again.', 'action-logger' ) ) );
 
                         return;
                     } else {
 
-                        if ( isset( $_POST[ 'select_cap' ] ) ) {
-                            update_option( 'al_log_user_role', $_POST[ 'select_cap' ] );
+                        if ( isset( $_POST[ 'al_select_cap' ] ) ) {
+                            update_option( 'al_log_user_role', $_POST[ 'al_select_cap' ] );
                         }
                         al_errors()->add( 'success_settings_saved', esc_html( __( 'Settings saved.', 'action-logger' ) ) );
 
@@ -380,8 +379,8 @@
                 /**
                  * Export data to CSV
                  */
-                if ( isset( $_POST[ 'export_csv_nonce' ] ) ) {
-                    if ( ! wp_verify_nonce( $_POST[ 'export_csv_nonce' ], 'export-csv-nonce' ) ) {
+                if ( isset( $_POST[ 'al_export_csv_nonce' ] ) ) {
+                    if ( ! wp_verify_nonce( $_POST[ 'al_export_csv_nonce' ], 'al-export-csv-nonce' ) ) {
                         al_errors()->add( 'error_nonce_no_match', esc_html( __( 'Something went wrong. Please try again.', 'action-logger' ) ) );
 
                         return;
@@ -399,7 +398,7 @@
                             foreach( $items as $item ) {
                                 // make array from object
                                 $array_item = (array) $item;
-                                $array_item[ 'action_description' ] = al_replace_log_vars( $array_item[ 'action_description' ], $array_item[ 'post_id' ] );
+                                $array_item[ 'action_description' ] = al_replace_log_vars( get_current_user_id(), $array_item[ 'action_description' ], $array_item[ 'post_id' ] );
                                 $csv_array[] = $array_item;
                             }
 
@@ -421,12 +420,14 @@
 
                             // open the "output" stream
                             // see http://www.php.net/manual/en/wrappers.php.php#refsect2-wrappers.php-unknown-unknown-unknown-descriptioq
-                            $f = fopen( 'php://output', 'w' );
+                            $file_contents = fopen( 'php://output', 'w' );
 
-                            fputcsv( $f, $csv_header, $delimiter );
-
+                            // write header row
+                            fputcsv( $file_contents, $csv_header, $delimiter );
+    
+                            // write rows
                             foreach ( $csv_array as $line ) {
-                                fputcsv( $f, $line, $delimiter );
+                                fputcsv( $file_contents, $line, $delimiter );
                             }
                             exit;
                         }
@@ -436,14 +437,14 @@
                 /**
                  * Preserve settings
                  */
-                if ( isset( $_POST[ 'preserve_settings_nonce' ] ) ) {
-                    if ( ! wp_verify_nonce( $_POST[ 'preserve_settings_nonce' ], 'preserve-settings-nonce' ) ) {
+                if ( isset( $_POST[ 'al_preserve_settings_nonce' ] ) ) {
+                    if ( ! wp_verify_nonce( $_POST[ 'al_preserve_settings_nonce' ], 'al-preserve-settings-nonce' ) ) {
                         al_errors()->add( 'error_nonce_no_match', esc_html( __( 'Something went wrong. Please try again.', 'action-logger' ) ) );
 
                         return;
                     } else {
 
-                        $preserve_settings = isset( $_POST[ 'preserve_settings' ] ) ? $_POST[ 'preserve_settings' ] : false;
+                        $preserve_settings = isset( $_POST[ 'al_preserve_settings' ] ) ? $_POST[ 'al_preserve_settings' ] : false;
                         if ( true == $preserve_settings ) {
                             update_option( 'al_preserve_settings', 1 );
                         } elseif ( false == $preserve_settings ) {
@@ -458,28 +459,28 @@
             /**
              * Function for the overview page.
              */
-            public function al_delete_selected_items() {
+            public function al_delete_items() {
 
-                if ( isset( $_POST[ 'delete_action_items_nonce' ] ) ) {
-                    if ( ! wp_verify_nonce( $_POST[ 'delete_action_items_nonce' ], 'delete-actions-items-nonce' ) ) {
+                if ( isset( $_POST[ 'al_delete_action_items_nonce' ] ) ) {
+                    if ( ! wp_verify_nonce( $_POST[ 'al_delete_action_items_nonce' ], 'al-delete-actions-items-nonce' ) ) {
                         al_errors()->add( 'error_nonce_no_match', esc_html( __( 'Something went wrong. Please try again.', 'action-logger' ) ) );
 
                         return;
                     } else {
 
                         // delete all
-                        if ( isset( $_POST['delete_all'] ) ) {
+                        if ( isset( $_POST[ 'al_delete_all' ] ) ) {
                             $this->al_truncate_log_table( true );
                             al_errors()->add( 'success_logs_deleted', esc_html( __( 'All logs deleted.', 'action-logger' ) ) );
 
                             return;
-                        } elseif ( isset( $_POST['rows'] ) ) {
+                        } elseif ( isset( $_POST[ 'rows' ] ) ) {
 
                             // delete rows
-                            if ( $_POST['rows'] ) {
+                            if ( $_POST[ 'rows' ] ) {
                                 $where = array();
                                 global $wpdb;
-                                foreach ( $_POST['rows'] as $row_id ) {
+                                foreach ( $_POST[ 'rows' ] as $row_id ) {
                                     $wpdb->delete( $wpdb->prefix . 'action_logs', array( 'ID' => $row_id ) );
                                 }
 
@@ -489,30 +490,6 @@
                             }
                         } else {
                             al_errors()->add( 'error_no_selection', esc_html( __( 'You didn\'t select any lines. If you did, then something went wrong.', 'action-logger' ) ) );
-
-                            return;
-                        }
-                    }
-                }
-            }
-
-
-            /**
-             * Delete all logs (truncate the table)
-             */
-            public function al_delete_all_logs() {
-
-                if ( isset( $_POST[ 'delete_all_logs_nonce' ] ) ) {
-                    if ( ! wp_verify_nonce( $_POST[ 'delete_all_logs_nonce' ], 'delete-all-logs-nonce' ) ) {
-                        al_errors()->add( 'error_nonce_no_match', esc_html( __( 'Something went wrong. Please try again.', 'action-logger' ) ) );
-
-                        return;
-                    } else {
-
-                        if ( isset( $_POST[ 'delete_all' ] ) ) {
-                            // truncate table
-                            $this->al_truncate_log_table( true );
-                            al_errors()->add( 'success_logs_deleted', esc_html( __( 'All logs deleted.', 'action-logger' ) ) );
 
                             return;
                         }
@@ -541,14 +518,14 @@
              */
             public function al_reset_all() {
 
-                if ( isset( $_POST[ 'reset_all_nonce' ] ) ) {
-                    if ( ! wp_verify_nonce( $_POST[ 'reset_all_nonce' ], 'reset-all-nonce' ) ) {
+                if ( isset( $_POST[ 'al_reset_all_nonce' ] ) ) {
+                    if ( ! wp_verify_nonce( $_POST[ 'al_reset_all_nonce' ], 'al-reset-all-nonce' ) ) {
                         al_errors()->add( 'error_nonce_no_match', esc_html( __( 'Something went wrong. Please try again.', 'action-logger' ) ) );
 
                         return;
                     } else {
 
-                        if ( isset( $_POST[ 'reset_all' ] ) ) {
+                        if ( isset( $_POST[ 'al_reset_all' ] ) ) {
 
                             global $wpdb;
                             $wpdb->query( "DROP TABLE {$wpdb->prefix}action_logs" );

@@ -17,9 +17,9 @@
         foreach ( $options as $key => $value ) {
             $actions[] = $value['action_name'];
         }
-        $actions[] = 'available_log_actions';
-        $actions[] = 'log_user_role';
-        $actions[] = 'posts_per_page';
+        $actions[] = 'al_available_log_actions';
+        $actions[] = 'al_log_user_role';
+        $actions[] = 'al_posts_per_page';
         foreach ( $actions as $action ) {
             delete_option( 'al_' . $action );
         }

@@ -24,7 +24,7 @@
                 'id'      => 'logs-overview',
                 'title'   => esc_html__( 'Dashboard', 'action-logger' ),
                 'content' => '<h5>All log entries</h5><p>' . esc_html__( 'This page will show all your logged entries.', 'action-logger' ) . '</p>' .
-                    '<p>' . esc_html__( 'You can select individual logs by checking the checkbox and click "Delete selected items".', 'action-logger' ) . '</p>'
+                    '<p>' . esc_html__( 'You can delete individual logs by checking the checkbox and click "Delete selected items" or delete them all at once.', 'action-logger' ) . '</p>'
             ) );
 
         }
@@ -44,16 +44,16 @@
                 'title'   => esc_html__( 'Log settings', 'action-logger' ),
                 'content' => '<h4>Log sttings</h4><p>' . esc_html__( 'On this page you can:', 'action-logger' ) . '</p>' .
                 '<ul>
+                    <li>' . esc_html__( 'select how long to keep the logs', 'action-logger' ) . '</li>
                     <li>' . esc_html__( 'select who can see the logs', 'action-logger' ) . '</li>
                     <li>' . esc_html__( 'select to preserve the data when uninstalling', 'action-logger' ) . '</li>
-                    <li>' . esc_html__( 'delete all logs', 'action-logger' ) . '</li>
                 </ul>',
             ) );
         }
 
         get_current_screen()->set_help_sidebar(
             '<p><strong>' . esc_html__( 'Author\'s website', 'action-logger' ) . '</strong></p>' .
-            '<p><a href="http://www.berryplasman.com?utm_source=' . $_SERVER[ 'SERVER_NAME' ] . '&utm_medium=plugin_admin&utm_campaign=free_promo">berryplasman.com</a></p>'
+            '<p><a href="https://berryplasman.com?utm_source=' . $_SERVER[ 'SERVER_NAME' ] . '&utm_medium=plugin_admin&utm_campaign=free_promo">berryplasman.com</a></p>'
         );
 
         return $old_help;

@@ -38,7 +38,7 @@
                     if ( $available_log_actions ) {
                         ?>
                         <form name="log_actions" id="settings-form" action="" method="post">
-                            <input name="active_logs_nonce" type="hidden" value="<?php echo wp_create_nonce( 'active-logs-nonce' ); ?>"/>
+                            <input name="al_active_logs_nonce" type="hidden" value="<?php echo wp_create_nonce( 'al-active-logs-nonce' ); ?>"/>
                             <table>
                                 <thead>
                                     <tr>
@@ -95,12 +95,12 @@
                                     <?php } ?>
                                 </tbody>
                             </table>
-                            <input type="submit" class="admin-button admin-button-small" value="<?php esc_html_e( 'Save settings', 'action-logger' ); ?>" />
+                            <input type="submit" class="button-primary admin-button-small" value="<?php esc_html_e( 'Save settings', 'action-logger' ); ?>" />
                         </form>
 
                         <?php if ( $available_post_types ) { ?>
                             <form name="post_types" id="post-types-form" action="" method="post">
-                                <input name="post_types_nonce" type="hidden" value="<?php echo wp_create_nonce( 'post-types-nonce' ); ?>"/>
+                                <input name="al_post_types_nonce" type="hidden" value="<?php echo wp_create_nonce( 'al-post-types-nonce' ); ?>"/>
                                 <table class="ai_post_types">
                                     <thead>
                                     <tr>
@@ -110,6 +110,7 @@
                                         <th>Edit</th>
                                         <th>Delete</th>
                                         <th>Pending</th>
+                                        <?php // @TODO: look into this ?>
                                         <!--<th>Republish</th>-->
                                     </tr>
                                     </thead>
@@ -129,7 +130,7 @@
                                                     }
                                                 ?>
                                                 <label for="post-type" class="screen-reader-text"><?php esc_html_e( 'Active', 'action-logger' ); ?></label>
-                                                <input name="post_types[<?php echo $post_type; ?>][]" id="post-type" type="checkbox" value="active" <?php echo $checked; ?>/>
+                                                <input name="al_post_types[<?php echo $post_type; ?>][]" id="post-type" type="checkbox" value="active" <?php echo $checked; ?>/>
                                             </td>
 
                                             <td class="checkbox">
@@ -143,7 +144,7 @@
                                                     }
                                                 ?>
                                                 <label for="post-type" class="screen-reader-text"><?php esc_html_e( 'Publish', 'action-logger' ); ?></label>
-                                                <input name="post_types[<?php echo $post_type; ?>][]" id="post-type" type="checkbox" value="publish" <?php echo $checked; ?>/>
+                                                <input name="al_post_types[<?php echo $post_type; ?>][]" id="post-type" type="checkbox" value="publish" <?php echo $checked; ?>/>
                                             </td>
 
                                             <td class="checkbox">
@@ -157,7 +158,7 @@
                                                     }
                                                 ?>
                                                 <label for="post-type" class="screen-reader-text"><?php esc_html_e( 'Edit', 'action-logger' ); ?></label>
-                                                <input name="post_types[<?php echo $post_type; ?>][]" id="post-type" type="checkbox" value="edit" <?php echo $checked; ?>/>
+                                                <input name="al_post_types[<?php echo $post_type; ?>][]" id="post-type" type="checkbox" value="edit" <?php echo $checked; ?>/>
                                             </td>
 
                                             <td class="checkbox">
@@ -171,7 +172,7 @@
                                                     }
                                                 ?>
                                                 <label for="post-type" class="screen-reader-text"><?php esc_html_e( 'Delete', 'action-logger' ); ?></label>
-                                                <input name="post_types[<?php echo $post_type; ?>][]" id="post-type" type="checkbox" value="delete" <?php echo $checked; ?>/>
+                                                <input name="al_post_types[<?php echo $post_type; ?>][]" id="post-type" type="checkbox" value="delete" <?php echo $checked; ?>/>
                                             </td>
 
                                             <td class="checkbox">
@@ -185,7 +186,7 @@
                                                     }
                                                 ?>
                                                 <label for="post-type" class="screen-reader-text"><?php esc_html_e( 'Pending', 'action-logger' ); ?></label>
-                                                <input name="post_types[<?php echo $post_type; ?>][]" id="post-type" type="checkbox" value="pending" <?php echo $checked; ?>/>
+                                                <input name="al_post_types[<?php echo $post_type; ?>][]" id="post-type" type="checkbox" value="pending" <?php echo $checked; ?>/>
                                             </td>
 
                                             <td class="hidden checkbox">
@@ -200,13 +201,13 @@
                                                     }
                                                 ?>
                                                 <label for="post-type" class="screen-reader-text"><?php esc_html_e( 'Republish', 'action-logger' ); ?></label>
-                                                <input name="post_types[<?php echo $post_type; ?>][]" id="post-type" type="checkbox" value="republish" <?php echo $checked; ?>/>
+                                                <input name="al_post_types[<?php echo $post_type; ?>][]" id="post-type" type="checkbox" value="republish" <?php echo $checked; ?>/>
                                             </td>
                                         </tr>
                                     <?php } ?>
                                     </tbody>
                                 </table>
-                                <input type="submit" class="admin-button admin-button-small" value="<?php esc_html_e( 'Save settings', 'action-logger' ); ?>" />
+                                <input type="submit" class="button-primary admin-button-small" value="<?php esc_html_e( 'Save settings', 'action-logger' ); ?>" />
                             </form>
                         <?php } ?>
                 <?php } ?>

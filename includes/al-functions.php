@@ -154,7 +154,7 @@
             'next_text' => __( 'Next &raquo;', 'action-logger' ),
             'type'      => 'list',
         );
-        $pagination = sprintf( '<div class="paginator">%s</div>', paginate_links( $pagination_args ) );
+        $pagination = sprintf( '<div class="al-paginator">%s</div>', paginate_links( $pagination_args ) );
 
         return $pagination;
 

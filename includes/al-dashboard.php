@@ -70,7 +70,7 @@
                     <?php echo al_get_pagination( $_GET, $pages ); ?>
 
                     <form name="logs-form" action="" method="post">
-                        <input name="delete_action_items_nonce" type="hidden" value="<?php echo wp_create_nonce( 'delete-actions-items-nonce' ); ?>" />
+                        <input name="al_delete_action_items_nonce" type="hidden" value="<?php echo wp_create_nonce( 'al-delete-actions-items-nonce' ); ?>" />
                         <table class="action-logs">
                             <thead>
                             <tr class="row">
@@ -111,8 +111,8 @@
                         </table>
                         <?php echo al_get_pagination( $_GET, $pages ); ?>
                         <?php if ( current_user_can( 'manage_options' ) ) { ?>
-                            <input name="delete_selected" type="submit" class="admin-button admin-button-small" value="<?php esc_html_e( 'Delete selected items', 'action-logger' ); ?>" />
-                            <input name="delete_all" type="submit" class="admin-button admin-button-small" onclick="return confirm( 'Are you sure you want to delete all logs ?' )" value="<?php esc_html_e( 'Delete all', 'action-logger' ); ?>" />
+                            <input name="al_delete_selected" type="submit" class="button-primary admin-button-small" value="<?php esc_html_e( 'Delete selected items', 'action-logger' ); ?>" />
+                            <input name="al_delete_all" type="submit" class="button-primary admin-button-small" onclick="return confirm( 'Are you sure you want to delete all logs ?' )" value="<?php esc_html_e( 'Delete all', 'action-logger' ); ?>" />
                         <?php } ?>
                     </form>
                 
