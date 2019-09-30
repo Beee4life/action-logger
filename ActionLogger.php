@@ -76,7 +76,9 @@
                 add_action( 'transition_post_status',       array( $this, 'al_post_status_transitions'), 10, 3 );
                 add_action( 'activated_plugin',             array( $this, 'al_log_plugin_activation' ), 10, 2 );
                 add_action( 'deactivated_plugin',           array( $this, 'al_log_plugin_deactivation' ), 10, 2 );
-    
+                
+                // @TODO: load plugin at end
+                
                 // EM actions (test)
                 // add_action( 'em_bookings_deleted',          array( $this, 'al_log_registration_delete' ), 10, 2 );
                 // add_action( 'em_booking_save',              array( $this, 'al_log_registration_change' ), 10, 2 );
@@ -181,7 +183,7 @@
                 $available_options = get_option( 'al_available_log_actions' );
                 if ( false == $available_options ) {
 
-                    $all_options = get_available_actions();
+                    $all_options = al_get_available_actions();
                     foreach ( $all_options as $option ) {
                         update_option( 'al_' . $option[ 'action_name' ], $option[ 'default_value' ] );
                     }
