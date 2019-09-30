@@ -895,8 +895,8 @@
             }
 
             /**
-             * Log successful file upload from CSV Importer
-             * Log file upload from CSV Importer
+             * Log successful file upload from CSV to WP
+             * Log file upload from CSV to WP
              *
              * @param $user_id
              */
@@ -908,7 +908,7 @@
             }
 
             /**
-             * Log successful csv validate from CSV Importer
+             * Log successful csv validate from CSV to WP
              * @param $user_id
              */
             public function al_csvi_file_validate( $file_name ) {
@@ -919,7 +919,7 @@
             }
 
             /**
-             * Log successful csv import from CSV Importer
+             * Log successful csv import from CSV to WP
              * @param $user_id
              */
             public function al_csvi_file_import( $line_number ) {
