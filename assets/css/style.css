@@ -15,7 +15,7 @@
     border-collapse: collapse;
     border-style:    hidden;
     border-spacing:  0;
-    margin-bottom:   2em;
+    margin-bottom:   1em;
     max-width:       100%;
 }
 
@@ -25,8 +25,8 @@
 }
 
 #action-logger table th {
-    text-align: left;
-    border-bottom: 1px solid #444444;
+    text-align:     left;
+    border-bottom:  1px solid #444444;
     padding-bottom: 0.5em;
 }
 
@@ -37,12 +37,15 @@
 #action-logger table tbody td.datetime {
     min-width: 130px;
 }
+
 #action-logger table tbody td.action {
     min-width: 100px;
 }
+
 #action-logger table tbody td.generator {
     min-width: 125px;
 }
+
 #action-logger table tbody td.description {
     min-width: 150px;
 }
@@ -50,8 +53,12 @@
 #action-logger table th.checkbox,
 #action-logger table td.checkbox {
     text-align: center;
-    min-width: 50px;
-    max-width: 90px;
+    min-width:  50px;
+    max-width:  90px;
+}
+
+#action-logger table.action-logs {
+    margin-bottom: 2em;
 }
 
 #action-logger table.action-logs a {
@@ -61,9 +68,11 @@
 #action-logger table.ai_post_types th {
     text-align: center;
 }
+
 #action-logger table.ai_post_types th:first-child {
     padding-right: 3em;
 }
+
 #action-logger table.ai_post_types tr td:first-child {
     padding-right: 3em;
 }
@@ -78,37 +87,33 @@
 }
 
 #contextual-help-columns h5 {
-    margin-top: 10px;
+    margin-top: 0.5em;
 }
 
-.paginator ul {
+.al-paginator ul {
     list-style-type: none;
     margin:          0;
     padding:         0 0 20px 0;
 }
 
-.paginator ul li {
+.al-paginator ul li {
     display: inline-block;
     margin:  2px;
 }
 
-.paginator span,
-.paginator a {
+.al-paginator span,
+.al-paginator a {
     margin: 0;
 }
 
-.paginator span.current,
-.paginator a.current {
-}
-
-.paginator span.separator,
-.paginator a.separator {
+.al-paginator span.separator,
+.al-paginator a.separator {
     background:     none;
     pointer-events: none;
     padding:        0 10px;
 }
 
-
-form#settings-form {
-    margin-bottom: 1em;
+form[name="log_actions"],
+form[name="post_types"] {
+    margin-bottom: 2em;
 }
