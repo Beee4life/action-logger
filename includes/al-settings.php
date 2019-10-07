@@ -81,7 +81,6 @@
                     <p>
                         <?php
                             $all_capabilities = get_role( 'administrator' )->capabilities;
-                            // echo '<pre>'; var_dump($all_capabilities); echo '</pre>'; exit;
                             $logs_user_role   = get_option( 'al_log_user_role' );
                             unset( $all_capabilities[ 'manage_links' ] ); // @TODO: why again
                             ksort( $all_capabilities );

@@ -1,7 +1,7 @@
 <?php
     /*
     Plugin Name: Action Logger
-    Version: 0.1-beta
+    Version: 1.0.0
     Tags: log
     Plugin URI: https://github.com/Beee4life/action-logger
     Description: This plugin logs several actions which are interesting to log, to know who did what, such as creating/deleting/promoting users.
@@ -38,7 +38,7 @@
                 // vars
                 $this->settings = array(
                     'path'    => trailingslashit( dirname( __FILE__ ) ),
-                    'version' => '0.1-beta',
+                    'version' => '1.0.0',
                 );
 
                 // (de)activation hooks
