@@ -25,7 +25,7 @@
                 <p><?php esc_html_e( 'By clicking this button you will trigger a download for a CSV (comma separated value) file.', 'action-logger' ); ?></p>
                 <form name="export-form" action="" method="post">
                     <input name="export_csv" type="hidden" value="1" />
-                    <input name="export_csv_nonce" type="hidden" value="<?php echo wp_create_nonce( 'export-csv-nonce' ); ?>"/>
+                    <input name="al_export_csv_nonce" type="hidden" value="<?php echo wp_create_nonce( 'al-export-csv-nonce' ); ?>"/>
                     <input type="submit" class="admin-button admin-button-small" value="<?php esc_html_e( 'Export to CSV', 'action-logger' ); ?>"/>
                 </form>
 

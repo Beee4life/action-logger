@@ -4,7 +4,7 @@
      *
      * @return array
      */
-    function get_available_actions() {
+    function al_get_available_actions() {
 
         $wp_options = array(
             array(
@@ -129,7 +129,7 @@
 
     }
 
-    function al_get_pagination( $get = false, $pages ) {
+    function al_get_pagination( $get, $pages ) {
 
         if ( $get == false || $pages == 1 ) {
             return false;
@@ -154,7 +154,7 @@
             'next_text' => __( 'Next &raquo;', 'action-logger' ),
             'type'      => 'list',
         );
-        $pagination = sprintf( '<div class="paginator">%s</div>', paginate_links( $pagination_args ) );
+        $pagination = sprintf( '<div class="al-paginator">%s</div>', paginate_links( $pagination_args ) );
 
         return $pagination;
 

@@ -22,6 +22,9 @@ This plugin gives you the option to log various (user) actions on your website. 
 * plugin activated
 * plugin deactivated
 
+## Version
+1.0.0
+
 ## Impact
 
 The overall impact is minimal. This plugin only 'watches' and doesn't interfere with any Wordpress actions.

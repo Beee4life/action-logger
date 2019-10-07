@@ -6,9 +6,9 @@
         $purge_logs_after = get_option( 'al_purge_logs', 0 );
         // only purge when it's not set to forever/0
         if ( 0 != $purge_logs_after ) {
-            $now_ts           = (int) current_time( 'timestamp' );
-            $purge_range      = $purge_logs_after * 24 * 60 * 60;
-            $purge_date       = $now_ts - $purge_range;
+            $now_ts      = (int)current_time( 'timestamp' );
+            $purge_range = $purge_logs_after * 24 * 60 * 60;
+            $purge_date  = $now_ts - $purge_range;
 
             global $wpdb;
             $wpdb->query(
